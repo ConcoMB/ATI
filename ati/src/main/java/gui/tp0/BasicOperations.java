@@ -1,30 +1,36 @@
 package gui.tp0;
 
-import app.ImageCreator;
-import app.ImageLoader;
-import app.ImageSaver;
 import gui.ExtensionFilter;
 import gui.MessageFrame;
 import gui.Panel;
 import gui.Window;
-import model.Image;
-import org.apache.sanselan.ImageWriteException;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-public class Tp0 extends JMenu {
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.filechooser.FileFilter;
+
+import org.apache.sanselan.ImageWriteException;
+
+import application.Loader;
+import application.Saver;
+import domain.Image;
+
+public class BasicOperations extends JMenu {
 
 	public JMenuItem saveImage = new JMenuItem("Save image");
 
 	private static final long serialVersionUID = 1L;
 
-	public Tp0() {
-		super("TP 0");
+	public BasicOperations() {
+		super("Basic operations");
 		this.setEnabled(true);
 		JMenuItem loadImage = new JMenuItem("Load image");
 		loadImage.addActionListener(new ActionListener() {
@@ -37,7 +43,7 @@ public class Tp0 extends JMenu {
 				chooser.addChoosableFileFilter(type);
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileFilter(type);
-				chooser.showOpenDialog(Tp0.this);
+				chooser.showOpenDialog(BasicOperations.this);
 
 				File arch = chooser.getSelectedFile();
 
@@ -46,7 +52,7 @@ public class Tp0 extends JMenu {
 					Image image = null;
 
 					try {
-						image = ImageLoader.loadImage(arch);
+						image = Loader.loadImage(arch);
 					} catch (Exception ex) {
                         ex.printStackTrace();
 						new MessageFrame("Couldn't load the image");
@@ -76,7 +82,7 @@ public class Tp0 extends JMenu {
 				chooser.addChoosableFileFilter(type);
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileFilter(type);
-				chooser.showOpenDialog(Tp0.this);
+				chooser.showOpenDialog(BasicOperations.this);
 				File arch = chooser.getSelectedFile();
 
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
@@ -92,7 +98,7 @@ public class Tp0 extends JMenu {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser selector = new JFileChooser();
 				selector.setApproveButtonText("Save");
-				selector.showSaveDialog(Tp0.this);
+				selector.showSaveDialog(BasicOperations.this);
 
 				File arch = selector.getSelectedFile();
 
@@ -100,7 +106,7 @@ public class Tp0 extends JMenu {
 					Image image = (((Window) getTopLevelAncestor()).getPanel()
 							.getWorkingImage());
 					try {
-						ImageSaver.saveImage(arch, image);
+						Saver.saveImage(arch, image);
 					} catch (ImageWriteException ex) {
 						new MessageFrame("Couldn't save the image");
 					} catch (IOException ex) {

@@ -16,7 +16,7 @@ public class Window extends JFrame {
 	public Window() {
 
         config = getGraphicsConfiguration();
-		setTitle("TPS Analisis y Tratamiento de Imagenes");
+		setTitle("Images Analysis and Treatment");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(1, 1, 900, 800);
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -24,7 +24,7 @@ public class Window extends JFrame {
 				- getHeight() / 2);
 		setResizable(false);
 		this.setMinimumSize(new Dimension(600, 600));
-		panel.setBackground(Color.BLACK);
+		panel.setBackground(Color.WHITE);
 		setJMenuBar(menuBar);
         panel.initKeyBindings();
 		add(panel);
@@ -40,7 +40,7 @@ public class Window extends JFrame {
 
 	public void enableTools() {
 		menuBar.getComponent(0).setEnabled(true);
-		((Tp0) menuBar.getComponent(0)).saveImage.setEnabled(true);
+		((BasicOperations) menuBar.getComponent(0)).saveImage.setEnabled(true);
 	}
 
     public GraphicsConfiguration getConfig() {

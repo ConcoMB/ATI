@@ -1,6 +1,6 @@
 package gui;
 
-import gui.tp0.Tp0;
+import gui.tp0.BasicOperations;
 
 import javax.swing.*;
 
@@ -11,7 +11,7 @@ public class Menu extends JMenuBar {
 	public Menu() {
 
 		// Menu for TP0
-		this.add(new Tp0());
+		this.add(new BasicOperations());
 
 	}
 

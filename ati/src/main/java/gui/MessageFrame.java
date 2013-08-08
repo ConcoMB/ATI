@@ -23,7 +23,7 @@ public class MessageFrame extends JFrame {
 		
 		JLabel label = new JLabel(mensaje);
 		label.setBounds(50, 0, 300, 50);
-		JButton aceptar = new JButton("Aceptar");
+		JButton aceptar = new JButton("Accept");
 		aceptar.setBounds(150, 60, 100, 30);
 		aceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

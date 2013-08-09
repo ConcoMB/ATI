@@ -1,20 +1,18 @@
 package gui;
 
+import gui.tp0.BasicOperations;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-
 	private Panel panel = new Panel(this);
-
 	private Menu menuBar = new Menu();
-
     private GraphicsConfiguration config;
 
 	public Window() {
-
         config = getGraphicsConfiguration();
 		setTitle("Images Analysis and Treatment");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -28,11 +26,7 @@ public class Window extends JFrame {
 		setJMenuBar(menuBar);
         panel.initKeyBindings();
 		add(panel);
-
-
 	}
-
-
 
 	public Panel getPanel() {
 		return panel;

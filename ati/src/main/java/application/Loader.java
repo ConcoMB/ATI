@@ -1,5 +1,7 @@
 package application;
 
+import static domain.Image.ImageFormat.RAW;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -12,7 +14,10 @@ import org.apache.sanselan.ImageInfo;
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
 
+import domain.ColorImage;
+import domain.GreyImage;
 import domain.Image;
+
 
 public class Loader {
 
@@ -39,9 +44,9 @@ public class Loader {
 		}
 
 		if (bi.getType() == BufferedImage.TYPE_INT_RGB) {
-			return new ColorImage(bi, format, Image.ImageType.RGB, false);
+			return new ColorImage(bi, format);
 		} else if (bi.getType() == BufferedImage.TYPE_BYTE_GRAY) {
-			return new ColorImage(bi, format, Image.ImageType.GRAYSCALE, false);
+			return new GreyImage(bi, format);
 		} else {
 			throw new IllegalStateException("Image wasn't RGB nor Grayscale");
 		}
@@ -62,11 +67,10 @@ public class Loader {
 				k = k + 1;
 			}
 		}
-		Image image = new ColorImage(height, width, Image.ImageFormat.RAW,
-				Image.ImageType.GRAYSCALE);
+		Image image = new GreyImage(height, width, RAW);
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				image.setRGBPixel(i, j, ret.getRGB(i, j));
+				image.setPixel(i, j, ret.getRGB(i, j));
 			}
 		}
 		return image;
@@ -74,12 +78,6 @@ public class Loader {
 	}
 
 	@SuppressWarnings("resource")
-	/**
-	 * Read the bytes from the file and returns it
-	 * @param file
-	 * @return
-	 * @throws IOException
-	 */
 	public static byte[] getBytesFromFile(File file) throws IOException {
 		InputStream is = new FileInputStream(file);
 		byte[] bytes = new byte[(int) file.length()];

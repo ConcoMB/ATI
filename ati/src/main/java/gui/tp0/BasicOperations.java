@@ -1,27 +1,21 @@
 package gui.tp0;
 
+import application.Creator;
+import application.Loader;
+import application.Saver;
 import gui.ExtensionFilter;
 import gui.MessageFrame;
 import gui.Panel;
 import gui.Window;
+import domain.Image;
+import org.apache.sanselan.ImageWriteException;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.filechooser.FileFilter;
-
-import org.apache.sanselan.ImageWriteException;
-
-import application.Loader;
-import application.Saver;
-import domain.Image;
 
 public class BasicOperations extends JMenu {
 
@@ -131,12 +125,11 @@ public class BasicOperations extends JMenu {
 
 		JMenuItem circleBinaryImage = new JMenuItem("Circle binary image");
 		circleBinaryImage.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 
-				Image img = ImageCreator.circle(300, 300);
+				Image img = Creator.circle(300, 300);
 
 				if (img != null) {
 					panel.loadImage(img);

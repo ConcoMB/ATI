@@ -1,11 +1,31 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
+
+import static domain.Image.ColorChannel.BLUE;
+import static domain.Image.ColorChannel.GREEN;
+import static domain.Image.ColorChannel.RED;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
+import domain.DrawingContainer;
+import domain.Image;
 
 public class Panel extends JPanel {
 
@@ -18,9 +38,7 @@ public class Panel extends JPanel {
 	private DrawingContainer drawingContainer;
 
 	public Panel(Window window) {
-
 		this.window = window;
-
 	}
 
 	void renderOffscreen() {
@@ -38,12 +56,8 @@ public class Panel extends JPanel {
 		} while (vImg.contentsLost());
 	}
 
-	/**
-	 * Paints an image in the panel
-	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
 		if (workingImage != null) {
 			BufferedImage bufferedImage = toCompatibleImage(workingImage
 					.getBufferedImage());
@@ -60,7 +74,6 @@ public class Panel extends JPanel {
 				g.drawRect(p.x, p.y, 1, 1);
 			}
 		}
-
 	}
 
 	private BufferedImage toCompatibleImage(BufferedImage image) {
@@ -91,11 +104,6 @@ public class Panel extends JPanel {
 		return new_image;
 	}
 
-	/**
-	 * Loads an image to the panel
-	 * 
-	 * @param image
-	 */
 	public void loadImage(Image image) {
 		this.workingImage = image;
 		this.image = image;
@@ -107,7 +115,6 @@ public class Panel extends JPanel {
 		int x = 0;
 		int y = 0;
 		int color = 0;
-
 		try {
 			x = Integer.valueOf(xText);
 			y = Integer.valueOf(yText);
@@ -116,7 +123,6 @@ public class Panel extends JPanel {
 			new MessageFrame("Los valores ingresados son incorrectos");
 			return false;
 		}
-
 		setAllPixels(x, y, color);
 
 		this.repaint();
@@ -124,9 +130,9 @@ public class Panel extends JPanel {
 	}
 
 	private void setAllPixels(int x, int y, double color) {
-		this.workingImage.setPixel(x, y, Image.ColorChannel.RED, color);
-		this.workingImage.setPixel(x, y, Image.ColorChannel.GREEN, color);
-		this.workingImage.setPixel(x, y, Image.ColorChannel.BLUE, color);
+		this.workingImage.setPixel(x, y, RED, color);
+		this.workingImage.setPixel(x, y, GREEN, color);
+		this.workingImage.setPixel(x, y, BLUE, color);
 	}
 
 	public Image getWorkingImage() {
@@ -143,7 +149,7 @@ public class Panel extends JPanel {
 
 	public void setImage(Image image) {
 		this.workingImage = image;
-		this.image = image.clone();
+		this.image = (Image) image.clone();
 	}
 
 	public void initKeyBindings() {
@@ -157,16 +163,13 @@ public class Panel extends JPanel {
 			}
 		};
 		Action redoAction = new
-
 		AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 
 			}
 		};
-
 		getActionMap().put(UNDO, undoAction);
 		getActionMap().put(REDO, redoAction);
-
 		InputMap[] inputMaps = new InputMap[] {
 				getInputMap(JComponent.WHEN_FOCUSED),
 				getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT),

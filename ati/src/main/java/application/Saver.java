@@ -3,14 +3,17 @@ package application;
 
 import ij.ImagePlus;
 import ij.io.FileSaver;
-import domain.Image;
-import org.apache.sanselan.ImageFormat;
-import org.apache.sanselan.ImageWriteException;
-import org.apache.sanselan.Sanselan;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import org.apache.sanselan.ImageFormat;
+import org.apache.sanselan.ImageWriteException;
+import org.apache.sanselan.Sanselan;
+
+import domain.ColorUtils;
+import domain.Image;
 
 public class Saver {
 	
@@ -21,13 +24,12 @@ public class Saver {
 
         ImageFormat format;
 
-        BufferedImage bi = ColorUtilities.populateEmptyBufferedImage(image);
+        BufferedImage bi = ColorUtils.populateEmptyBufferedImage(image);
         if(!extension.equals("raw")){
-			format = ColorUtilities.toSanselanImageFormat(image.getImageFormat());
+			format = ColorUtils.toSanselanImageFormat(image.getImageFormat());
             Sanselan.writeImage(bi, arch, format, null);
         } else {
             new FileSaver(new ImagePlus("", bi)).saveAsRaw(arch.getAbsoluteFile().toString());
-//			throw new UnsupportedOperationException("Still not supporting saving raw");
 		}
 
 

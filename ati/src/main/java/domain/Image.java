@@ -1,26 +1,63 @@
 package domain;
 
-public interface Image {
+import java.awt.image.BufferedImage;
+
+public abstract class Image implements Cloneable {
 
 	public static enum ColorChannel { RED, GREEN, BLUE }
-
-	public static enum ImageType { RGB, GREYSCALE }
-
+	public static enum ImageType { COLOR, GREY }
 	public static enum ImageFormat { BMP, PGM, PPM, RAW }
+	public static final int GREY_MAX = 255;
 
-	public static final int GREY_MAX = 256;
+	private ImageFormat format;
+	private int height;
+	private int width;
+	private BufferedImage bufferedImage;
+	
+	public int getHeight() {
+		return height;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	protected void setHeight(int height) {
+		this.height = height;
+	}
 
-	public void setPixel(int x, int y, ColorChannel channel, double color);
+	public ImageFormat getFormat() {
+		return format;
+	}
 
-	public void setRGBPixel(int x, int y, int rgb);
+	public void setFormat(ImageFormat format) {
+		this.format = format;
+	}
 
-	public int getRGBPixel(int x, int y);
+	protected void setWidth(int width) {
+		this.width = width;
+	}
 
-	public int getHeight();
+	public ImageFormat getImageFormat() {
+		return format;
+	}
+	
+    public BufferedImage getBufferedImage() {
+    	return bufferedImage;
+    }
 
-	public int getWidth();
+    protected void setBufferedImage(BufferedImage bi) {
+    	bufferedImage = bi;
+    }
+	
+	public abstract void setPixel(int x, int y, ColorChannel channel, double val);
+	
+	public abstract void setPixel(int x, int y, int rgb);
 
-	public ImageType getType();
+	public abstract int getPixel(int x, int y);
 
-	public ImageFormat getImageFormat();
+	public abstract ImageType getType();
+	
+	@Override
+	public abstract Object clone();
 }

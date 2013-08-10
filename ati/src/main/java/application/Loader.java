@@ -1,6 +1,8 @@
 package application;
 
 import static domain.Image.ImageFormat.RAW;
+import static domain.Image.ImageType.COLOR;
+import static domain.Image.ImageType.GREYSCALE;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -14,10 +16,7 @@ import org.apache.sanselan.ImageInfo;
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
 
-import domain.ColorImage;
-import domain.GreyImage;
 import domain.Image;
-
 
 public class Loader {
 
@@ -44,9 +43,9 @@ public class Loader {
 		}
 
 		if (bi.getType() == BufferedImage.TYPE_INT_RGB) {
-			return new ColorImage(bi, format);
+			return new Image(bi, format, COLOR);
 		} else if (bi.getType() == BufferedImage.TYPE_BYTE_GRAY) {
-			return new GreyImage(bi, format);
+			return new Image(bi, format, GREYSCALE);
 		} else {
 			throw new IllegalStateException("Image wasn't RGB nor Grayscale");
 		}
@@ -55,7 +54,7 @@ public class Loader {
 
 	public static Image loadRaw(File file, int width, int height)
 			throws IOException {
-
+		
 		BufferedImage ret;
 		byte[] data = getBytesFromFile(file);
 		ret = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
@@ -66,8 +65,8 @@ public class Loader {
 				raster.setSample(i, j, 0, data[k]);
 				k = k + 1;
 			}
-		}
-		Image image = new GreyImage(height, width, RAW);
+		} 
+		Image image = new Image(height, width, RAW, GREYSCALE);
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				image.setPixel(i, j, ret.getRGB(i, j));

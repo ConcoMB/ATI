@@ -31,7 +31,7 @@ public class ColorUtils {
 
 	public static int toBufferedImageType(Image.ImageType type) {
 		switch(type) {
-		case GREY:
+		case GREYSCALE:
 			return BufferedImage.TYPE_BYTE_GRAY;
 		case COLOR:
 			return BufferedImage.TYPE_INT_RGB;

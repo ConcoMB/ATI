@@ -1,16 +1,16 @@
 package application;
 
+import static domain.Image.ImageType.COLOR;
+import static domain.Image.ImageType.GREYSCALE;
 import static domain.Image.ImageFormat.BMP;
 
 import java.awt.Color;
 
-import domain.ColorImage;
-import domain.GreyImage;
 import domain.Image;
 
 public class Creator {
 	public static Image createBinaryImage(int height, int width) {
-		Image binaryImage = new GreyImage(height, width, BMP);
+		Image binaryImage = new Image(height, width, BMP, GREYSCALE);
 
 		Color blackColor = Color.BLACK;
 		Color whiteColor = Color.WHITE;
@@ -31,7 +31,7 @@ public class Creator {
 	}
 
 	public static Image createWhiteImage(int height, int width) {
-		Image whiteImage = new GreyImage(height, width, BMP);
+		Image whiteImage = new Image(height, width, BMP, GREYSCALE);
 
 		Color whiteColor = Color.WHITE;
 
@@ -48,9 +48,9 @@ public class Creator {
 			int color1, int color2) {
 		Image degradee = null;
 		if (isColor) {
-			degradee = new ColorImage(height, width, BMP);
+			degradee = new Image(height, width, BMP, COLOR);
 		} else {
-			degradee = new GreyImage(height, width, BMP);
+			degradee = new Image(height, width, BMP, GREYSCALE);
 		}
 
 		Color c1 = new Color(color1);
@@ -82,7 +82,7 @@ public class Creator {
 	}
 
 	public static Image circle(int height, int width) {
-		Image binaryImage = new GreyImage(height, width, BMP);
+		Image binaryImage = new Image(height, width, BMP, GREYSCALE);
 
 		Color blackColor = Color.BLACK;
 		Color whiteColor = Color.WHITE;

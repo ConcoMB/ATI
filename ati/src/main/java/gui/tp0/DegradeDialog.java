@@ -42,11 +42,11 @@ public class DegradeDialog extends JDialog {
 		pan2.setBounds(0, 60, 270, 60);
 
 		JLabel altoLabel = new JLabel("Height = ");
-		final JTextField alto = new JTextField("0");
+		final JTextField alto = new JTextField("500");
 		alto.setColumns(3);
 
 		JLabel anchoLabel = new JLabel("Width = ");
-		final JTextField ancho = new JTextField("0");
+		final JTextField ancho = new JTextField("500");
 		ancho.setColumns(3);
 
 		String fieldText = "0";

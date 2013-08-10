@@ -23,7 +23,7 @@ public abstract class CreateImageDialog extends JDialog {
 
 	public CreateImageDialog(final Panel panel) {
 
-		setTitle("Create binary image");
+		setTitle("Create square binary image");
 		setBounds(1, 1, 250, 130);
 		Toolkit toolkit = getToolkit();
 		Dimension size = toolkit.getScreenSize();

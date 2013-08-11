@@ -18,12 +18,9 @@ import domain.Image;
 public class Saver {
 	
 	public static void saveImage(File arch, Image image) throws ImageWriteException, IOException {
-		
 		String[] cadena = (arch.getName()).split("\\.");
 		String extension = cadena[cadena.length-1];
-
         ImageFormat format;
-
         BufferedImage bi = ColorUtils.populateEmptyBufferedImage(image);
         if(!extension.equals("raw")){
 			format = ColorUtils.toSanselanImageFormat(image.getImageFormat());

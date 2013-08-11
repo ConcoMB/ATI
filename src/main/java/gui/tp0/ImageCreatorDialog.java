@@ -17,13 +17,11 @@ import javax.swing.JTextField;
 
 import domain.Image;
 
-public abstract class CreateImageDialog extends JDialog {
+@SuppressWarnings("serial")
+public abstract class ImageCreatorDialog extends JDialog {
 
-	private static final long serialVersionUID = 1L;
-
-	public CreateImageDialog(final Panel panel) {
-
-		setTitle("Create square binary image");
+	public ImageCreatorDialog(final Panel panel) {
+		setTitle("Create square image");
 		setBounds(1, 1, 250, 130);
 		Toolkit toolkit = getToolkit();
 		Dimension size = toolkit.getScreenSize();
@@ -31,43 +29,29 @@ public abstract class CreateImageDialog extends JDialog {
 				- getHeight() / 3);
 		this.setResizable(false);
 		setLayout(null);
-
 		JPanel pan1 = new JPanel();
 		pan1.setBorder(BorderFactory.createTitledBorder("Size"));
 		pan1.setBounds(0, 0, 250, 60);
-
-		JLabel altoLabel = new JLabel("Height = ");
-		final JTextField alto = new JTextField("300");
-		alto.setColumns(3);
-
-		JLabel anchoLabel = new JLabel(", Width = ");
-		final JTextField ancho = new JTextField("300");
-		ancho.setColumns(3);
-
+		JLabel sizeLabel = new JLabel("Size = ");
+		final JTextField sizeField = new JTextField("300");
+		sizeField.setColumns(3);
 		JButton okButton = new JButton("OK");
 		okButton.setSize(250, 40);
 		okButton.setBounds(0, 60, 250, 40);
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				int height;
-				int width;
-
+				int size;
 				try {
-					height = Integer.valueOf(alto.getText().trim());
-					width = Integer.valueOf(ancho.getText().trim());
+					size = Integer.valueOf(sizeField.getText().trim());
 				} catch (NumberFormatException ex) {
 					new MessageFrame("Invalid data");
 					return;
 				}
-
-				if (height <= 0 || width <= 0) {
+				if (size <= 0) {
 					new MessageFrame("The image must be at least of 1x1");
 					return;
 				}
-
-				Image img = createBinaryImage(height, width);
-
+				Image img = createBinaryImage(size, size);
 				if (img != null) {
 					panel.loadImage(img);
 					panel.repaint();
@@ -76,21 +60,13 @@ public abstract class CreateImageDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-
 			}
-
 		});
-
-		pan1.add(altoLabel);
-		pan1.add(alto);
-
-		pan1.add(anchoLabel);
-		pan1.add(ancho);
-
+		pan1.add(sizeLabel);
+		pan1.add(sizeField);
 		this.add(pan1);
 		this.add(okButton);
-
-	};
-
+	}
+	
 	protected abstract Image createBinaryImage(int height, int width);
 }

@@ -1,7 +1,7 @@
 package gui.tp0;
 
 import gui.Panel;
-import application.Creator;
+import application.BasicImageUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")
@@ -13,7 +13,7 @@ public class CircleImageDialog extends ImageCreatorDialog {
 	
 	@Override
 	protected Image createBinaryImage(int height, int width) {
-		return Creator.createCircleImage(height, width);
+		return BasicImageUtils.createCircleImage(height, width);
 	}
 
 }

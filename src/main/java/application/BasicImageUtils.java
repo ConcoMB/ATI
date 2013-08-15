@@ -1,14 +1,14 @@
 package application;
 
+import static domain.Image.ImageFormat.BMP;
 import static domain.Image.ImageType.COLOR;
 import static domain.Image.ImageType.GREYSCALE;
-import static domain.Image.ImageFormat.BMP;
 
 import java.awt.Color;
 
 import domain.Image;
 
-public class Creator {
+public class BasicImageUtils {
 	
 	public static Image createSquareImage(int height, int width) {
 		Image binaryImage = new Image(height, width, BMP, GREYSCALE);
@@ -77,5 +77,15 @@ public class Creator {
 			}
 		}
 		return binaryImage;
+	}
+	
+	public static Image crop(int height, int width, int x, int y, Image original) {
+		Image image = new Image(height, width, original.getImageFormat(), original.getType());
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < height; j++) {
+				image.setPixel(i, j, original.getPixel(i + x, j + y));
+			}
+		}
+		return image;
 	}
 }

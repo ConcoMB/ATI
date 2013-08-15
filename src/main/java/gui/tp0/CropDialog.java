@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import application.BasicImageUtils;
+
 import domain.Image;
 
 @SuppressWarnings("serial")
@@ -80,32 +82,22 @@ public class CropDialog extends JDialog {
 					new MessageFrame("Invalid Parameters");
 					return;
 				}
-				Image img = new Image(height, width, original.getImageFormat(),
-						original.getType());
-				for (int i = 0; i < height; i++) {
-					for (int j = 0; j < height; j++) {
-						img.setPixel(i, j, original.getRGBPixel(i + x, j + y));
-					}
-				}
+				Image img = BasicImageUtils.crop(height,width, x, y, original);
 				panel.loadImage(img);
 				panel.repaint();
 				dispose();
 			}
 		});
-
 		pan1.add(heightLabel);
 		pan1.add(heightField);
-
 		pan1.add(widthLabel);
 		pan1.add(widthField);
-
 		pan2.add(startPointLabelX);
 		pan2.add(startPointFieldX);
 		pan2.add(startPointLabelY);
 		pan2.add(startPointFieldY);
-
-		this.add(pan1);
-		this.add(pan2);
-		this.add(okButton);
+		add(pan1);
+		add(pan2);
+		add(okButton);
 	}
 }

@@ -1,6 +1,7 @@
 package gui;
 
 import gui.tp0.FileMenu;
+import gui.tp1.PunctualOperationsMenu;
 
 import javax.swing.*;
 
@@ -8,10 +9,8 @@ import javax.swing.*;
 public class MenuBar extends JMenuBar {
 
 	public MenuBar() {
-
-		// Menu for TP0
-		this.add(new FileMenu());
-
+		add(new FileMenu());
+		add(new PunctualOperationsMenu());
 	}
 
 }

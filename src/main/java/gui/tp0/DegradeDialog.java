@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.Creator;
+import application.BasicImageUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")
@@ -97,7 +97,7 @@ public class DegradeDialog extends JDialog {
 					new MessageFrame("The image must be at least of 1x1");
 					return;
 				}
-				Image img = Creator.createDegrade(isColor, heightVal, widthVal, c1,
+				Image img = BasicImageUtils.createDegrade(isColor, heightVal, widthVal, c1,
 						c2);
 				if (img != null) {
 					panel.loadImage(img);
@@ -110,22 +110,16 @@ public class DegradeDialog extends JDialog {
 
 			}
 		});
-
 		pan1.add(heightLabel);
 		pan1.add(height);
-
 		pan1.add(widthLabel);
 		pan1.add(width);
-
 		pan2.add(colorLabel1);
 		pan2.add(color1);
 		pan2.add(colorLabel2);
 		pan2.add(color2);
-
-		this.add(pan1);
-		this.add(pan2);
-		this.add(okButton);
-
+		add(pan1);
+		add(pan2);
+		add(okButton);
 	};
-
 }

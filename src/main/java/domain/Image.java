@@ -21,7 +21,7 @@ public class Image implements Cloneable {
 		BMP, PGM, PPM, RAW
 	}
 
-	public static final int MAX_VAL = 256;
+	public static final int MAX_VAL = 255;
 
 	private ImageType type;
 	private ImageFormat format;
@@ -96,14 +96,14 @@ public class Image implements Cloneable {
 		}
 	}
 
-	public int getRGBPixel(int x, int y) {
-		int redComponent = this.red.truncatePixel(getPixelFromChannel(x, y, RED));
-		int greenComponent = this.green.truncatePixel(getPixelFromChannel(x, y, GREEN));
-		int blueComponent = this.blue.truncatePixel(getPixelFromChannel(x, y, BLUE));
+	public int getPixel(int x, int y) {
+		int redComponent = this.red.truncatePixel(getPixel(x, y, RED));
+		int greenComponent = this.green.truncatePixel(getPixel(x, y, GREEN));
+		int blueComponent = this.blue.truncatePixel(getPixel(x, y, BLUE));
 		return new Color(redComponent, greenComponent, blueComponent).getRGB();
 	}
 
-	public double getPixelFromChannel(int x, int y, ColorChannel channel) {
+	public double getPixel(int x, int y, ColorChannel channel) {
 		switch(channel) {
 		case RED:
 			return red.getPixel(x, y);
@@ -139,7 +139,7 @@ public class Image implements Cloneable {
 		}
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
-				bufferedImage.setRGB(x, y, getRGBPixel(x, y));
+				bufferedImage.setRGB(x, y, getPixel(x, y));
 			}
 		}
 		return bufferedImage;

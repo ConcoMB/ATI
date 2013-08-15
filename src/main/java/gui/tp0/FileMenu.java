@@ -112,8 +112,6 @@ public class FileMenu extends JMenu {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				JDialog crop = new CropDialog(panel);
 				crop.setVisible(true);
-//				panel.loadImage(image);
-				panel.repaint();
 			}
 		});
 		

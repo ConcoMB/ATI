@@ -79,14 +79,11 @@ public class RawImageDialog extends JDialog {
 				dispose();
 			}
 		});
-
 		pan1.add(anchoLabel);
 		pan1.add(ancho);
 		pan1.add(altoLabel);
 		pan1.add(alto);
-
-		this.add(pan1);
-		this.add(okButton);
+		add(pan1);
+		add(okButton);
 	}
-
 }

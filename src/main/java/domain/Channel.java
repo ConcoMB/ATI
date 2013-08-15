@@ -38,9 +38,9 @@ public class Channel implements Cloneable {
 		if (!validPixel(x, y)) {
 			throw new IndexOutOfBoundsException();
 		}
-		if (val > MAX_VAL || val < MIN_VAL) {
-			throw new IllegalArgumentException();
-		}
+//		if (val > MAX_VAL || val < MIN_VAL) {
+//			throw new IllegalArgumentException();
+//		}
 		channel[y * width + x] = val;
 	}
 

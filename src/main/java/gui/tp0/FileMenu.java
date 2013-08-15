@@ -49,12 +49,12 @@ public class FileMenu extends JMenu {
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileFilter(type);
 				chooser.showOpenDialog(FileMenu.this);
-				File arch = chooser.getSelectedFile();
+				File file = chooser.getSelectedFile();
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
-				if (arch != null) {
+				if (file != null) {
 					Image image = null;
 					try {
-						image = Loader.loadImage(arch);
+						image = Loader.loadImage(file);
 					} catch (Exception ex) {
                         ex.printStackTrace();
 						new MessageFrame("Couldn't load the image");
@@ -76,10 +76,10 @@ public class FileMenu extends JMenu {
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileFilter(type);
 				chooser.showOpenDialog(FileMenu.this);
-				File arch = chooser.getSelectedFile();
+				File file = chooser.getSelectedFile();
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
-				if (arch != null) {
-					JDialog rawParams = new RawImageDialog(panel, arch);
+				if (file != null) {
+					JDialog rawParams = new RawImageDialog(panel, file);
 					rawParams.setVisible(true);
 				}
 			}
@@ -91,12 +91,12 @@ public class FileMenu extends JMenu {
 				JFileChooser selector = new JFileChooser();
 				selector.setApproveButtonText("Save");
 				selector.showSaveDialog(FileMenu.this);
-				File arch = selector.getSelectedFile();
-				if (arch != null) {
+				File file = selector.getSelectedFile();
+				if (file != null) {
 					Image image = (((Window) getTopLevelAncestor()).getPanel()
 							.getWorkingImage());
 					try {
-						Saver.saveImage(arch, image);
+						Saver.saveImage(file, image);
 					} catch (ImageWriteException ex) {
 						new MessageFrame("Couldn't save the image");
 					} catch (IOException ex) {

@@ -18,9 +18,8 @@ import javax.swing.JTextField;
 import application.Loader;
 import domain.Image;
 
+@SuppressWarnings("serial")
 public class RawImageDialog extends JDialog {
-
-	private static final long serialVersionUID = 1L;
 
 	public RawImageDialog(final Panel panel, final File arch) {
 		setTitle("Load raw image");

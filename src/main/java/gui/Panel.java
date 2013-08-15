@@ -27,12 +27,13 @@ import javax.swing.KeyStroke;
 import domain.DrawingContainer;
 import domain.Image;
 
+@SuppressWarnings("serial")
 public class Panel extends JPanel {
 
-	private static final long serialVersionUID = 1L;
 	private Image workingImage = null;
 	private Image image = null;
-	private Image lastImg = null;
+//	private Image lastImg = null;
+	@SuppressWarnings("unused")
 	private Window window;
 	private VolatileImage vImg;
 	private DrawingContainer drawingContainer;

@@ -23,15 +23,22 @@ import application.Loader;
 import application.Saver;
 import domain.Image;
 
-public class BasicOperations extends JMenu {
+@SuppressWarnings("serial")
+public class FileMenu extends JMenu {
 
 	public JMenuItem saveImage = new JMenuItem("Save image");
-
-	private static final long serialVersionUID = 1L;
-
-	public BasicOperations() {
-		super("Basic operations");
+	public JMenuItem cropImage = new JMenuItem("Crop image");
+	
+	public FileMenu() {
+		super("File");
 		this.setEnabled(true);
+		JMenuItem newWindow = new JMenuItem("New window");
+		newWindow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Window window = new Window();
+				window.setVisible(true);
+			}
+		});
 		JMenuItem loadImage = new JMenuItem("Load image");
 		loadImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -41,7 +48,7 @@ public class BasicOperations extends JMenu {
 				chooser.addChoosableFileFilter(type);
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileFilter(type);
-				chooser.showOpenDialog(BasicOperations.this);
+				chooser.showOpenDialog(FileMenu.this);
 				File arch = chooser.getSelectedFile();
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				if (arch != null) {
@@ -68,7 +75,7 @@ public class BasicOperations extends JMenu {
 				chooser.addChoosableFileFilter(type);
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileFilter(type);
-				chooser.showOpenDialog(BasicOperations.this);
+				chooser.showOpenDialog(FileMenu.this);
 				File arch = chooser.getSelectedFile();
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				if (arch != null) {
@@ -83,7 +90,7 @@ public class BasicOperations extends JMenu {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser selector = new JFileChooser();
 				selector.setApproveButtonText("Save");
-				selector.showSaveDialog(BasicOperations.this);
+				selector.showSaveDialog(FileMenu.this);
 				File arch = selector.getSelectedFile();
 				if (arch != null) {
 					Image image = (((Window) getTopLevelAncestor()).getPanel()
@@ -99,6 +106,17 @@ public class BasicOperations extends JMenu {
 			}
 		});
 
+		cropImage.setEnabled(false);
+		cropImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				JDialog crop = new CropDialog(panel);
+				crop.setVisible(true);
+//				panel.loadImage(image);
+				panel.repaint();
+			}
+		});
+		
 		JMenuItem binaryImage = new JMenuItem("Square image");
 		binaryImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,9 +149,12 @@ public class BasicOperations extends JMenu {
 				degrade.setVisible(true);
 			}
 		});
+		this.add(newWindow);
+		this.add(new JSeparator());
 		this.add(loadImage);
 		this.add(loadRaw);
 		this.add(saveImage);
+		this.add(cropImage);
 		this.add(new JSeparator());
 		this.add(binaryImage);
 		this.add(circleBinaryImage);

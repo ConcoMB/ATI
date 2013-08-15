@@ -9,9 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class MessageFrame extends JFrame {
-
-	private static final long serialVersionUID = 1L;	
 
 	public MessageFrame(String mensaje) {
 		setTitle("Error");

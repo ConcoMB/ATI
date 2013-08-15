@@ -19,9 +19,8 @@ import javax.swing.JTextField;
 import application.Creator;
 import domain.Image;
 
+@SuppressWarnings("serial")
 public class DegradeDialog extends JDialog {
-
-	private static final long serialVersionUID = 1L;
 
 	public DegradeDialog(final Panel panel, final boolean isColor) {
 
@@ -41,13 +40,13 @@ public class DegradeDialog extends JDialog {
 		pan2.setBorder(BorderFactory.createTitledBorder("Color"));
 		pan2.setBounds(0, 60, 270, 60);
 
-		JLabel altoLabel = new JLabel("Height = ");
-		final JTextField alto = new JTextField("500");
-		alto.setColumns(3);
+		JLabel heightLabel = new JLabel("Height = ");
+		final JTextField height = new JTextField("500");
+		height.setColumns(3);
 
-		JLabel anchoLabel = new JLabel("Width = ");
-		final JTextField ancho = new JTextField("500");
-		ancho.setColumns(3);
+		JLabel widthLabel = new JLabel("Width = ");
+		final JTextField width = new JTextField("500");
+		width.setColumns(3);
 
 		String fieldText = "0";
 		if (isColor) {
@@ -71,14 +70,14 @@ public class DegradeDialog extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				int height;
-				int width;
+				int heightVal;
+				int widthVal;
 				int c1;
 				int c2;
 
 				try {
-					height = Integer.valueOf(alto.getText().trim());
-					width = Integer.valueOf(ancho.getText().trim());
+					heightVal = Integer.valueOf(height.getText().trim());
+					widthVal = Integer.valueOf(width.getText().trim());
 					if (isColor) {
 						c1 = Integer.valueOf(color1.getText().trim(), 16);
 						c2 = Integer.valueOf(color2.getText().trim(), 16);
@@ -94,11 +93,11 @@ public class DegradeDialog extends JDialog {
 					return;
 				}
 
-				if (height <= 0 || width <= 0) {
+				if (heightVal <= 0 || widthVal <= 0) {
 					new MessageFrame("The image must be at least of 1x1");
 					return;
 				}
-				Image img = Creator.createDegrade(isColor, height, width, c1,
+				Image img = Creator.createDegrade(isColor, heightVal, widthVal, c1,
 						c2);
 				if (img != null) {
 					panel.loadImage(img);
@@ -112,11 +111,11 @@ public class DegradeDialog extends JDialog {
 			}
 		});
 
-		pan1.add(altoLabel);
-		pan1.add(alto);
+		pan1.add(heightLabel);
+		pan1.add(height);
 
-		pan1.add(anchoLabel);
-		pan1.add(ancho);
+		pan1.add(widthLabel);
+		pan1.add(width);
 
 		pan2.add(colorLabel1);
 		pan2.add(color1);

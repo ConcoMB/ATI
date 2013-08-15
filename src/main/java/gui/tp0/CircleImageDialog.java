@@ -4,9 +4,8 @@ import gui.Panel;
 import application.Creator;
 import domain.Image;
 
+@SuppressWarnings("serial")
 public class CircleImageDialog extends ImageCreatorDialog {
-
-	private static final long serialVersionUID = 1L;
 
 	public CircleImageDialog(Panel panel) {
 		super(panel);

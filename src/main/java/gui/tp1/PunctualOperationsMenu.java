@@ -23,7 +23,17 @@ public class PunctualOperationsMenu extends JMenu {
 		JMenuItem addition = new AddImagesItem(this);
 		JMenuItem substraction = new SubstractImagesItem(this);
 		JMenuItem multiplication = new MultiplyImagesItem(this);
-
+		JMenuItem scalarMultiplication = new JMenuItem("Scalar multiplication");
+		scalarMultiplication.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog scalarMult = new ScalarMultiplicationDialog(panel);
+				scalarMult.setVisible(true);
+			}
+		});
 		JMenuItem negative = new JMenuItem("Negative");
 		negative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -50,6 +60,7 @@ public class PunctualOperationsMenu extends JMenu {
 		add(addition);
 		add(substraction);
 		add(multiplication);
+		add(scalarMultiplication);
 		add(new JSeparator());
 		add(negative);
 		add(new JSeparator());

@@ -19,7 +19,7 @@ public class Window extends JFrame {
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(size.width / 3 - getWidth() / 3, size.height / 3
 				- getHeight() / 2);
-		setResizable(false);
+//		setResizable(false);
 		setMinimumSize(new Dimension(600, 600));
 		panel.setBackground(Color.WHITE);
 		setJMenuBar(menuBar);

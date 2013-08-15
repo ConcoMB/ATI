@@ -28,8 +28,11 @@ public abstract class ImageAlgebraicOperations extends JMenuItem {
 		this.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
 				Panel panel = (((Window) menu.getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JFileChooser chooser = new JFileChooser();
 				Image panelImage = panel.getWorkingImage();
 				FileFilter type = new ExtensionFilter("Images", new String[] {
 						".pgm", ".PGM", ".ppm", ".PPM", ".bmp", ".BMP" });

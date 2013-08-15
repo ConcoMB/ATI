@@ -102,6 +102,25 @@ public class PunctualOperationsUtils {
 		return img;				
 	}
 	
+	public static Image multiply(Image original, double value) {
+		if (original == null) {
+			return null;
+		}
+		Image img = new Image(original.getHeight(), original.getWidth(), original.getImageFormat(), original.getType());
+		for (int x = 0; x < img.getHeight(); x++) {
+			for (int y = 0; y < img.getWidth(); y++) {
+				double red = original.getPixel(x, y, RED) * value;
+				double green = original.getPixel(x, y, GREEN) * value;
+				double blue = original.getPixel(x, y, BLUE) * value;
+				img.setPixel(x, y, RED, red);
+				img.setPixel(x, y, GREEN, green);
+				img.setPixel(x, y, BLUE, blue);
+			}
+		}
+		truncate(img);
+		return img;			
+	}
+	
 	private static double min(double a, double b, double c, double d) {
 		return Math.min(a, Math.min(b, Math.min(c, d)));
 	}
@@ -123,6 +142,19 @@ public class PunctualOperationsUtils {
 				image.setPixel(x, y, RED, toBase256(red));
 				image.setPixel(x, y, GREEN, toBase256(green));
 				image.setPixel(x, y, BLUE, toBase256(blue));
+			}
+		}
+	}
+	
+	private static void truncate(Image image) {
+		for (int x = 0; x < image.getHeight(); x++) {
+			for (int y = 0; y < image.getWidth(); y++) {
+				double red = image.getPixel(x, y, RED);
+				double green = image.getPixel(x, y, GREEN);
+				double blue = image.getPixel(x, y, BLUE);
+				image.setPixel(x, y, RED, red > Image.MAX_VAL ? Image.MAX_VAL : red);
+				image.setPixel(x, y, GREEN, green > Image.MAX_VAL ? Image.MAX_VAL : green);
+				image.setPixel(x, y, BLUE, blue > Image.MAX_VAL ? Image.MAX_VAL : blue);
 			}
 		}
 	}

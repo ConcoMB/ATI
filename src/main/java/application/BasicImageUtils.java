@@ -24,6 +24,10 @@ public class BasicImageUtils {
 		return binaryImage;
 	}
 
+	public static boolean invalidValue(int x) {
+		return  x < 0 || x > Image.MAX_VAL;
+	}
+	
 	public static Image createWhiteImage(int height, int width) {
 		Image whiteImage = new Image(height, width, BMP, GREYSCALE);
 		for (int y = 0; y < height; y++) {

@@ -162,4 +162,74 @@ public class PunctualOperationsUtils {
 	private static double toBase256(double val) {
 		return Math.floor(val*255 + 0.5);
 	}
+
+	public static Image dynamicCompression(Image original) {
+		if (original == null) {
+			return null;
+		}
+		double L = Image.MAX_VAL;
+		double RRed = 0, RGreen = 0 , RBlue = 0;
+		for (int x = 0; x < original.getHeight(); x++) {
+			for (int y = 0; y < original.getWidth(); y++) {
+				RRed = Math.max(RRed, original.getPixel(x, y, RED));
+				RGreen = Math.max(RGreen, original.getPixel(x, y, GREEN));
+				RBlue = Math.max(RBlue, original.getPixel(x, y, BLUE));
+			}
+		}
+		
+		double cRed = (L - 1) / Math.log(1 + RRed);
+		double cGreen = (L - 1) / Math.log(1 + RGreen);
+		double cBlue = (L - 1) / Math.log(1 + RBlue);
+
+		Image image = new Image(original.getHeight(), original.getWidth(), original.getImageFormat(), original.getType());
+		for (int x = 0; x < image.getHeight(); x++) {
+			for (int y = 0; y < image.getWidth(); y++) {
+				double rRed = original.getPixel(x, y, RED);
+				double rGreen = original.getPixel(x, y, GREEN);
+				double rBlue = original.getPixel(x, y, BLUE);
+				double colorRed = (double) (cRed * Math.log(1 + rRed));
+				double colorGreen = (double) (cGreen * Math.log(1 + rGreen));
+				double colorBlue = (double) (cBlue * Math.log(1 + rBlue));
+				image.setPixel(x, y, RED, colorRed);
+				image.setPixel(x, y, GREEN, colorGreen);
+				image.setPixel(x, y, BLUE, colorBlue);
+			}
+		}
+		return image;
+	}
+
+	public static Image contrast(Image original, int r1, int r2, int s1, int s2) {
+		if (original == null) {
+			return null;
+		}
+		Image img = new Image(original.getHeight(), original.getWidth(), original.getImageFormat(), original.getType());
+		for (int x = 0; x < img.getHeight(); x++) {
+			for (int y = 0; y < img.getWidth(); y++) {
+				double red = contrastValue(original.getPixel(x, y, RED), r1, r2, s1, s2);
+				double green = contrastValue(original.getPixel(x, y, GREEN), r1, r2, s1, s2);
+				double blue = contrastValue(original.getPixel(x, y, BLUE), r1, r2, s1, s2);
+				img.setPixel(x, y, RED, red);
+				img.setPixel(x, y, GREEN, green);
+				img.setPixel(x, y, BLUE, blue);
+			}
+		}
+		return img;			
+	}
+
+	private static double contrastValue(double pixel, int r1, int r2, int s1,
+			int s2) {
+		double m = 0;
+		double b = 0;
+		if (pixel < r1) {
+			m = s1 / r1;
+			b = 0;
+		} else if (pixel > r2) {
+			m = (Image.MAX_VAL - s2) / (Image.MAX_VAL - r2);
+			b = s2 - m * r2;
+		} else {
+			m = (s2 - s1) / (r2 - r1);
+			b = s1 - m * r1;
+		}
+		return m * pixel + b;
+	}
 }

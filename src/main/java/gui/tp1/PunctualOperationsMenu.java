@@ -34,6 +34,17 @@ public class PunctualOperationsMenu extends JMenu {
 				scalarMult.setVisible(true);
 			}
 		});
+		JMenuItem dinamicRange = new JMenuItem("Dynamic range compression");
+		dinamicRange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				panel.setImage(PunctualOperationsUtils.dynamicCompression(panel.getImage()));
+				panel.repaint();
+			}
+		});
 		JMenuItem negative = new JMenuItem("Negative");
 		negative.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -56,16 +67,55 @@ public class PunctualOperationsMenu extends JMenu {
 				thresholdDialog.setVisible(true);
 			}
 		});
+		JMenuItem contrast = new JMenuItem("Contrast");
+		contrast.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog contrastDialog = new ContrastDialog(panel);
+				contrastDialog.setVisible(true);
+			}
+		});
+		JMenuItem histogram = new JMenuItem("Histogram");
+		histogram.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				// TODO
+			}
+		});
+		
+		JMenuItem ecualization = new JMenuItem("Ecualization");
+		ecualization.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				// TODO
+			}
+		});
+		
 		
 		add(addition);
 		add(substraction);
 		add(multiplication);
 		add(scalarMultiplication);
+		add(dinamicRange);
 		add(new JSeparator());
 		add(negative);
 		add(new JSeparator());
+		add(contrast);
+		add(new JSeparator());
 		add(threshold);
 		add(new JSeparator());
+		add(histogram);
+		add(new JSeparator());
+		add(ecualization);
 	}
 
 }

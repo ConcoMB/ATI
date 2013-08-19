@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
 import application.PunctualOperationsUtils;
+import domain.Image;
 
 @SuppressWarnings("serial")
 public class PunctualOperationsMenu extends JMenu {
@@ -85,7 +86,13 @@ public class PunctualOperationsMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				// TODO
+				JDialog histogramDialog;
+				if (panel.getImage().getType() == Image.ImageType.GREYSCALE) {
+					histogramDialog = new GreyHistogramDialog(panel);
+				} else {
+					histogramDialog = new ColorHistogramDialog(panel);
+				}
+				histogramDialog.setVisible(true);
 			}
 		});
 		

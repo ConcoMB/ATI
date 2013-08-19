@@ -145,6 +145,13 @@ public class Image implements Cloneable {
 		return bufferedImage;
 	}
 	
+	public double getGraylevelFromPixel(int x, int y) {
+		double red = this.red.getPixel(x, y);
+		double green = this.green.getPixel(x, y);
+		double blue = this.blue.getPixel(x, y);
+		return (red + green + blue) / 3.0;
+	}
+	
 	@Override
 	public Object clone() {
 		BufferedImage bi = ColorUtils.populateEmptyBufferedImage(this);

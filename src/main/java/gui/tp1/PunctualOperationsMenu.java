@@ -103,7 +103,8 @@ public class PunctualOperationsMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				// TODO
+				panel.setImage(PunctualOperationsUtils.ecualizate(panel.getImage()));
+				panel.repaint();
 			}
 		});
 		

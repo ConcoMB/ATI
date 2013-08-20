@@ -29,20 +29,22 @@ public class Image implements Cloneable {
 	private Channel green;
 	private Channel blue;
 	private BufferedImage bufferedImage;
-
+	private boolean changed;
+	
 	public Image(int height, int width, ImageFormat format, ImageType type) {
 		this.red = new Channel(width, height);
 		this.green = new Channel(width, height);
 		this.blue = new Channel(width, height);
-
 		this.format = format;
 		this.type = type;
+		changed = false;
 	}
 
 	public Image(BufferedImage bi, ImageFormat format, ImageType type) {
 		this(bi.getHeight(), bi.getWidth(), format, type);
 		bufferedImage = bi;
 		initRGB(bi);
+		changed = true;
 	}
 
 	public static Image reuse(Image img, BufferedImage newImg) {
@@ -72,15 +74,17 @@ public class Image implements Cloneable {
 	}
 
 	public void setPixel(int x, int y, int rgb) {
-		this.setPixel(x, y, RED, ColorUtils.getRedFromRGB(rgb));
-		this.setPixel(x, y, GREEN, ColorUtils.getGreenFromRGB(rgb));
-		this.setPixel(x, y, BLUE, ColorUtils.getBlueFromRGB(rgb));
+		setPixel(x, y, RED, ColorUtils.getRedFromRGB(rgb));
+		setPixel(x, y, GREEN, ColorUtils.getGreenFromRGB(rgb));
+		setPixel(x, y, BLUE, ColorUtils.getBlueFromRGB(rgb));
+		changed = true;
 	}
 
 	public void setPixel(int x, int y, ColorChannel channel, double color) {
 		if (!red.validPixel(x, y)) {
 			throw new IllegalArgumentException("Invalid pixels on setPixel");
 		}
+		changed = true;
 		switch(channel) {
 		case RED:
 			red.setPixel(x, y, color);
@@ -125,6 +129,11 @@ public class Image implements Cloneable {
 	}
 
 	public ImageType getType() {
+		if (!changed) {
+			return type;
+		}
+		changed = false;
+		checkType();
 		return type;
 	}
 
@@ -156,5 +165,21 @@ public class Image implements Cloneable {
 	public Object clone() {
 		BufferedImage bi = ColorUtils.populateEmptyBufferedImage(this);
 		return new Image(bi, format, type);
+	}
+	
+	private void checkType() {
+		for (int x = 0; x < getHeight(); x++) {
+			for (int y = 0; y < getWidth(); y++) {
+				double r = red.getPixel(x, y);
+				double g = green.getPixel(x, y);
+				double b = blue.getPixel(x, y);
+				if (r != g || r != b || g != b) {
+					type = ImageType.COLOR;
+					return;
+				}
+			}
+		}
+		type = ImageType.GREYSCALE; 
+		return;
 	}
 }

@@ -1,10 +1,6 @@
 package gui;
 
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -31,8 +29,8 @@ import domain.Image;
 public class Panel extends JPanel {
 
 	private Image workingImage = null;
-	private Image image = null;
-//	private Image lastImg = null;
+	private Deque<Image> imageHistory = new LinkedList<Image>();
+	private Deque<Image> undoStack = new LinkedList<Image>();
 	@SuppressWarnings("unused")
 	private Window window;
 	private VolatileImage vImg;
@@ -83,10 +81,6 @@ public class Panel extends JPanel {
 				.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 				.getDefaultConfiguration();
 
-		/*
-		 * if image is already compatible and optimized for current system
-		 * settings, simply return it
-		 */
 		if (image.getColorModel().equals(gfx_config.getColorModel()))
 			return image;
 
@@ -106,51 +100,33 @@ public class Panel extends JPanel {
 	}
 
 	public void loadImage(Image image) {
-		this.workingImage = image;
-		this.image = image;
+		workingImage = image;
+		imageHistory.push(image);
 		((Window) getTopLevelAncestor()).enableTools();
 	}
 
-	public boolean setPixel(String xText, String yText, String colorText) {
-
-		int x = 0;
-		int y = 0;
-		int color = 0;
-		try {
-			x = Integer.valueOf(xText);
-			y = Integer.valueOf(yText);
-			color = Integer.valueOf(colorText);
-		} catch (NumberFormatException ex) {
-			new MessageFrame("Los valores ingresados son incorrectos");
-			return false;
-		}
-		setAllPixels(x, y, color);
-
-		this.repaint();
-		return true;
-	}
-
-	private void setAllPixels(int x, int y, double color) {
-		this.workingImage.setPixel(x, y, RED, color);
-		this.workingImage.setPixel(x, y, GREEN, color);
-		this.workingImage.setPixel(x, y, BLUE, color);
-	}
-
-	public Image getWorkingImage() {
-		return workingImage;
-	}
-
-	public void setWorkingImage(Image workingImage) {
-		this.workingImage = workingImage;
-	}
-
 	public Image getImage() {
-		return image;
+		return imageHistory.peek();
 	}
 
 	public void setImage(Image image) {
-		this.workingImage = image;
-		this.image = (Image) image.clone();
+		workingImage = image;
+		imageHistory.push((Image) image.clone());
+		undoStack.clear();
+	}
+	
+	public void undo() {
+		if (!imageHistory.isEmpty()) {
+			undoStack.push(imageHistory.pop());
+			workingImage = imageHistory.peek();
+		}
+	}
+	
+	public void redo() {
+		if (!undoStack.isEmpty()) {
+			imageHistory.push(undoStack.pop());
+			workingImage = imageHistory.peek();
+		}
 	}
 
 	public void initKeyBindings() {
@@ -158,7 +134,7 @@ public class Panel extends JPanel {
 		String REDO = "Redo action key";
 		Action undoAction = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				setWorkingImage(getImage());
+				workingImage = getImage();
 				drawingContainer = new DrawingContainer();
 				repaint();
 			}

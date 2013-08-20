@@ -32,6 +32,22 @@ public class FileMenu extends JMenu {
 	public FileMenu() {
 		super("File");
 		this.setEnabled(true);
+		JMenuItem undo = new JMenuItem("Undo");
+		undo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				panel.undo();
+				panel.repaint();
+			}
+		});
+		JMenuItem redo = new JMenuItem("Redo");
+		redo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				panel.redo();
+				panel.repaint();
+			}
+		});
 		JMenuItem newWindow = new JMenuItem("New window");
 		newWindow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -94,7 +110,7 @@ public class FileMenu extends JMenu {
 				File file = selector.getSelectedFile();
 				if (file != null) {
 					Image image = (((Window) getTopLevelAncestor()).getPanel()
-							.getWorkingImage());
+							.getImage());
 					try {
 						Saver.saveImage(file, image);
 					} catch (ImageWriteException ex) {
@@ -147,16 +163,20 @@ public class FileMenu extends JMenu {
 				degrade.setVisible(true);
 			}
 		});
-		this.add(newWindow);
-		this.add(new JSeparator());
-		this.add(loadImage);
-		this.add(loadRaw);
-		this.add(saveImage);
-		this.add(cropImage);
-		this.add(new JSeparator());
-		this.add(binaryImage);
-		this.add(circleBinaryImage);
-		this.add(degradeBW);
-		this.add(degradeColor);
+		add(newWindow);
+		add(new JSeparator());
+		add(loadImage);
+		add(loadRaw);
+		add(saveImage);
+		add(new JSeparator());
+		add(cropImage);
+		add(new JSeparator());
+		add(undo);
+		add(redo);
+		add(new JSeparator());
+		add(binaryImage);
+		add(circleBinaryImage);
+		add(degradeBW);
+		add(degradeColor);
 	}
 }

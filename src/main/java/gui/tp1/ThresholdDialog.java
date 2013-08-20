@@ -76,7 +76,7 @@ public class ThresholdDialog extends JDialog implements ChangeListener {
 		JSlider source = (JSlider)e.getSource();
 	    if (!source.getValueIsAdjusting()) {
 	        Image modify = PunctualOperationsUtils.threshold(panel.getImage(), (int)source.getValue());
-			panel.setWorkingImage(modify);
+			panel.setImage(modify);
 			panel.repaint();
 	    }
 

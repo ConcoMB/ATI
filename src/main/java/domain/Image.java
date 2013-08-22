@@ -31,7 +31,7 @@ public class Image implements Cloneable {
 	private BufferedImage bufferedImage;
 	private boolean changed;
 	
-	public Image(int height, int width, ImageFormat format, ImageType type) {
+	public Image(int width, int height, ImageFormat format, ImageType type) {
 		this.red = new Channel(width, height);
 		this.green = new Channel(width, height);
 		this.blue = new Channel(width, height);
@@ -41,7 +41,7 @@ public class Image implements Cloneable {
 	}
 
 	public Image(BufferedImage bi, ImageFormat format, ImageType type) {
-		this(bi.getHeight(), bi.getWidth(), format, type);
+		this(bi.getWidth(), bi.getHeight(), format, type);
 		bufferedImage = bi;
 		initRGB(bi);
 		changed = true;
@@ -168,8 +168,8 @@ public class Image implements Cloneable {
 	}
 	
 	private void checkType() {
-		for (int x = 0; x < getHeight(); x++) {
-			for (int y = 0; y < getWidth(); y++) {
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
 				double r = red.getPixel(x, y);
 				double g = green.getPixel(x, y);
 				double b = blue.getPixel(x, y);

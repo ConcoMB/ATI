@@ -11,7 +11,7 @@ import domain.Image;
 public class BasicImageUtils {
 	
 	public static Image createSquareImage(int height, int width) {
-		Image binaryImage = new Image(height, width, BMP, GREYSCALE);
+		Image binaryImage = new Image(width, height, BMP, GREYSCALE);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				// Analyzes if the point is in the black or white square
@@ -29,7 +29,7 @@ public class BasicImageUtils {
 	}
 	
 	public static Image createWhiteImage(int height, int width) {
-		Image whiteImage = new Image(height, width, BMP, GREYSCALE);
+		Image whiteImage = new Image(width, height, BMP, GREYSCALE);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				whiteImage.setPixel(x, y, Color.WHITE.getRGB());
@@ -42,9 +42,9 @@ public class BasicImageUtils {
 			int color1, int color2) {
 		Image degradee = null;
 		if (isColor) {
-			degradee = new Image(height, width, BMP, COLOR);
+			degradee = new Image(width, height, BMP, COLOR);
 		} else {
-			degradee = new Image(height, width, BMP, GREYSCALE);
+			degradee = new Image(width, height, BMP, GREYSCALE);
 		}
 		Color c1 = new Color(color1);
 		Color c2 = new Color(color2);
@@ -70,7 +70,7 @@ public class BasicImageUtils {
 	}
 
 	public static Image createCircleImage(int height, int width) {
-		Image binaryImage = new Image(height, width, BMP, GREYSCALE);
+		Image binaryImage = new Image(width, height, BMP, GREYSCALE);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				double aTerm = Math.pow(x - width / 2, 2);
@@ -84,7 +84,7 @@ public class BasicImageUtils {
 	}
 	
 	public static Image crop(int height, int width, int x, int y, Image original) {
-		Image image = new Image(height, width, original.getImageFormat(), original.getType());
+		Image image = new Image(width, height, original.getImageFormat(), original.getType());
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < height; j++) {
 				image.setPixel(i, j, original.getPixel(i + x, j + y));

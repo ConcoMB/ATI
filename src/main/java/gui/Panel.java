@@ -108,6 +108,10 @@ public class Panel extends JPanel {
 	public Image getImage() {
 		return imageHistory.peek();
 	}
+	
+	public Image getTempImage() {
+		return workingImage;
+	}
 
 	public void setImage(Image image) {
 		workingImage = image;
@@ -168,5 +172,9 @@ public class Panel extends JPanel {
 			drawingContainer = new DrawingContainer();
 		}
 		return drawingContainer;
+	}
+
+	public void setTempImage(Image image) {
+		workingImage = image;
 	}
 }

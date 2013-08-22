@@ -66,7 +66,7 @@ public class Loader {
 				k = k + 1;
 			}
 		} 
-		Image image = new Image(height, width, RAW, GREYSCALE);
+		Image image = new Image(width, height, RAW, GREYSCALE);
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				image.setPixel(i, j, ret.getRGB(i, j));

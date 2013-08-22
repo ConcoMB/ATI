@@ -12,10 +12,10 @@ public class PunctualOperationsUtils {
 		if (original == null) {
 			return null;
 		}
-		Image inverse = new Image(original.getHeight(), original.getWidth(),
+		Image inverse = new Image(original.getWidth(), original.getHeight(),
 				original.getImageFormat(), original.getType());
-		for (int x = 0; x < original.getHeight(); x++) {
-			for (int y = 0; y < original.getWidth(); y++) {
+		for (int x = 0; x < original.getWidth(); x++) {
+			for (int y = 0; y < original.getHeight(); y++) {
 				double red = original.getPixel(x, y, RED);
 				double green = original.getPixel(x, y, GREEN);
 				double blue = original.getPixel(x, y, BLUE);
@@ -31,10 +31,10 @@ public class PunctualOperationsUtils {
 		if (original == null) {
 			return null;
 		}
-		Image threshold = new Image(original.getHeight(), original.getWidth(),
+		Image threshold = new Image(original.getWidth(), original.getHeight(),
 				original.getImageFormat(), original.getType());
-		for (int x = 0; x < original.getHeight(); x++) {
-			for (int y = 0; y < original.getWidth(); y++) {
+		for (int x = 0; x < original.getWidth(); x++) {
+			for (int y = 0; y < original.getHeight(); y++) {
 				int red = original.getPixel(x, y, RED) > value ? Image.MAX_VAL
 						: 0;
 				int green = original.getPixel(x, y, GREEN) > value ? Image.MAX_VAL
@@ -53,11 +53,11 @@ public class PunctualOperationsUtils {
 		if (img1 == null || img2 == null) {
 			return null;
 		}
-		Image img = new Image(img1.getHeight(), img1.getWidth(),
+		Image img = new Image(img1.getWidth(), img2.getHeight(),
 				img1.getImageFormat(), img1.getType());
 		double min = 0, max = 255;
-		for (int x = 0; x < img1.getHeight(); x++) {
-			for (int y = 0; y < img1.getWidth(); y++) {
+		for (int x = 0; x < img1.getWidth(); x++) {
+			for (int y = 0; y < img1.getHeight(); y++) {
 				double red = img1.getPixel(x, y, RED)
 						+ img2.getPixel(x, y, RED);
 				double green = img1.getPixel(x, y, GREEN)
@@ -79,11 +79,11 @@ public class PunctualOperationsUtils {
 		if (img1 == null || img2 == null) {
 			return null;
 		}
-		Image img = new Image(img1.getHeight(), img1.getWidth(),
+		Image img = new Image(img1.getWidth(), img2.getHeight(),
 				img1.getImageFormat(), img1.getType());
 		double min = 0, max = 255;
-		for (int x = 0; x < img1.getHeight(); x++) {
-			for (int y = 0; y < img1.getWidth(); y++) {
+		for (int x = 0; x < img1.getWidth(); x++) {
+			for (int y = 0; y < img1.getHeight(); y++) {
 				double red = img1.getPixel(x, y, RED)
 						- img2.getPixel(x, y, RED);
 				double green = img1.getPixel(x, y, GREEN)
@@ -105,11 +105,11 @@ public class PunctualOperationsUtils {
 		if (img1 == null || img2 == null) {
 			return null;
 		}
-		Image img = new Image(img1.getHeight(), img1.getWidth(),
+		Image img = new Image(img1.getWidth(), img2.getHeight(),
 				img1.getImageFormat(), img1.getType());
 		double min = 0, max = 255;
-		for (int x = 0; x < img1.getHeight(); x++) {
-			for (int y = 0; y < img1.getWidth(); y++) {
+		for (int x = 0; x < img1.getWidth(); x++) {
+			for (int y = 0; y < img1.getHeight(); y++) {
 				double red = img1.getPixel(x, y, RED)
 						* img2.getPixel(x, y, RED);
 				double green = img1.getPixel(x, y, GREEN)
@@ -131,10 +131,10 @@ public class PunctualOperationsUtils {
 		if (original == null) {
 			return null;
 		}
-		Image img = new Image(original.getHeight(), original.getWidth(),
+		Image img = new Image(original.getWidth(), original.getHeight(),
 				original.getImageFormat(), original.getType());
-		for (int x = 0; x < img.getHeight(); x++) {
-			for (int y = 0; y < img.getWidth(); y++) {
+		for (int x = 0; x < img.getWidth(); x++) {
+			for (int y = 0; y < img.getHeight(); y++) {
 				double red = original.getPixel(x, y, RED) * value;
 				double green = original.getPixel(x, y, GREEN) * value;
 				double blue = original.getPixel(x, y, BLUE) * value;
@@ -143,7 +143,7 @@ public class PunctualOperationsUtils {
 				img.setPixel(x, y, BLUE, blue);
 			}
 		}
-		truncate(img);
+		dynamicCompression(img);
 		return img;
 	}
 
@@ -160,8 +160,8 @@ public class PunctualOperationsUtils {
 			return;
 		}
 		double dif = max - min;
-		for (int x = 0; x < image.getHeight(); x++) {
-			for (int y = 0; y < image.getWidth(); y++) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
 				double red = (image.getPixel(x, y, RED) - min) / dif;
 				double green = (image.getPixel(x, y, GREEN) - min) / dif;
 				double blue = (image.getPixel(x, y, BLUE) - min) / dif;
@@ -173,8 +173,8 @@ public class PunctualOperationsUtils {
 	}
 
 	public static void truncate(Image image) {
-		for (int x = 0; x < image.getHeight(); x++) {
-			for (int y = 0; y < image.getWidth(); y++) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
 				double red = image.getPixel(x, y, RED);
 				double green = image.getPixel(x, y, GREEN);
 				double blue = image.getPixel(x, y, BLUE);
@@ -198,8 +198,8 @@ public class PunctualOperationsUtils {
 		}
 		double L = Image.MAX_VAL;
 		double RRed = 0, RGreen = 0, RBlue = 0;
-		for (int x = 0; x < original.getHeight(); x++) {
-			for (int y = 0; y < original.getWidth(); y++) {
+		for (int x = 0; x < original.getWidth(); x++) {
+			for (int y = 0; y < original.getHeight(); y++) {
 				RRed = Math.max(RRed, original.getPixel(x, y, RED));
 				RGreen = Math.max(RGreen, original.getPixel(x, y, GREEN));
 				RBlue = Math.max(RBlue, original.getPixel(x, y, BLUE));
@@ -208,10 +208,10 @@ public class PunctualOperationsUtils {
 		double cRed = (L - 1) / Math.log(1 + RRed);
 		double cGreen = (L - 1) / Math.log(1 + RGreen);
 		double cBlue = (L - 1) / Math.log(1 + RBlue);
-		Image image = new Image(original.getHeight(), original.getWidth(),
+		Image image = new Image(original.getWidth(), original.getHeight(),
 				original.getImageFormat(), original.getType());
-		for (int x = 0; x < image.getHeight(); x++) {
-			for (int y = 0; y < image.getWidth(); y++) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
 				double rRed = original.getPixel(x, y, RED);
 				double rGreen = original.getPixel(x, y, GREEN);
 				double rBlue = original.getPixel(x, y, BLUE);
@@ -230,10 +230,10 @@ public class PunctualOperationsUtils {
 		if (original == null) {
 			return null;
 		}
-		Image img = new Image(original.getHeight(), original.getWidth(),
+		Image img = new Image(original.getWidth(), original.getHeight(),
 				original.getImageFormat(), original.getType());
-		for (int x = 0; x < img.getHeight(); x++) {
-			for (int y = 0; y < img.getWidth(); y++) {
+		for (int x = 0; x < img.getWidth(); x++) {
+			for (int y = 0; y < img.getHeight(); y++) {
 				double red = contrastValue(original.getPixel(x, y, RED), r1,
 						r2, s1, s2);
 				double green = contrastValue(original.getPixel(x, y, GREEN),
@@ -266,7 +266,7 @@ public class PunctualOperationsUtils {
 	}
 
 	public static Image ecualizate(Image original) {
-		Image image = new Image(original.getHeight(), original.getWidth(),
+		Image image = new Image(original.getWidth(), original.getHeight(),
 				original.getImageFormat(), original.getType());
 		equalizeChannel(original, image, RED);
 		equalizeChannel(original, image, GREEN);
@@ -285,7 +285,7 @@ public class PunctualOperationsUtils {
 		for (int i = 0; i < levels.length; i++) {
 
 			int level = (int) Math.floor(original.getPixel(
-					i / image.getWidth(), i % image.getWidth(), color));
+					i / image.getHeight(), i % image.getWidth(), color));
 
 			double levelVal = 0;
 			for (int k = 0; k < level; k++) {
@@ -302,8 +302,8 @@ public class PunctualOperationsUtils {
 			levels[i] = Math.ceil(aux);
 		}
 		int i = 0;
-		for (int x = 0; x < image.getHeight(); x++) {
-			for (int y = 0; y < image.getWidth(); y++) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
 				image.setPixel(x, y, color, levels[i++]);
 			}
 		}
@@ -311,8 +311,8 @@ public class PunctualOperationsUtils {
 
 	private static int[] getColorOccurrences(Image image, ColorChannel color) {
 		int[] dataset = new int[Image.MAX_VAL + 1];
-		for (int x = 0; x < image.getHeight(); x++) {
-			for (int y = 0; y < image.getWidth(); y++) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
 				dataset[(int) Math.floor(image.getPixel(x, y, color))]++;
 			}
 		}

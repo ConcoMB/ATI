@@ -72,7 +72,7 @@ public class StatsUtilities {
 		double[] result = new double[image.getHeight() * image.getWidth()];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = image.getGraylevelFromPixel(
-					(int) Math.floor(i / image.getWidth()), i % image.getHeight());
+					(int) Math.floor(i / image.getHeight()), i % image.getWidth());
 		}
 		return result;
 	}
@@ -81,7 +81,7 @@ public class StatsUtilities {
 		double[] result = new double[image.getHeight() * image.getWidth()];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = image.getPixel(
-					(int) Math.floor(i / image.getWidth()), i % image.getHeight(), color);
+					(int) Math.floor(i / image.getHeight()), i % image.getWidth(), color);
 		}
 		return result;
 	}

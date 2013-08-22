@@ -8,7 +8,7 @@ import domain.Image.ColorChannel;
 
 public class PunctualOperationsUtils {
 
-	public static Image createInverse(Image original) {
+	public static Image negative(Image original) {
 		if (original == null) {
 			return null;
 		}
@@ -16,7 +16,12 @@ public class PunctualOperationsUtils {
 				original.getImageFormat(), original.getType());
 		for (int x = 0; x < original.getHeight(); x++) {
 			for (int y = 0; y < original.getWidth(); y++) {
-				inverse.setPixel(x, y, Image.MAX_VAL - original.getPixel(x, y));
+				double red = original.getPixel(x, y, RED);
+				double green = original.getPixel(x, y, GREEN);
+				double blue = original.getPixel(x, y, BLUE);
+				inverse.setPixel(x, y, RED, Image.MAX_VAL - red);
+				inverse.setPixel(x, y, GREEN, Image.MAX_VAL - green);
+				inverse.setPixel(x, y, BLUE, Image.MAX_VAL - blue);
 			}
 		}
 		return inverse;
@@ -167,7 +172,7 @@ public class PunctualOperationsUtils {
 		}
 	}
 
-	private static void truncate(Image image) {
+	public static void truncate(Image image) {
 		for (int x = 0; x < image.getHeight(); x++) {
 			for (int y = 0; y < image.getWidth(); y++) {
 				double red = image.getPixel(x, y, RED);
@@ -269,7 +274,8 @@ public class PunctualOperationsUtils {
 		return image;
 	}
 
-	public static void equalizeChannel(Image original, Image image, ColorChannel color) {
+	public static void equalizeChannel(Image original, Image image,
+			ColorChannel color) {
 		int[] ocurrences = getColorOccurrences(original, color);
 		int totalPixels = image.getWidth() * image.getHeight();
 		double[] levels = new double[totalPixels];
@@ -277,8 +283,9 @@ public class PunctualOperationsUtils {
 		double s_max = Image.MAX_VAL;
 
 		for (int i = 0; i < levels.length; i++) {
-			
-			int level = (int) Math.floor(original.getPixel(i / image.getWidth(), i % image.getWidth(), color));
+
+			int level = (int) Math.floor(original.getPixel(
+					i / image.getWidth(), i % image.getWidth(), color));
 
 			double levelVal = 0;
 			for (int k = 0; k < level; k++) {

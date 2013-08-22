@@ -53,7 +53,7 @@ public class PunctualOperationsMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				panel.setImage(PunctualOperationsUtils.createInverse(panel.getImage()));
+				panel.setImage(PunctualOperationsUtils.negative(panel.getImage()));
 				panel.repaint();
 			}
 		});

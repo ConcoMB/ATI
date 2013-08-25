@@ -34,11 +34,11 @@ public class SaltAndPepperDialog extends JDialog {
 		paramPanel.setBounds(0, 0, 250, 75);
 
 		JLabel minLabel = new JLabel("Min = %");
-		final JTextField minTextField = new JTextField("");
+		final JTextField minTextField = new JTextField("1");
 		minTextField.setColumns(3);
 
 		JLabel maxLabel = new JLabel("Max = %");
-		final JTextField maxTextField = new JTextField("");
+		final JTextField maxTextField = new JTextField("99");
 		maxTextField.setColumns(3);
 
 		JButton okButton = new JButton("OK");

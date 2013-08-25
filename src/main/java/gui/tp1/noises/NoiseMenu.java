@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class NoiseMenu extends JMenu {
@@ -70,8 +71,11 @@ public class NoiseMenu extends JMenu {
 		});
 		
 		add(exponential);
+		add(new JSeparator());
 		add(rayleigh);
+		add(new JSeparator());
 		add(gaussian);
+		add(new JSeparator());
 		add(saltAndPepper);
 	}
 		

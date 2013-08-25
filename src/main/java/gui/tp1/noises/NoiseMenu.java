@@ -30,7 +30,49 @@ public class NoiseMenu extends JMenu {
 			}
 		});
 		
+		JMenuItem gaussian = new JMenuItem("Gaussian");
+		gaussian.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog gauss = new GaussianDialog(panel);
+				gauss.setVisible(true);
+			}
+		});
+		
+		JMenuItem rayleigh = new JMenuItem("Rayleigh");
+		rayleigh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog exp = new RayleighDialog(panel);
+				exp.setVisible(true);
+			}
+		});
+		
+		JMenuItem exponential = new JMenuItem("Exponential");
+		exponential.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog exp = new ExponentialDialog(panel);
+				exp.setVisible(true);
+			}
+		});
+		
 		add(saltAndPepper);
+		add(gaussian);
+		add(rayleigh);
+		add(exponential);
 	}
 		
 }

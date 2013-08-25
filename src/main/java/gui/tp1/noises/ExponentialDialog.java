@@ -22,28 +22,26 @@ public class ExponentialDialog extends JDialog {
 
 	public ExponentialDialog(final Panel panel) {
 		setTitle("Exponential");
-		setBounds(1, 1, 300, 150);
+		setBounds(1, 1, 400, 150);
 		Dimension size = getToolkit().getScreenSize();
-		setLocation(size.width / 3 - getWidth() / 3, size.height / 3
-				- getHeight() / 3);
+		setLocation(size.width/3 - getWidth()/3, size.height/3 - getHeight()/3);
 		this.setResizable(false);
 		setLayout(null);
 
 		JPanel paramPanel = new JPanel();
 		paramPanel.setBorder(BorderFactory.createTitledBorder("Parameters"));
-		paramPanel.setBounds(0, 0, 300, 75);
-
+		paramPanel.setBounds(0, 0, 400, 75);
 		JLabel lambdaLabel = new JLabel("Lambda = ");
-		final JTextField lambdaTextField = new JTextField("");
+		final JTextField lambdaTextField = new JTextField("1");
 		lambdaTextField.setColumns(3);
 
 		JLabel pLabel = new JLabel("Probability = ");
-		final JTextField pTextField = new JTextField("");
+		final JTextField pTextField = new JTextField("50");
 		pTextField.setColumns(3);
 
 		JButton okButton = new JButton("OK");
 		okButton.setSize(250, 40);
-		okButton.setBounds(0, 75, 300, 40);
+		okButton.setBounds(50, 75, 250, 40);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

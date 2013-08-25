@@ -69,10 +69,10 @@ public class NoiseMenu extends JMenu {
 			}
 		});
 		
-		add(saltAndPepper);
-		add(gaussian);
-		add(rayleigh);
 		add(exponential);
+		add(rayleigh);
+		add(gaussian);
+		add(saltAndPepper);
 	}
 		
 }

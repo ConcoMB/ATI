@@ -22,7 +22,7 @@ public class GaussianDialog extends JDialog {
 
 	public GaussianDialog(final Panel panel) {
 		setTitle("Gaussian");
-		setBounds(1, 1, 350, 150);
+		setBounds(0, 0, 350, 200);
 		Dimension size = getToolkit().getScreenSize();
 		setLocation(size.width / 3 - getWidth() / 3, size.height / 3
 				- getHeight() / 3);
@@ -31,29 +31,29 @@ public class GaussianDialog extends JDialog {
 
 		JPanel paramPanel = new JPanel();
 		paramPanel.setBorder(BorderFactory.createTitledBorder("Parameters"));
-		paramPanel.setBounds(0, 0, 350, 75);
+		paramPanel.setBounds(0, 0, 350, 120);
 
 		JLabel avgLabel = new JLabel("Average = ");
-		final JTextField avgTextField = new JTextField("");
+		final JTextField avgTextField = new JTextField("0");
 		avgTextField.setColumns(3);
 
 		JLabel devLabel = new JLabel("Deviation = ");
-		final JTextField devTextField = new JTextField("");
+		final JTextField devTextField = new JTextField("1");
 		devTextField.setColumns(3);
-		
-		JLabel pLabel = new JLabel("Probability = ");
-		final JTextField pTextField = new JTextField("");
+
+		JLabel pLabel = new JLabel("Probability = %");
+		final JTextField pTextField = new JTextField("50");
 		pTextField.setColumns(3);
 
 		JButton okButton = new JButton("OK");
 		okButton.setSize(300, 40);
-		okButton.setBounds(0, 75, 350, 40);
+		okButton.setBounds(0, 120, 350, 40);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				double avg = 0;
 				double dev = 1;
-				double p = 50;
+				double p = 20;
 				try {
 					avg = Double.valueOf(avgTextField.getText());
 					dev = Double.valueOf(devTextField.getText());
@@ -68,7 +68,8 @@ public class GaussianDialog extends JDialog {
 					return;
 				}
 				Image image = panel.getImage();
-				panel.setImage(NoiseUtils.gaussianNoise(image,avg, dev, p*0.01));
+				panel.setImage(NoiseUtils.gaussianNoise(image, avg, dev,
+						p * 0.01));
 				panel.repaint();
 				dispose();
 			}
@@ -79,12 +80,12 @@ public class GaussianDialog extends JDialog {
 
 		paramPanel.add(devLabel);
 		paramPanel.add(devTextField);
-		
+
 		paramPanel.add(pLabel);
 		paramPanel.add(pTextField);
 
 		this.add(paramPanel);
 		this.add(okButton);
 	}
-	
+
 }

@@ -48,8 +48,8 @@ public class NoiseUtils {
 				double rand = Math.random();
 				if(rand < p){
 					gaussian.setPixel(x, y, RED, original.getPixel(x, y, RED) + gaussianGenerator(avg, dev));
-					gaussian.setPixel(x, y, GREEN, original.getPixel(x, y, RED) + gaussianGenerator(avg, dev));
-					gaussian.setPixel(x, y, BLUE, original.getPixel(x, y, RED) + gaussianGenerator(avg, dev));
+					gaussian.setPixel(x, y, GREEN, original.getPixel(x, y, GREEN) + gaussianGenerator(avg, dev));
+					gaussian.setPixel(x, y, BLUE, original.getPixel(x, y, BLUE) + gaussianGenerator(avg, dev));
 				} else {
 					gaussian.setPixel(x, y, original.getPixel(x, y));
 				}
@@ -73,8 +73,8 @@ public class NoiseUtils {
 				double rand = Math.random();
 				if(rand < p){
 					gaussian.setPixel(x, y, RED, original.getPixel(x, y, RED) * expGenerator(lambda));
-					gaussian.setPixel(x, y, GREEN, original.getPixel(x, y, RED) * expGenerator(lambda));
-					gaussian.setPixel(x, y, BLUE, original.getPixel(x, y, RED) * expGenerator(lambda));
+					gaussian.setPixel(x, y, GREEN, original.getPixel(x, y, GREEN) * expGenerator(lambda));
+					gaussian.setPixel(x, y, BLUE, original.getPixel(x, y, BLUE) * expGenerator(lambda));
 				} else {
 					gaussian.setPixel(x, y, original.getPixel(x, y));
 				}
@@ -98,8 +98,8 @@ public class NoiseUtils {
 				double rand = Math.random();
 				if(rand < p){
 					gaussian.setPixel(x, y, RED, original.getPixel(x, y, RED) * rayleighGenerator(psi));
-					gaussian.setPixel(x, y, GREEN, original.getPixel(x, y, RED) * rayleighGenerator(psi));
-					gaussian.setPixel(x, y, BLUE, original.getPixel(x, y, RED) * rayleighGenerator(psi));
+					gaussian.setPixel(x, y, GREEN, original.getPixel(x, y, GREEN) * rayleighGenerator(psi));
+					gaussian.setPixel(x, y, BLUE, original.getPixel(x, y, BLUE) * rayleighGenerator(psi));
 				} else {
 					gaussian.setPixel(x, y, original.getPixel(x, y));
 				}

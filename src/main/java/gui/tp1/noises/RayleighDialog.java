@@ -22,7 +22,7 @@ public class RayleighDialog extends JDialog {
 
 	public RayleighDialog(final Panel panel) {
 		setTitle("Exponential");
-		setBounds(1, 1, 250, 150);
+		setBounds(1, 1, 400, 150);
 		Dimension size = getToolkit().getScreenSize();
 		setLocation(size.width / 3 - getWidth() / 3, size.height / 3
 				- getHeight() / 3);
@@ -31,19 +31,19 @@ public class RayleighDialog extends JDialog {
 
 		JPanel paramPanel = new JPanel();
 		paramPanel.setBorder(BorderFactory.createTitledBorder("Parameters"));
-		paramPanel.setBounds(0, 0, 250, 75);
+		paramPanel.setBounds(0, 0, 400, 75);
 
 		JLabel psiLabel = new JLabel("Psi = ");
-		final JTextField psiTextField = new JTextField("");
+		final JTextField psiTextField = new JTextField("1");
 		psiTextField.setColumns(3);
 
 		JLabel pLabel = new JLabel("Probability = ");
-		final JTextField pTextField = new JTextField("");
+		final JTextField pTextField = new JTextField("50");
 		pTextField.setColumns(3);
 
 		JButton okButton = new JButton("OK");
 		okButton.setSize(250, 40);
-		okButton.setBounds(0, 75, 250, 40);
+		okButton.setBounds(50, 75, 250, 40);
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

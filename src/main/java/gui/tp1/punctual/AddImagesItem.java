@@ -1,4 +1,4 @@
-package gui.tp1;
+package gui.tp1.punctual;
 
 import application.PunctualOperationsUtils;
 import domain.Image;

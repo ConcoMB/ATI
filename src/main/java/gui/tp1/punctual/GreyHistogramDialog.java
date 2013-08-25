@@ -1,4 +1,4 @@
-package gui.tp1;
+package gui.tp1.punctual;
 
 import gui.Panel;
 
@@ -15,14 +15,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import application.StatsUtilities;
-import static domain.Image.ColorChannel.*;
 
 @SuppressWarnings("serial")
-public class ColorHistogramDialog extends JDialog {
+public class GreyHistogramDialog extends JDialog {
 
-	public ColorHistogramDialog(Panel panel) {
-		setTitle("Color gistogram");
-		setBounds(1, 1, 1000, 300);
+	public GreyHistogramDialog(final Panel panel) {
+
+		setTitle("Greyscale histogram");
+		setBounds(1, 1, 600, 450);
 		Toolkit toolkit = getToolkit();
 		Dimension size = toolkit.getScreenSize();
 		setLocation(size.width / 3 - getWidth() / 3, size.height / 3
@@ -30,20 +30,14 @@ public class ColorHistogramDialog extends JDialog {
 		this.setResizable(false);
 		setLayout(null);
 
-		final BufferedImage redHistogram = StatsUtilities.getHistogram(panel
-				.getImage(), RED);
-		final BufferedImage greenHistogram = StatsUtilities.getHistogram(panel
-				.getImage(), GREEN);		
-		final BufferedImage blueHistogram = StatsUtilities.getHistogram(panel
-						.getImage(), BLUE);
+		final BufferedImage histogram = StatsUtilities.getHistogram(panel
+				.getImage());
 		JPanel p1 = new JPanel();
-		p1.setBounds(0, 0, 1000, 200);
-		p1.add(new JLabel(new ImageIcon(redHistogram)));
-		p1.add(new JLabel(new ImageIcon(greenHistogram)));
-		p1.add(new JLabel(new ImageIcon(blueHistogram)));
+		p1.setBounds(0, 0, 600, 400);
+		p1.add(new JLabel(new ImageIcon(histogram)));
 		JButton backButton = new JButton("Back");
 		backButton.setSize(400, 30);
-		backButton.setBounds(300, 220, 400, 30);
+		backButton.setBounds(100, 400, 400, 30);
 		backButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -52,6 +46,6 @@ public class ColorHistogramDialog extends JDialog {
 
 		add(p1);
 		add(backButton);
+
 	}
-	
 }

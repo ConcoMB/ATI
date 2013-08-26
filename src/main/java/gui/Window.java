@@ -24,7 +24,7 @@ public class Window extends JFrame {
 		panel.setBackground(Color.WHITE);
 		setJMenuBar(menuBar);
         panel.initKeyBindings();
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(panel);
 	}
 

@@ -30,5 +30,35 @@ public class SpatialOperationsMenu extends JMenu {
 		});
 		
 		add(edgeEnhancement);
+		
+		JMenuItem meanFilter = new JMenuItem("Mean filter");
+		meanFilter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog dialog = new MeanFilterDialog(panel);
+				dialog.setVisible(true);
+			}
+		});
+		
+		add(meanFilter);
+		
+		JMenuItem medianFilter = new JMenuItem("Median filter");
+		medianFilter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog dialog = new MedianFilterDialog(panel);
+				dialog.setVisible(true);
+			}
+		});
+		
+		add(medianFilter);
 	}
 }

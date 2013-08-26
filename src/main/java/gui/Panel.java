@@ -177,4 +177,8 @@ public class Panel extends JPanel {
 	public void setTempImage(Image image) {
 		workingImage = image;
 	}
+	
+	public Image getWorkingImage() {
+		return workingImage;
+	}
 }

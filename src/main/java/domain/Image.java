@@ -5,6 +5,7 @@ import static domain.Image.ColorChannel.GREEN;
 import static domain.Image.ColorChannel.RED;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 public class Image implements Cloneable {
@@ -181,5 +182,11 @@ public class Image implements Cloneable {
 		}
 		type = ImageType.GREYSCALE; 
 		return;
+	}
+	
+	public void applyMedianMask(Point point) {
+		this.red.applyMedianMask(point);
+		this.green.applyMedianMask(point);
+		this.blue.applyMedianMask(point);
 	}
 }

@@ -49,5 +49,5 @@ public class MaskFactory {
 		}
 		return mask;
 	}
-
+	
 }

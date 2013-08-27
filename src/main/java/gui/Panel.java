@@ -178,7 +178,4 @@ public class Panel extends JPanel {
 		workingImage = image;
 	}
 	
-	public Image getWorkingImage() {
-		return workingImage;
-	}
 }

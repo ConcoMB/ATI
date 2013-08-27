@@ -9,12 +9,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
-public class SpatialOperationsMenu extends JMenu {
+public class FiltersMenu extends JMenu {
 
-	public SpatialOperationsMenu() {
-		super("Spatial operations");
+	public FiltersMenu() {
+		super("Filter");
 		setEnabled(true);
 		JMenuItem edgeEnhancement = new JMenuItem("Edge enhancement");
 		edgeEnhancement.addActionListener(new ActionListener() {
@@ -29,8 +30,6 @@ public class SpatialOperationsMenu extends JMenu {
 			}
 		});
 		
-		add(edgeEnhancement);
-		
 		JMenuItem meanFilter = new JMenuItem("Mean filter");
 		meanFilter.addActionListener(new ActionListener() {
 			@Override
@@ -44,7 +43,6 @@ public class SpatialOperationsMenu extends JMenu {
 			}
 		});
 		
-		add(meanFilter);
 		
 		JMenuItem medianFilter = new JMenuItem("Median filter");
 		medianFilter.addActionListener(new ActionListener() {
@@ -59,6 +57,10 @@ public class SpatialOperationsMenu extends JMenu {
 			}
 		});
 		
+		add(meanFilter);
+		add(new JSeparator());
 		add(medianFilter);
+		add(new JSeparator());
+		add(edgeEnhancement);		
 	}
 }

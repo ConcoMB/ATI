@@ -1,8 +1,5 @@
 package domain;
 
-import java.awt.Point;
-import java.util.Iterator;
-import java.util.TreeSet;
 
 public class Channel implements Cloneable {
 
@@ -70,39 +67,5 @@ public class Channel implements Cloneable {
 			}
 		}
 		return newChannel;
-	}
-	
-	public void applyMedianMask(Point point) {
-		Channel newChannel = new Channel(this.width, this.height);
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				double newPixel = applyMedianPixelMask(x, y, point);
-				newChannel.setPixel(x, y, newPixel);
-			}
-		}
-		this.channel = newChannel.channel;
-	}
-	
-	private double applyMedianPixelMask(int x, int y, Point point) {
-		TreeSet<Double> pixelsAffected = new TreeSet<Double>();
-		for (int i = -point.x / 2; i <= point.x / 2; i++) {
-			for (int j = -point.y / 2; j <= point.y / 2; j++) {
-				if (this.validPixel(x + i, y + j)) {
-					double oldColor = this.getPixel(x + i, y + j);
-					pixelsAffected.add(oldColor);
-				}
-			}
-		}
-
-		double valueToReturn = 0;
-		int indexToReturn = pixelsAffected.size() / 2;
-		Iterator<Double> iterator = pixelsAffected.iterator();
-		for (int i = 0; iterator.hasNext(); i++) {
-			double each = iterator.next();
-			if (i == indexToReturn) {
-				valueToReturn = each;
-			}
-		}
-		return valueToReturn;
 	}
 }

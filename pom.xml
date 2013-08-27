@@ -43,7 +43,7 @@
             </releases>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>always</updatePolicy> 
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots>
             <layout>default</layout>
@@ -110,11 +110,11 @@
             <artifactId>imagej</artifactId>
             <version>1.46</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>xuggle</groupId>
             <artifactId>xuggle-xuggler</artifactId>
             <version>5.2</version>
-        </dependency>
+        </dependency> -->
         <dependency>
 		  <groupId>net.sf.doodleproject</groupId>
 		  <artifactId>numerics4j</artifactId>

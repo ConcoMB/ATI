@@ -98,5 +98,37 @@ public class MaskUtils {
 		}
 		return val;
 	}
+	
+	public static Image applyMeanMask(Image original, int maskWidth, int maskHeight) {
+		if (original == null) {
+			return null;
+		}
+		Image image = new Image(original.getWidth(), original.getHeight(),
+				original.getImageFormat(), original.getType());
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				image.setPixel(x, y, RED, getMeanPixel(original, RED, x, y, maskWidth, maskHeight));
+				image.setPixel(x, y, GREEN, getMeanPixel(original, GREEN, x, y, maskWidth, maskHeight));
+				image.setPixel(x, y, BLUE, getMeanPixel(original, BLUE, x, y, maskWidth, maskHeight));
+			}
+		}
+		return image;
+	}
+	
+	private static double getMeanPixel(Image image, ColorChannel color, int x, int y, int maskWidth, int maskHeight) {
+		List<Double> pixelsAffected = new ArrayList<Double>();
+		for (int i = -maskWidth / 2; i <= maskWidth / 2; i++) {
+			for (int j = -maskHeight / 2; j <= maskHeight / 2; j++) {
+				if (image.validPixel(x + i, y + j)) {
+					pixelsAffected.add(image.getPixel(x + i, y + j, color));
+				}
+			}
+		}
+		double val = 0;
+		for(Double var : pixelsAffected){
+			val += var;
+		}
+		return val/pixelsAffected.size();
+	}
 
 }

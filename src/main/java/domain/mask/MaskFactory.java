@@ -2,17 +2,6 @@ package domain.mask;
 
 public class MaskFactory {
 
-	public static Mask buildMeanMask(int width, int height) {
-		Mask mask = new Mask(width, height);
-		double totalPixels = width * height;
-		for (int i = -width / 2; i <= width / 2; i++) {
-			for (int j = -height / 2; j <= height / 2; j++) {
-				mask.setPixel(i, j, 1 / totalPixels);
-			}
-		}
-		return mask;
-	}
-
 	public static Mask buildEdgeEnhancementMask(int width, int height) {
 		Mask mask = new Mask(width, height);
 		double pixelAmount = width * height;

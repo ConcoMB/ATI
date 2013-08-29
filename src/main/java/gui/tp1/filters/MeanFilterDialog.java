@@ -1,11 +1,11 @@
 package gui.tp1.filters;
 
+import gui.MessageFrame;
+import gui.Panel;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import gui.MessageFrame;
-import gui.Panel;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import application.MaskUtils;
-import domain.mask.MaskFactory;
 
 @SuppressWarnings("serial")
 public class MeanFilterDialog extends JDialog {
@@ -55,7 +54,7 @@ public class MeanFilterDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-				panel.setImage(MaskUtils.applyMask(panel.getImage(), MaskFactory.buildMeanMask(size, size)));
+				panel.setImage(MaskUtils.applyMeanMask(panel.getImage(), size, size));
 				panel.repaint();
 				dispose();
 

@@ -15,9 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.PunctualOperationsUtils;
+import application.utils.PunctualOperationsUtils;
 import domain.Image;
-import static application.BasicImageUtils.invalidValue;
+import static application.utils.BasicImageUtils.invalidValue;
 
 @SuppressWarnings("serial")
 public class ContrastDialog extends JDialog {

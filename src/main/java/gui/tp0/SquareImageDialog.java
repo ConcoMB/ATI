@@ -1,7 +1,7 @@
 package gui.tp0;
 
 import gui.Panel;
-import application.BasicImageUtils;
+import application.utils.BasicImageUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")

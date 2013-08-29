@@ -1,4 +1,4 @@
-package application;
+package application.utils;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.PunctualOperationsUtils;
+import application.utils.PunctualOperationsUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")

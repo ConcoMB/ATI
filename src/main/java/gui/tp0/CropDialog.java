@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.BasicImageUtils;
+import application.utils.BasicImageUtils;
 
 import domain.Image;
 

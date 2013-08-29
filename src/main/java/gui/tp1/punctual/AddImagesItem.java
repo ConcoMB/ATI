@@ -1,6 +1,6 @@
 package gui.tp1.punctual;
 
-import application.PunctualOperationsUtils;
+import application.utils.PunctualOperationsUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")

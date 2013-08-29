@@ -1,8 +1,9 @@
-package application;
+package application.utils;
 
 import static domain.Image.ColorChannel.BLUE;
 import static domain.Image.ColorChannel.GREEN;
 import static domain.Image.ColorChannel.RED;
+import gui.tp2.filters.AbstractBorderDetectorDialog.SynthesizationType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import domain.Image;
 import domain.Image.ColorChannel;
+import domain.mask.DoubleMask;
 import domain.mask.Mask;
 
 public class MaskUtils {
@@ -129,6 +131,24 @@ public class MaskUtils {
 			val += var;
 		}
 		return val/pixelsAffected.size();
+	}
+
+	public static Image applyDoubleMask(Image original,
+			DoubleMask doubleMask, SynthesizationType synthesizationType) {
+		if (original == null || doubleMask == null) {
+			return null;
+		}
+		Image imageX = new Image(original.getWidth(), original.getHeight(),
+				original.getImageFormat(), original.getType());
+		Image imageY = new Image(original.getWidth(), original.getHeight(),
+				original.getImageFormat(), original.getType());
+		applyMask(original, imageX, doubleMask.getMaskX(), RED);
+		applyMask(original, imageX, doubleMask.getMaskX(), GREEN);
+		applyMask(original, imageX, doubleMask.getMaskX(), BLUE);
+		applyMask(original, imageY, doubleMask.getMaskY(), RED);
+		applyMask(original, imageY, doubleMask.getMaskY(), GREEN);
+		applyMask(original, imageY, doubleMask.getMaskY(), BLUE);
+		return SynthesizationUtils.synthesize(synthesizationType, imageX, imageY);	
 	}
 
 }

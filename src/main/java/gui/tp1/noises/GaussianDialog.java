@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.NoiseUtils;
+import application.utils.NoiseUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")

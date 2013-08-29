@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.MaskUtils;
+import application.utils.MaskUtils;
 import domain.mask.MaskFactory;
 
 @SuppressWarnings("serial")

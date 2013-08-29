@@ -14,7 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import application.StatsUtilities;
+import application.utils.StatsUtilities;
 
 @SuppressWarnings("serial")
 public class GreyHistogramDialog extends JDialog {

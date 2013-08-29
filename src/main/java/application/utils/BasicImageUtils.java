@@ -1,4 +1,4 @@
-package application;
+package application.utils;
 
 import static domain.Image.ColorChannel.BLUE;
 import static domain.Image.ColorChannel.GREEN;

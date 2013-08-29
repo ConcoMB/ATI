@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.MaskUtils;
+import application.utils.MaskUtils;
 
 @SuppressWarnings("serial")
 public class MeanFilterDialog extends JDialog {

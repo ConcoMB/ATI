@@ -16,7 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import application.PunctualOperationsUtils;
+import application.utils.PunctualOperationsUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")

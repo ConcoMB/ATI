@@ -11,7 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
-import application.PunctualOperationsUtils;
+import application.utils.PunctualOperationsUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")

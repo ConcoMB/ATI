@@ -30,12 +30,12 @@ public class ColorHistogramDialog extends JDialog {
 		this.setResizable(false);
 		setLayout(null);
 
-		final BufferedImage redHistogram = StatsUtilities.getHistogram(panel
-				.getImage(), RED);
-		final BufferedImage greenHistogram = StatsUtilities.getHistogram(panel
-				.getImage(), GREEN);		
-		final BufferedImage blueHistogram = StatsUtilities.getHistogram(panel
-						.getImage(), BLUE);
+		final BufferedImage redHistogram = StatsUtilities.getHistogram(
+				panel.getImage(), RED);
+		final BufferedImage greenHistogram = StatsUtilities.getHistogram(
+				panel.getImage(), GREEN);
+		final BufferedImage blueHistogram = StatsUtilities.getHistogram(
+				panel.getImage(), BLUE);
 		JPanel p1 = new JPanel();
 		p1.setBounds(0, 0, 1000, 200);
 		p1.add(new JLabel(new ImageIcon(redHistogram)));
@@ -53,5 +53,5 @@ public class ColorHistogramDialog extends JDialog {
 		add(p1);
 		add(backButton);
 	}
-	
+
 }

@@ -1,5 +1,8 @@
 package application;
 
+import static domain.Image.ColorChannel.BLUE;
+import static domain.Image.ColorChannel.GREEN;
+import static domain.Image.ColorChannel.RED;
 import static domain.Image.ImageFormat.BMP;
 import static domain.Image.ImageType.COLOR;
 import static domain.Image.ImageType.GREYSCALE;
@@ -7,7 +10,6 @@ import static domain.Image.ImageType.GREYSCALE;
 import java.awt.Color;
 
 import domain.Image;
-
 public class BasicImageUtils {
 	
 	public static Image createSquareImage(int height, int width) {
@@ -87,7 +89,9 @@ public class BasicImageUtils {
 		Image image = new Image(width, height, original.getImageFormat(), original.getType());
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < height; j++) {
-				image.setPixel(i, j, original.getPixel(i + x, j + y));
+				image.setPixel(i, j, RED, original.getPixel(i + x, j + y, RED));
+				image.setPixel(i, j, GREEN, original.getPixel(i + x, j + y, GREEN));
+				image.setPixel(i, j, BLUE, original.getPixel(i + x, j + y, BLUE));
 			}
 		}
 		return image;

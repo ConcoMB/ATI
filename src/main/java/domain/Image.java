@@ -100,7 +100,7 @@ public class Image implements Cloneable {
 		}
 	}
 
-	public int getPixel(int x, int y) {
+	private int getPixel(int x, int y) {
 		int redComponent = this.red.truncatePixel(getPixel(x, y, RED));
 		int greenComponent = this.green.truncatePixel(getPixel(x, y, GREEN));
 		int blueComponent = this.blue.truncatePixel(getPixel(x, y, BLUE));
@@ -163,8 +163,17 @@ public class Image implements Cloneable {
 	
 	@Override
 	public Object clone() {
-		BufferedImage bi = ColorUtils.populateEmptyBufferedImage(this);
-		return new Image(bi, format, type);
+//		BufferedImage bi = ColorUtils.populateEmptyBufferedImage(this);
+//		return new Image(bi, format, type);
+		Image cloned = new Image(getWidth(), getHeight(), format, type);
+		for (int x = 0; x < getWidth(); x++) {
+			for (int y = 0; y < getHeight(); y++) {
+				cloned.setPixel(x, y, RED, getPixel(x, y, RED));
+				cloned.setPixel(x, y, GREEN, getPixel(x, y, GREEN));
+				cloned.setPixel(x, y, BLUE, getPixel(x, y, BLUE));
+			}
+		}
+		return cloned;
 	}
 	
 	private void checkType() {

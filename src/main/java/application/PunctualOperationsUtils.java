@@ -155,7 +155,23 @@ public class PunctualOperationsUtils {
 		return Math.max(a, Math.max(b, Math.max(c, d)));
 	}
 
-	private static void normalize(Image image, double min, double max) {
+	public static void normalize(Image image) {
+		double max = 0, min = 0;
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				max = Math.max(max, image.getPixel(x, y, RED));
+				max = Math.max(max, image.getPixel(x, y, GREEN));
+				max = Math.max(max, image.getPixel(x, y, BLUE));
+				min = Math.min(min, image.getPixel(x, y, RED));
+				min = Math.min(min, image.getPixel(x, y, GREEN));
+				min = Math.min(min, image.getPixel(x, y, BLUE));
+
+			}
+		}
+		normalize(image, min, max);
+	}
+
+	public static void normalize(Image image, double min, double max) {
 		if (min == 0 && max == 255) {
 			return;
 		}
@@ -178,12 +194,48 @@ public class PunctualOperationsUtils {
 				double red = image.getPixel(x, y, RED);
 				double green = image.getPixel(x, y, GREEN);
 				double blue = image.getPixel(x, y, BLUE);
-				image.setPixel(x, y, RED, red > Image.MAX_VAL ? Image.MAX_VAL
-						: red);
-				image.setPixel(x, y, GREEN,
-						green > Image.MAX_VAL ? Image.MAX_VAL : green);
-				image.setPixel(x, y, BLUE, blue > Image.MAX_VAL ? Image.MAX_VAL
-						: blue);
+				if (red > Image.MAX_VAL) {
+					red = Image.MAX_VAL;
+				} else if (red < 0) {
+					red = 0;
+				}
+				if (green > Image.MAX_VAL) {
+					green = Image.MAX_VAL;
+				} else if (green < 0) {
+					green = 0;
+				}
+				if (blue > Image.MAX_VAL) {
+					blue = Image.MAX_VAL;
+				} else if (blue < 0) {
+					blue = 0;
+				}
+
+				image.setPixel(x, y, RED, red);
+				image.setPixel(x, y, GREEN, green);
+				image.setPixel(x, y, BLUE, blue);
+			}
+		}
+	}
+
+	public static void round(Image image) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				double red = image.getPixel(x, y, RED);
+				double green = image.getPixel(x, y, GREEN);
+				double blue = image.getPixel(x, y, BLUE);
+				if (red > Image.MAX_VAL || red < 0) {
+					red = red % Image.MAX_VAL;
+				}
+				if (green > Image.MAX_VAL || green < 0) {
+					green = green % Image.MAX_VAL;
+				}
+				if (blue > Image.MAX_VAL || blue < 0) {
+					blue = blue % Image.MAX_VAL;
+				}
+
+				image.setPixel(x, y, RED, red);
+				image.setPixel(x, y, GREEN, green);
+				image.setPixel(x, y, BLUE, blue);
 			}
 		}
 	}

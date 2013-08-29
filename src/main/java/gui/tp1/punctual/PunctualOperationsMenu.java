@@ -20,7 +20,7 @@ public class PunctualOperationsMenu extends JMenu {
 	public PunctualOperationsMenu() {
 		super("Punctual operations");
 		setEnabled(true);
-		
+
 		JMenuItem addition = new AddImagesItem(this);
 		JMenuItem substraction = new SubstractImagesItem(this);
 		JMenuItem multiplication = new MultiplyImagesItem(this);
@@ -42,7 +42,8 @@ public class PunctualOperationsMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				panel.setImage(PunctualOperationsUtils.dynamicCompression(panel.getImage()));
+				panel.setImage(PunctualOperationsUtils.dynamicCompression(panel
+						.getImage()));
 				panel.repaint();
 			}
 		});
@@ -53,7 +54,8 @@ public class PunctualOperationsMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				panel.setImage(PunctualOperationsUtils.negative(panel.getImage()));
+				panel.setImage(PunctualOperationsUtils.negative(panel
+						.getImage()));
 				panel.repaint();
 			}
 		});
@@ -95,7 +97,7 @@ public class PunctualOperationsMenu extends JMenu {
 				histogramDialog.setVisible(true);
 			}
 		});
-		
+
 		JMenuItem ecualization = new JMenuItem("Ecualization");
 		ecualization.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -103,12 +105,12 @@ public class PunctualOperationsMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				panel.setImage(PunctualOperationsUtils.ecualizate(panel.getImage()));
+				panel.setImage(PunctualOperationsUtils.ecualizate(panel
+						.getImage()));
 				panel.repaint();
 			}
 		});
-		
-		
+
 		add(addition);
 		add(substraction);
 		add(multiplication);

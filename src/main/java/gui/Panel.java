@@ -1,6 +1,5 @@
 package gui;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -27,6 +26,8 @@ import domain.Image;
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel {
+
+	private static final int STACK_MAX_SIZE = 10;
 
 	private Image workingImage = null;
 	private Deque<Image> imageHistory = new LinkedList<Image>();
@@ -108,7 +109,7 @@ public class Panel extends JPanel {
 	public Image getImage() {
 		return imageHistory.peek();
 	}
-	
+
 	public Image getTempImage() {
 		return workingImage;
 	}
@@ -116,16 +117,19 @@ public class Panel extends JPanel {
 	public void setImage(Image image) {
 		workingImage = image;
 		imageHistory.push((Image) image.clone());
+		if (imageHistory.size() > STACK_MAX_SIZE) {
+			imageHistory.removeLast();
+		}
 		undoStack.clear();
 	}
-	
+
 	public void undo() {
 		if (!imageHistory.isEmpty()) {
 			undoStack.push(imageHistory.pop());
 			workingImage = imageHistory.peek();
 		}
 	}
-	
+
 	public void redo() {
 		if (!undoStack.isEmpty()) {
 			imageHistory.push(undoStack.pop());
@@ -143,8 +147,7 @@ public class Panel extends JPanel {
 				repaint();
 			}
 		};
-		Action redoAction = new
-		AbstractAction() {
+		Action redoAction = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
 
 			}
@@ -177,5 +180,5 @@ public class Panel extends JPanel {
 	public void setTempImage(Image image) {
 		workingImage = image;
 	}
-	
+
 }

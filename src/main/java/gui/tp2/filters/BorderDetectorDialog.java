@@ -12,17 +12,14 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import domain.SynthetizationType;
+
 @SuppressWarnings("serial")
-public abstract class AbstractBorderDetectorDialog extends JDialog {
+public abstract class BorderDetectorDialog extends JDialog {
 
 	protected Panel panel;
 	
-	public enum SynthesizationType {
-		MAX, MIN, AVG, ABS
-	}
-
-	
-	public AbstractBorderDetectorDialog(final Panel panel, final String title) {
+	public BorderDetectorDialog(final Panel panel, final String title) {
 		setTitle(title);
 		this.panel = panel;
 		setBounds(1, 1, 450, 150);
@@ -89,21 +86,21 @@ public abstract class AbstractBorderDetectorDialog extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SynthesizationType synthetizationType = null;
+				SynthetizationType synthetizationType = null;
 
 				if(maxRadioButton.isSelected()) {
-					synthetizationType = SynthesizationType.MAX;
+					synthetizationType = SynthetizationType.MAX;
 				} else if(minRadioButton.isSelected()) {
-					synthetizationType = SynthesizationType.MIN;
+					synthetizationType = SynthetizationType.MIN;
 				} else if(avgRadioButton.isSelected()) {
-					synthetizationType = SynthesizationType.AVG;
+					synthetizationType = SynthetizationType.AVG;
 				} else if(absRadioButton.isSelected()) {
-					synthetizationType = SynthesizationType.ABS;
+					synthetizationType = SynthetizationType.ABS;
 				} else {
 					throw new IllegalStateException();
 				}
 				
-				AbstractBorderDetectorDialog.this.applyFunction(synthetizationType);
+				BorderDetectorDialog.this.applyFunction(synthetizationType);
 			}
 		});
 
@@ -116,5 +113,5 @@ public abstract class AbstractBorderDetectorDialog extends JDialog {
 		this.add(okButton);
 	}
 	
-	abstract void applyFunction(SynthesizationType synthesizationType);
+	abstract void applyFunction(SynthetizationType synthesizationType);
 }

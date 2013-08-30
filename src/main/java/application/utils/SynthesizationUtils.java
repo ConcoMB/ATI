@@ -3,13 +3,13 @@ package application.utils;
 import static domain.Image.ColorChannel.BLUE;
 import static domain.Image.ColorChannel.GREEN;
 import static domain.Image.ColorChannel.RED;
-import gui.tp2.filters.AbstractBorderDetectorDialog.SynthesizationType;
 import domain.Image;
 import domain.Image.ColorChannel;
+import domain.SynthetizationType;
 
 public class SynthesizationUtils {
 
-	public static Image synthesize(SynthesizationType synthesizationType,
+	public static Image synthesize(SynthetizationType synthesizationType,
 			Image... images) {
 		switch (synthesizationType) {
 		case MAX:
@@ -31,12 +31,9 @@ public class SynthesizationUtils {
 				images[0].getType());
 		for (int x = 0; x < synthesized.getWidth(); x++) {
 			for (int y = 0; y < synthesized.getHeight(); y++) {
-				double[] reds = getPixels(x, y, RED, images);
-				double[] greens = getPixels(x, y, GREEN, images);
-				double[] blues = getPixels(x, y, BLUE, images);
-				synthesized.setPixel(x, y, RED, f.apply(reds));
-				synthesized.setPixel(x, y, GREEN, f.apply(greens));
-				synthesized.setPixel(x, y, BLUE, f.apply(blues));
+				synthesized.setPixel(x, y, RED, f.apply(getPixels(x, y, RED, images)));
+				synthesized.setPixel(x, y, GREEN, f.apply(getPixels(x, y, GREEN, images)));
+				synthesized.setPixel(x, y, BLUE, f.apply(getPixels(x, y, BLUE, images)));
 			}
 		}
 		return synthesized;
@@ -50,6 +47,11 @@ public class SynthesizationUtils {
 		}
 		return data;
 	}
+	
+	private interface Function {
+		public double apply(double[] data);
+	}
+
 
 	private static class MaxFunction implements Function {
 		@Override

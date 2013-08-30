@@ -3,7 +3,6 @@ package application.utils;
 import static domain.Image.ColorChannel.BLUE;
 import static domain.Image.ColorChannel.GREEN;
 import static domain.Image.ColorChannel.RED;
-import gui.tp2.filters.AbstractBorderDetectorDialog.SynthesizationType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +11,10 @@ import java.util.List;
 
 import domain.Image;
 import domain.Image.ColorChannel;
+import domain.SynthetizationType;
 import domain.mask.DoubleMask;
 import domain.mask.Mask;
+import domain.mask.QuadrupleMask;
 
 public class MaskUtils {
 
@@ -134,21 +135,34 @@ public class MaskUtils {
 	}
 
 	public static Image applyDoubleMask(Image original,
-			DoubleMask doubleMask, SynthesizationType synthesizationType) {
+			DoubleMask doubleMask, SynthetizationType synthesizationType) {
 		if (original == null || doubleMask == null) {
 			return null;
 		}
-		Image imageX = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
-		Image imageY = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
-		applyMask(original, imageX, doubleMask.getMaskX(), RED);
-		applyMask(original, imageX, doubleMask.getMaskX(), GREEN);
-		applyMask(original, imageX, doubleMask.getMaskX(), BLUE);
-		applyMask(original, imageY, doubleMask.getMaskY(), RED);
-		applyMask(original, imageY, doubleMask.getMaskY(), GREEN);
-		applyMask(original, imageY, doubleMask.getMaskY(), BLUE);
+		Image imageX = createImageAndApplyMask(original, doubleMask.getMaskX());
+		Image imageY = createImageAndApplyMask(original, doubleMask.getMaskY());
 		return SynthesizationUtils.synthesize(synthesizationType, imageX, imageY);	
+	}
+
+	private static Image createImageAndApplyMask(Image original, Mask mask) {
+		Image image = new Image(original.getWidth(), original.getHeight(),
+				original.getImageFormat(), original.getType());
+		applyMask(original, image, mask, RED);
+		applyMask(original, image, mask, GREEN);
+		applyMask(original, image, mask, BLUE);
+		return image;
+	}
+
+	public static Image applyQuadrupleMask(Image original,
+			QuadrupleMask quadrupleMask, SynthetizationType synthesizationType) {
+		if (original == null || quadrupleMask == null) {
+			return null;
+		}
+		Image imageA = createImageAndApplyMask(original, quadrupleMask.getMaskA());
+		Image imageB = createImageAndApplyMask(original, quadrupleMask.getMaskB());
+		Image imageC = createImageAndApplyMask(original, quadrupleMask.getMaskC());
+		Image imageD = createImageAndApplyMask(original, quadrupleMask.getMaskD());
+		return SynthesizationUtils.synthesize(synthesizationType, imageA, imageB, imageC, imageD);
 	}
 
 }

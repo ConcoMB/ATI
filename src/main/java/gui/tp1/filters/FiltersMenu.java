@@ -3,6 +3,7 @@ package gui.tp1.filters;
 import gui.Panel;
 import gui.Window;
 import gui.tp2.filters.GaussianFilterDialog;
+import gui.tp2.filters.KirshBorderDetectorDialog;
 import gui.tp2.filters.PrewittBorderDetectorDialog;
 import gui.tp2.filters.RobertsBorderDetectorDialog;
 import gui.tp2.filters.SobelBorderDetectorDialog;
@@ -21,6 +22,19 @@ public class FiltersMenu extends JMenu {
 	public FiltersMenu() {
 		super("Filter");
 		setEnabled(true);
+		
+		JMenuItem kirshFilter = new JMenuItem("Kirsh filter");
+		kirshFilter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog dialog = new KirshBorderDetectorDialog(panel);
+				dialog.setVisible(true);
+			}
+		});
 		
 		JMenuItem robertsFilter = new JMenuItem("Roberts filter");
 		robertsFilter.addActionListener(new ActionListener() {
@@ -122,6 +136,8 @@ public class FiltersMenu extends JMenu {
 		add(robertsFilter);
 		add(prewittFilter);
 		add(sobelFilter);
+		add(new JSeparator());
+		add(kirshFilter);
 		
 	}
 }

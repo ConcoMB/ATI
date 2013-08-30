@@ -1,7 +1,5 @@
 package domain.mask;
 
-
-
 public class MaskFactory {
 
 	public static Mask buildEdgeEnhancementMask(int width, int height) {
@@ -32,73 +30,49 @@ public class MaskFactory {
 		}
 		for (int i = -mask.getWidth() / 2; i <= mask.getWidth() / 2; i++) {
 			for (int j = -mask.getHeight() / 2; j <= mask.getHeight() / 2; j++) {
-				mask.setPixel(i, j, mask.getValue(i, j)/total);
+				mask.setPixel(i, j, mask.getValue(i, j) / total);
 			}
 		}
-		
+
 		return mask;
 	}
 
 	public static DoubleMask buildPrewittMasks() {
-		int size = 3;
-		Mask dx = new Mask(size);
-		Mask dy = new Mask(size);
-
-		dx.setPixel(-1, -1, -1);
-		dx.setPixel(-1, 0, -1);
-		dx.setPixel(-1, 1, -1);
-		dx.setPixel(1, -1, 1);
-		dx.setPixel(1, 0, 1);
-		dx.setPixel(1, 1, 1);
-
-		dy.setPixel(-1, -1, -1);
-		dy.setPixel(0, -1, -1);
-		dy.setPixel(1, -1, -1);
-		dy.setPixel(-1, 1, 1);
-		dy.setPixel(0, 1, 1);
-		dy.setPixel(1, 1, 1);
-
+		double[][] dxValues = { { -1, -1, -1 }, { 0, 0, 0 }, { 1, 1, 1 } };
+		double[][] dyValues = { { -1, 0, 1 }, { -1, 0, 1 }, { -1, 0, 1 } };
+		Mask dx = new Mask(dxValues);
+		Mask dy = new Mask(dyValues);
 		return new DoubleMask(dx, dy);
 	}
 
 	public static DoubleMask buildSobelMasks() {
-		int size = 3;
-		Mask dx = new Mask(size);
-		Mask dy = new Mask(size);
-
-		dx.setPixel(-1, -1, -1);
-		dx.setPixel(-1, 0, -2);
-		dx.setPixel(-1, 1, -1);
-		dx.setPixel(1, -1, 1);
-		dx.setPixel(1, 0, 2);
-		dx.setPixel(1, 1, 1);
-
-		dy.setPixel(-1, -1, -1);
-		dy.setPixel(0, -1, -2);
-		dy.setPixel(1, -1, -1);
-		dy.setPixel(-1, 1, 1);
-		dy.setPixel(0, 1, 2);
-		dy.setPixel(1, 1, 1);
-
+		double[][] dxValues = { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
+		double[][] dyValues = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+		Mask dx = new Mask(dxValues);
+		Mask dy = new Mask(dyValues);
 		return new DoubleMask(dx, dy);
 	}
 
 	public static DoubleMask buildRobertsMasks() {
-		int size = 3;
-		Mask dx = new Mask(size);
-		Mask dy = new Mask(size);
-
-		dx.setPixel(0, 0, 1);
-		dx.setPixel(0, 1, 0);
-		dx.setPixel(1, 0, 0);
-		dx.setPixel(1, 1, -1);
-
-		dy.setPixel(0, 0, 0);
-		dy.setPixel(0, 1, 1);
-		dy.setPixel(1, 0, -1);
-		dy.setPixel(1, 1, 0);
-
+		double[][] dxValues = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, -1 } };
+		double[][] dyValues = { { 0, 0, 0 }, { 0, 0, 1 }, { 0, -1, 0 } };
+		Mask dx = new Mask(dxValues);
+		Mask dy = new Mask(dyValues);
 		return new DoubleMask(dx, dy);
+	}
+
+	public static QuadrupleMask buildKirshMasks() {
+		double[][] aValues = { { 5, 5, 5 }, { -3, 0, -3 }, { -3, -3, -3 } };
+		double[][] bValues = { { -3, 5, 5 }, { -3, 0, 5 }, { -3, -3, -3 } };
+		double[][] cValues = { { -3, -3, -3 }, { 5, 0, -3 }, { 5, 5, -3 } };
+		double[][] dValues = { { 5, -3, -3 }, { 5, 0, -3 }, { 5, -3, -3 } };
+		
+		Mask maskA = new Mask(aValues);
+		Mask maskB = new Mask(bValues);
+		Mask maskC = new Mask(cValues);
+		Mask maskD = new Mask(dValues);
+
+		return new QuadrupleMask(maskA, maskB, maskC, maskD);
 	}
 
 }

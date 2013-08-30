@@ -11,6 +11,15 @@ public class Mask {
 	public Mask(int squareSide) {
 		this(squareSide, squareSide);
 	}
+	
+	public Mask(double[][] values) {
+		this(values.length, values[0].length);
+		for (int x = 0; x < values.length; x++) {
+			for (int y = 0; y < values[0].length; y++) {
+				this.values[x][y] = values[x][y];
+			}
+		}
+	}
 
 	public double accessDirectly(int x, int y) {
 		return values[x][y];

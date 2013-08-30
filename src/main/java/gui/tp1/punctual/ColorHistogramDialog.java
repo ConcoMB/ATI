@@ -21,7 +21,7 @@ import static domain.Image.ColorChannel.*;
 public class ColorHistogramDialog extends JDialog {
 
 	public ColorHistogramDialog(Panel panel) {
-		setTitle("Color gistogram");
+		setTitle("Color histogram");
 		setBounds(1, 1, 1000, 300);
 		Toolkit toolkit = getToolkit();
 		Dimension size = toolkit.getScreenSize();

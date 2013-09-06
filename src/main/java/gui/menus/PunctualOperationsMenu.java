@@ -1,7 +1,14 @@
-package gui.tp1.punctual;
+package gui.menus;
 
 import gui.Panel;
 import gui.Window;
+import gui.tp1.punctual.AddImagesItem;
+import gui.tp1.punctual.ColorHistogramDialog;
+import gui.tp1.punctual.ContrastDialog;
+import gui.tp1.punctual.GreyHistogramDialog;
+import gui.tp1.punctual.MultiplyImagesItem;
+import gui.tp1.punctual.ScalarMultiplicationDialog;
+import gui.tp1.punctual.SubstractImagesItem;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +25,7 @@ import domain.Image;
 public class PunctualOperationsMenu extends JMenu {
 
 	public PunctualOperationsMenu() {
-		super("Punctual operations");
+		super("Punctual");
 		setEnabled(true);
 
 		JMenuItem addition = new AddImagesItem(this);
@@ -59,17 +66,7 @@ public class PunctualOperationsMenu extends JMenu {
 				panel.repaint();
 			}
 		});
-		JMenuItem threshold = new JMenuItem("Threshold");
-		threshold.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
-				if (panel.getImage() == null) {
-					return;
-				}
-				JDialog thresholdDialog = new ThresholdDialog(panel);
-				thresholdDialog.setVisible(true);
-			}
-		});
+		
 		JMenuItem contrast = new JMenuItem("Contrast");
 		contrast.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -120,8 +117,6 @@ public class PunctualOperationsMenu extends JMenu {
 		add(negative);
 		add(new JSeparator());
 		add(contrast);
-		add(new JSeparator());
-		add(threshold);
 		add(new JSeparator());
 		add(histogram);
 		add(new JSeparator());

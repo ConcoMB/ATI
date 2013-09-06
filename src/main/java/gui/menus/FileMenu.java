@@ -1,9 +1,14 @@
-package gui.tp0;
+package gui.menus;
 
 import gui.ExtensionFilter;
 import gui.MessageFrame;
 import gui.Panel;
 import gui.Window;
+import gui.tp0.CircleImageDialog;
+import gui.tp0.CropDialog;
+import gui.tp0.DegradeDialog;
+import gui.tp0.RawImageDialog;
+import gui.tp0.SquareImageDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

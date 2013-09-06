@@ -6,15 +6,14 @@ import domain.mask.MaskFactory;
 import domain.mask.MaskFactory.Direction;
 
 @SuppressWarnings("serial")
-public class KirshBorderDetectorDialog extends DirectionalBorderDetectorDialog {
+public class AFilterDialog extends DirectionalBorderDetectorDialog {
 
-	public KirshBorderDetectorDialog(final Panel panel) {
-		super(panel, "Kirsh border detection");
+	public AFilterDialog(final Panel panel) {
+		super(panel, "A filter border detection");
 	}
 
 	@Override
 	protected Mask getMask(Direction d) {
-		return MaskFactory.buildKirshMask(d);
+		return MaskFactory.buildAMask(d);
 	}
-	
 }

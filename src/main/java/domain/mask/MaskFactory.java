@@ -1,6 +1,13 @@
 package domain.mask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MaskFactory {
+
+	public enum Direction {
+		VERTICAL, HORIZONTAL, DIAGONAL, INVERSE_DIAGONAL
+	}
 
 	public static Mask buildEdgeEnhancementMask(int width, int height) {
 		Mask mask = new Mask(width, height);
@@ -37,42 +44,173 @@ public class MaskFactory {
 		return mask;
 	}
 
-	public static DoubleMask buildPrewittMasks() {
+	public static List<Mask> buildPrewittMasks() {
 		double[][] dxValues = { { -1, -1, -1 }, { 0, 0, 0 }, { 1, 1, 1 } };
 		double[][] dyValues = { { -1, 0, 1 }, { -1, 0, 1 }, { -1, 0, 1 } };
-		Mask dx = new Mask(dxValues);
-		Mask dy = new Mask(dyValues);
-		return new DoubleMask(dx, dy);
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(new Mask(dxValues));
+		list.add(new Mask(dyValues));
+		return list;
 	}
 
-	public static DoubleMask buildSobelMasks() {
+	public static List<Mask> buildSobelMasks() {
 		double[][] dxValues = { { -1, -2, -1 }, { 0, 0, 0 }, { 1, 2, 1 } };
 		double[][] dyValues = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
-		Mask dx = new Mask(dxValues);
-		Mask dy = new Mask(dyValues);
-		return new DoubleMask(dx, dy);
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(new Mask(dxValues));
+		list.add(new Mask(dyValues));
+		return list;
 	}
 
-	public static DoubleMask buildRobertsMasks() {
+	public static List<Mask> buildRobertsMasks() {
 		double[][] dxValues = { { 0, 0, 0 }, { 0, 1, 0 }, { 0, 0, -1 } };
 		double[][] dyValues = { { 0, 0, 0 }, { 0, 0, 1 }, { 0, -1, 0 } };
-		Mask dx = new Mask(dxValues);
-		Mask dy = new Mask(dyValues);
-		return new DoubleMask(dx, dy);
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(new Mask(dxValues));
+		list.add(new Mask(dyValues));
+		return list;
 	}
 
-	public static QuadrupleMask buildKirshMasks() {
-		double[][] aValues = { { 5, 5, 5 }, { -3, 0, -3 }, { -3, -3, -3 } };
-		double[][] bValues = { { -3, 5, 5 }, { -3, 0, 5 }, { -3, -3, -3 } };
-		double[][] cValues = { { -3, -3, -3 }, { 5, 0, -3 }, { 5, 5, -3 } };
-		double[][] dValues = { { 5, -3, -3 }, { 5, 0, -3 }, { 5, -3, -3 } };
+	public static List<Mask> buildKirshMasks() {
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(buildKirshMask(Direction.VERTICAL));
+		list.add(buildKirshMask(Direction.HORIZONTAL));
+		list.add(buildKirshMask(Direction.DIAGONAL));
+		list.add(buildKirshMask(Direction.INVERSE_DIAGONAL));
+		return list;
+	}
+
+	public static Mask buildKirshMask(Direction d) {
+		switch (d) {
+		case VERTICAL:
+			double[][] dValues = { { 5, -3, -3 }, { 5, 0, -3 }, { 5, -3, -3 } };
+			return new Mask(dValues);
+		case HORIZONTAL:
+			double[][] aValues = { { 5, 5, 5 }, { -3, 0, -3 }, { -3, -3, -3 } };
+			return new Mask(aValues);
+		case DIAGONAL:
+			double[][] bValues = { { -3, 5, 5 }, { -3, 0, 5 }, { -3, -3, -3 } };
+			return new Mask(bValues);
+		case INVERSE_DIAGONAL:
+			double[][] cValues = { { -3, -3, -3 }, { 5, 0, -3 }, { 5, 5, -3 } };
+			return new Mask(cValues);
+		}
+		return null;
+	}
+
+	public static List<Mask> buildAMasks() {
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(buildAMask(Direction.VERTICAL));
+		list.add(buildAMask(Direction.HORIZONTAL));
+		list.add(buildAMask(Direction.DIAGONAL));
+		list.add(buildAMask(Direction.INVERSE_DIAGONAL));
+		return list;
+	}
+	
+	public static Mask buildAMask(Direction d) {
+		switch (d) {
+		case VERTICAL:
+			double[][] dValues = { { 1, 1, -1 }, { 1, -2, -1 }, { 1, 1, -1 } };
+			return new Mask(dValues);
+		case HORIZONTAL:
+			double[][] aValues = { { 1, 1, 1 }, { 1, -2, 1 }, { -1, -1, -1 } };
+			return new Mask(aValues);
+		case DIAGONAL:
+			double[][] bValues = { { 1, 1, 1 }, { 1, -2, -1 }, { 1, -1, -1 } };
+			return new Mask(bValues);
+		case INVERSE_DIAGONAL:
+			double[][] cValues = { { 1, -1, -1 }, { 1, -2, -1 }, { 1, 1, 1 } };
+			return new Mask(cValues);
+		}
+		return null;
+	}
+
+	public static List<Mask> buildAnOtherMasks() {
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(buildAnOtherMask(Direction.VERTICAL));
+		list.add(buildAnOtherMask(Direction.HORIZONTAL));
+		list.add(buildAnOtherMask(Direction.DIAGONAL));
+		list.add(buildAnOtherMask(Direction.INVERSE_DIAGONAL));
+		return list;
+	}
+
+	public static Mask buildAnOtherMask(Direction d) {
+		switch (d) {
+		case VERTICAL:
+			double[][] dValues = { { 1, 0, -1 }, { 1, 0, -1 }, { 1, 0, -1 } };
+			return new Mask(dValues);
+		case HORIZONTAL:
+			double[][] aValues = { { 1, 1, 1 }, { 0, 0, 0 }, { -1, -1, -1 } };
+			return new Mask(aValues);
+		case DIAGONAL:
+			double[][] bValues = { { 1, 1, 0 }, { 1, 0, -1 }, { 0, -1, -1 } };
+			return new Mask(bValues);
+		case INVERSE_DIAGONAL:
+			double[][] cValues = { { 0, -1, -1 }, { 1, 0, -1 }, { 1, 1, 0 } };
+			return new Mask(cValues);
+		}
+		return null;
+	}
+	
+	public static List<Mask> buildADifferentMasks() {
+		double[][] aValues = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
+		double[][] bValues = { { 2, 1, 0 }, { 1, 0, -1 }, { 0, -1, -2 } };
+		double[][] cValues = { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };
+		double[][] dValues = { { 0, -1, -2 }, { 1, 0, -1 }, { 2, 1, 0 } };
+
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(new Mask(aValues));
+		list.add(new Mask(bValues));
+		list.add(new Mask(cValues));
+		list.add(new Mask(dValues));
 		
-		Mask maskA = new Mask(aValues);
-		Mask maskB = new Mask(bValues);
-		Mask maskC = new Mask(cValues);
-		Mask maskD = new Mask(dValues);
-
-		return new QuadrupleMask(maskA, maskB, maskC, maskD);
+		return list;
 	}
 
+	public static Mask buildADifferentMask(Direction d) {
+		switch (d) {
+		case VERTICAL:
+			double[][] dValues = { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };
+			return new Mask(dValues);
+		case HORIZONTAL:
+			double[][] aValues = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
+			return new Mask(aValues);
+		case DIAGONAL:
+			double[][] bValues = { { 2, 1, 0 }, { 1, 0, -1 }, { 0, -1, -2 } };
+			return new Mask(bValues);
+		case INVERSE_DIAGONAL:
+			double[][] cValues = { { 0, -1, -2 }, { 1, 0, -1 }, { 2, 1, 0 } };
+			return new Mask(cValues);
+		}
+		return null;
+	}
+
+	public static Mask buildLaplacianMask() {
+		double[][] mask = { { 0, -1, 0 }, { -1, 4, -1 }, { 0, -1, 0 } };
+		return new Mask(mask);
+	}
+
+	public static Mask buildLogMask(int size, double sigma) {
+		if (size % 2 == 0) {
+            size++;
+        }
+		Mask mask = new Mask(size);
+		for (int i = -mask.getWidth() / 2; i <= mask.getWidth() / 2; i++) {
+			for (int j = -mask.getHeight() / 2; j <= mask.getHeight() / 2; j++) {
+				//1/(sqrt(2*pi)*sigma^3)
+				double factor = Math.pow(
+						Math.sqrt(2 * Math.PI) * Math.pow(sigma, 3), -1);
+				//e^(-(x^2+y^2)/(2*sigma^2))
+				double exp = -(Math.pow(i, 2) + Math.pow(j, 2))
+						/ (2 * Math.pow(sigma, 2));
+				//2-((x^2+y^2)/(sigma^2))
+				double term = 2 - (Math.pow(i, 2) + Math.pow(j, 2))
+						/ Math.pow(sigma, 2);
+				double pixelValue = -1 * factor * term * Math.pow(Math.E, exp);
+				mask.setPixel(i, j, pixelValue);
+			}
+		}
+		return mask;
+	}
+	
 }

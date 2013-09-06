@@ -1,5 +1,6 @@
 package gui.tp1.punctual;
 
+import gui.menus.PunctualOperationsMenu;
 import application.utils.PunctualOperationsUtils;
 import domain.Image;
 

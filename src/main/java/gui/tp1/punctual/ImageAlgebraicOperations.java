@@ -4,6 +4,7 @@ import gui.ExtensionFilter;
 import gui.MessageFrame;
 import gui.Panel;
 import gui.Window;
+import gui.menus.PunctualOperationsMenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,7 +1,11 @@
-package gui.tp1.noises;
+package gui.menus;
 
 import gui.Panel;
 import gui.Window;
+import gui.tp1.noises.ExponentialDialog;
+import gui.tp1.noises.GaussianDialog;
+import gui.tp1.noises.RayleighDialog;
+import gui.tp1.noises.SaltAndPepperDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

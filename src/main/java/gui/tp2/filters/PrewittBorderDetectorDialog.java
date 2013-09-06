@@ -11,9 +11,10 @@ public class PrewittBorderDetectorDialog extends BorderDetectorDialog {
 	public PrewittBorderDetectorDialog(final Panel panel) {
 		super(panel, "Prewitt border detection");
 	}
-	
+
 	public void applyFunction(SynthetizationType synthesizationType) {
-		panel.setImage(MaskUtils.applyDoubleMask(panel.getImage(), MaskFactory.buildPrewittMasks(), synthesizationType));
+		panel.setImage(MaskUtils.applyMasks(panel.getImage(),
+				MaskFactory.buildPrewittMasks(), synthesizationType));
 		panel.repaint();
 		dispose();
 	}

@@ -13,7 +13,8 @@ public class SobelBorderDetectorDialog extends BorderDetectorDialog {
 	}
 
 	public void applyFunction(SynthetizationType synthesizationType) {
-		panel.setImage(MaskUtils.applyDoubleMask(panel.getImage(), MaskFactory.buildSobelMasks(), synthesizationType));
+		panel.setImage(MaskUtils.applyMasks(panel.getImage(),
+				MaskFactory.buildSobelMasks(), synthesizationType));
 		panel.repaint();
 		dispose();
 	}

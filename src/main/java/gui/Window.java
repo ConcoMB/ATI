@@ -1,6 +1,7 @@
 package gui;
 
-import gui.tp0.FileMenu;
+import gui.menus.FileMenu;
+import gui.menus.MenuBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,7 @@ public class Window extends JFrame {
 		panel.setBackground(Color.WHITE);
 		setJMenuBar(menuBar);
         panel.initKeyBindings();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		add(panel);
 	}
 

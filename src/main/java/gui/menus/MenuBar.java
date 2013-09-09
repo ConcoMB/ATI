@@ -12,5 +12,6 @@ public class MenuBar extends JMenuBar {
 		add(new ThresholdMenu());
 		add(new FiltersMenu());
 		add(new NoiseMenu());
+		add(new DiffusionMenu());
 	}
 }

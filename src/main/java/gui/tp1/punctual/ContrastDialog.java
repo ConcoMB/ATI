@@ -75,7 +75,7 @@ public class ContrastDialog extends JDialog {
 					return;
 				}
 				Image original = panel.getImage();
-				panel.loadImage(PunctualOperationsUtils.contrast(original, r1, r2, s1, s2));
+				panel.setImage(PunctualOperationsUtils.contrast(original, r1, r2, s1, s2));
 				panel.repaint();
 				dispose();
 			}

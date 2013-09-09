@@ -73,7 +73,7 @@ public class RawImageDialog extends JDialog {
 				}
 				
 				if (image != null) {
-					panel.loadImage(image);
+					panel.setImage(image);
 					panel.repaint();
 				}
 				dispose();

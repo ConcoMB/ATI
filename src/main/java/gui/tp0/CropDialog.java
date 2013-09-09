@@ -83,7 +83,7 @@ public class CropDialog extends JDialog {
 					return;
 				}
 				Image img = BasicImageUtils.crop(height,width, x, y, original);
-				panel.loadImage(img);
+				panel.setImage(img);
 				panel.repaint();
 				dispose();
 			}

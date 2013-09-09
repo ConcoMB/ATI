@@ -100,7 +100,7 @@ public class DegradeDialog extends JDialog {
 				Image img = BasicImageUtils.createDegrade(isColor, heightVal, widthVal, c1,
 						c2);
 				if (img != null) {
-					panel.loadImage(img);
+					panel.setImage(img);
 					panel.repaint();
 					dispose();
 				} else {

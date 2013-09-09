@@ -54,7 +54,7 @@ public class ScalarMultiplicationDialog extends JDialog {
 				}
 				Image original = panel.getImage();
 				Image img = PunctualOperationsUtils.multiply(original, value);
-				panel.loadImage(img);
+				panel.setImage(img);
 				panel.repaint();
 				dispose();
 			}

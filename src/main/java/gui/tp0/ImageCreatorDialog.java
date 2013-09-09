@@ -53,7 +53,7 @@ public abstract class ImageCreatorDialog extends JDialog {
 				}
 				Image img = createBinaryImage(size, size);
 				if (img != null) {
-					panel.loadImage(img);
+					panel.setImage(img);
 					panel.repaint();
 					dispose();
 				} else {

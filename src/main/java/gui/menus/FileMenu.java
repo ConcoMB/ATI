@@ -81,7 +81,7 @@ public class FileMenu extends JMenu {
 						new MessageFrame("Couldn't load the image");
 					}
 					if (image != null) {
-						panel.loadImage(image);
+						panel.setImage(image);
 						panel.repaint();
 					}
 				}

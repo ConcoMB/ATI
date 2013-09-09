@@ -73,7 +73,6 @@ public class Loader {
 			}
 		}
 		return image;
-
 	}
 
 	@SuppressWarnings("resource")

@@ -42,11 +42,11 @@ public class AnisotropicDiffusionDialog extends JDialog {
 
 
 		JLabel iterationsLabel = new JLabel("Iterations ");
-		final JTextField iterationsTextField = new JTextField("");
+		final JTextField iterationsTextField = new JTextField("100");
 		iterationsTextField.setColumns(3);
 
 		JLabel sigmaLabel = new JLabel("Sigma ");
-		final JTextField sigmaTextField = new JTextField("");
+		final JTextField sigmaTextField = new JTextField("10");
 		sigmaTextField.setColumns(3);
 
 		final JRadioButton leclercRadioButton = new JRadioButton("Leclerc", true);

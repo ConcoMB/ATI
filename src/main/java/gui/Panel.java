@@ -32,7 +32,6 @@ public class Panel extends JPanel {
 	private Image workingImage = null;
 	private Deque<Image> imageHistory = new LinkedList<Image>();
 	private Deque<Image> undoStack = new LinkedList<Image>();
-	@SuppressWarnings("unused")
 	private Window window;
 	private VolatileImage vImg;
 	private DrawingContainer drawingContainer;
@@ -100,11 +99,11 @@ public class Panel extends JPanel {
 		return new_image;
 	}
 
-	public void loadImage(Image image) {
-		workingImage = image;
-		imageHistory.push(image);
-		((Window) getTopLevelAncestor()).enableTools();
-	}
+//	public void loadImage(Image image) {
+//		workingImage = image;
+//		imageHistory.push(image);
+//		((Window) getTopLevelAncestor()).enableTools();
+//	}
 
 	public Image getImage() {
 		return imageHistory.peek();
@@ -121,6 +120,7 @@ public class Panel extends JPanel {
 			imageHistory.removeLast();
 		}
 		undoStack.clear();
+		window.setBounds(1, 1, image.getWidth() + 5, image.getHeight() + 5);
 	}
 
 	public void undo() {

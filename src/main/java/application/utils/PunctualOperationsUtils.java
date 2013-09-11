@@ -27,28 +27,6 @@ public class PunctualOperationsUtils {
 		return inverse;
 	}
 
-	public static Image threshold(Image original, int value) {
-		if (original == null) {
-			return null;
-		}
-		Image threshold = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
-		for (int x = 0; x < original.getWidth(); x++) {
-			for (int y = 0; y < original.getHeight(); y++) {
-				int red = original.getPixel(x, y, RED) > value ? Image.MAX_VAL
-						: 0;
-				int green = original.getPixel(x, y, GREEN) > value ? Image.MAX_VAL
-						: 0;
-				int blue = original.getPixel(x, y, BLUE) > value ? Image.MAX_VAL
-						: 0;
-				threshold.setPixel(x, y, RED, red);
-				threshold.setPixel(x, y, GREEN, green);
-				threshold.setPixel(x, y, BLUE, blue);
-			}
-		}
-		return threshold;
-	}
-
 	public static Image add(Image img1, Image img2) {
 		if (img1 == null || img2 == null) {
 			return null;
@@ -370,4 +348,5 @@ public class PunctualOperationsUtils {
 		}
 		return dataset;
 	}
+
 }

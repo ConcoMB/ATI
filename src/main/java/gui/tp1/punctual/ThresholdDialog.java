@@ -16,7 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import application.utils.PunctualOperationsUtils;
+import application.utils.ThresholdUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")
@@ -76,7 +76,7 @@ public class ThresholdDialog extends JDialog implements ChangeListener {
 	public void stateChanged(ChangeEvent e) {
 		JSlider source = (JSlider)e.getSource();
 	    if (!source.getValueIsAdjusting()) {
-	        Image modify = PunctualOperationsUtils.threshold(panel.getImage(), (int)source.getValue());
+	        Image modify = ThresholdUtils.threshold(panel.getImage(), (int)source.getValue());
 			panel.setTempImage(modify);
 			panel.repaint();
 	    }

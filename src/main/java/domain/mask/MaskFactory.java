@@ -98,16 +98,16 @@ public class MaskFactory {
 		return null;
 	}
 
-	public static List<Mask> buildAMasks() {
+	public static List<Mask> buildAllPrewittMasks() {
 		List<Mask> list = new ArrayList<Mask>();
-		list.add(buildAMask(Direction.VERTICAL));
-		list.add(buildAMask(Direction.HORIZONTAL));
-		list.add(buildAMask(Direction.DIAGONAL));
-		list.add(buildAMask(Direction.INVERSE_DIAGONAL));
+		list.add(buildPrewittMask(Direction.VERTICAL));
+		list.add(buildPrewittMask(Direction.HORIZONTAL));
+		list.add(buildPrewittMask(Direction.DIAGONAL));
+		list.add(buildPrewittMask(Direction.INVERSE_DIAGONAL));
 		return list;
 	}
 	
-	public static Mask buildAMask(Direction d) {
+	public static Mask buildPrewittMask(Direction d) {
 		switch (d) {
 		case VERTICAL:
 			double[][] dValues = { { 1, 1, -1 }, { 1, -2, -1 }, { 1, 1, -1 } };
@@ -152,7 +152,7 @@ public class MaskFactory {
 		return null;
 	}
 	
-	public static List<Mask> buildADifferentMasks() {
+	public static List<Mask> buildAllSobelMasks() {
 		double[][] aValues = { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
 		double[][] bValues = { { 2, 1, 0 }, { 1, 0, -1 }, { 0, -1, -2 } };
 		double[][] cValues = { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };
@@ -167,7 +167,7 @@ public class MaskFactory {
 		return list;
 	}
 
-	public static Mask buildADifferentMask(Direction d) {
+	public static Mask buildSobelMask(Direction d) {
 		switch (d) {
 		case VERTICAL:
 			double[][] dValues = { { 1, 0, -1 }, { 2, 0, -2 }, { 1, 0, -1 } };

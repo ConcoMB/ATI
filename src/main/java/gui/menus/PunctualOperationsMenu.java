@@ -27,6 +27,8 @@ public class PunctualOperationsMenu extends JMenu {
 	public PunctualOperationsMenu() {
 		super("Punctual");
 		setEnabled(true);
+		
+		JMenu algebraic = new JMenu("Algrebraic operations");
 
 		JMenuItem addition = new AddImagesItem(this);
 		JMenuItem substraction = new SubstractImagesItem(this);
@@ -107,11 +109,13 @@ public class PunctualOperationsMenu extends JMenu {
 				panel.repaint();
 			}
 		});
-
-		add(addition);
-		add(substraction);
-		add(multiplication);
-		add(scalarMultiplication);
+		
+		add(algebraic);
+		algebraic.add(addition);
+		algebraic.add(substraction);
+		algebraic.add(multiplication);
+		algebraic.add(scalarMultiplication);
+		add(new JSeparator());
 		add(dinamicRange);
 		add(new JSeparator());
 		add(negative);

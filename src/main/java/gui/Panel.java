@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -99,12 +100,6 @@ public class Panel extends JPanel {
 		return new_image;
 	}
 
-//	public void loadImage(Image image) {
-//		workingImage = image;
-//		imageHistory.push(image);
-//		((Window) getTopLevelAncestor()).enableTools();
-//	}
-
 	public Image getImage() {
 		return imageHistory.peek();
 	}
@@ -120,9 +115,15 @@ public class Panel extends JPanel {
 			imageHistory.removeLast();
 		}
 		undoStack.clear();
-		window.setBounds(1, 1, image.getWidth() + 5, image.getHeight() + 5);
 	}
 
+	public void loadImage(Image image) {
+		setImage(image);
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		window.setBounds(size.width / 3 - window.getWidth() / 3, size.height / 3
+				- window.getHeight() / 2, image.getWidth() + 5, image.getHeight() + 5);
+	}
+	
 	public void undo() {
 		if (!imageHistory.isEmpty()) {
 			undoStack.push(imageHistory.pop());

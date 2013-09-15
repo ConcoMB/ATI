@@ -16,18 +16,20 @@ public class ThresholdUtils {
 				original.getImageFormat(), original.getType());
 		for (int x = 0; x < original.getWidth(); x++) {
 			for (int y = 0; y < original.getHeight(); y++) {
-				int red = original.getPixel(x, y, RED) > value ? Image.MAX_VAL
-						: 0;
-				int green = original.getPixel(x, y, GREEN) > value ? Image.MAX_VAL
-						: 0;
-				int blue = original.getPixel(x, y, BLUE) > value ? Image.MAX_VAL
-						: 0;
-				threshold.setPixel(x, y, RED, red);
-				threshold.setPixel(x, y, GREEN, green);
-				threshold.setPixel(x, y, BLUE, blue);
+				threshold(threshold, value, RED);
+				threshold(threshold, value, GREEN);
+				threshold(threshold, value, BLUE);
 			}
 		}
 		return threshold;
+	}
+	
+	public static void threshold(Image image, int value, ColorChannel c) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				image.setPixel(x, y, c, image.getPixel(x, y, c) > value ? Image.MAX_VAL	: 0);
+			}
+		}
 	}
 	
 	public static Image globalThreshold(Image image, int T, int delta) {
@@ -143,7 +145,6 @@ public class ThresholdUtils {
 		for (int i = 0; i < probabilities.length; i++) {
 			probabilities[i] /= (img.getWidth() * img.getHeight());
 		}
-
 		return probabilities;
 	}
 	

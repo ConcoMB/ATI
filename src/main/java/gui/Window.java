@@ -42,6 +42,4 @@ public class Window extends JFrame {
     public GraphicsConfiguration getConfig() {
         return config;
     }
-    
-    
 }

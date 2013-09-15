@@ -81,7 +81,7 @@ public class FileMenu extends JMenu {
 						new MessageFrame("Couldn't load the image");
 					}
 					if (image != null) {
-						panel.setImage(image);
+						panel.loadImage(image);
 						panel.repaint();
 					}
 				}
@@ -168,6 +168,9 @@ public class FileMenu extends JMenu {
 				degrade.setVisible(true);
 			}
 		});
+		
+		JMenu synthetic = new JMenu("Synthetic images");
+		
 		add(newWindow);
 		add(new JSeparator());
 		add(loadImage);
@@ -179,9 +182,10 @@ public class FileMenu extends JMenu {
 		add(undo);
 		add(redo);
 		add(new JSeparator());
-		add(binaryImage);
-		add(circleBinaryImage);
-		add(degradeBW);
-		add(degradeColor);
+		add(synthetic);
+		synthetic.add(binaryImage);
+		synthetic.add(circleBinaryImage);
+		synthetic.add(degradeBW);
+		synthetic.add(degradeColor);
 	}
 }

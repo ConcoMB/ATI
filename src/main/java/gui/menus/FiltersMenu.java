@@ -5,9 +5,9 @@ import gui.Window;
 import gui.tp1.filters.EdgeEnhancementDialog;
 import gui.tp1.filters.MeanFilterDialog;
 import gui.tp1.filters.MedianFilterDialog;
-import gui.tp2.filters.ADifferentFilterDialog;
-import gui.tp2.filters.AFilterDialog;
 import gui.tp2.filters.AnOtherFilterDialog;
+import gui.tp2.filters.DirectionalPrewittFilterDialog;
+import gui.tp2.filters.DirectionalSobelFilterDialog;
 import gui.tp2.filters.GaussianFilterDialog;
 import gui.tp2.filters.KirshBorderDetectorDialog;
 import gui.tp2.filters.LaplacianDialog;
@@ -31,6 +31,11 @@ public class FiltersMenu extends JMenu {
 		super("Filter");
 		setEnabled(true);
 
+		JMenu directionalFilters = new JMenu("Directional filters");
+		JMenu secodDerivate = new JMenu("Second derivate filters");
+		JMenu laplacian = new JMenu("Laplacian filters");
+
+		
 		JMenuItem laplacianFilter = new JMenuItem("Laplacian");
 		laplacianFilter.addActionListener(new ActionListener() {
 			@Override
@@ -69,7 +74,7 @@ public class FiltersMenu extends JMenu {
 			}
 		});
 
-		JMenuItem aDifferentFilter = new JMenuItem("A different filter");
+		JMenuItem aDifferentFilter = new JMenuItem("Sobel");
 		aDifferentFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -77,7 +82,7 @@ public class FiltersMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				JDialog dialog = new ADifferentFilterDialog(panel);
+				JDialog dialog = new DirectionalSobelFilterDialog(panel);
 				dialog.setVisible(true);
 			}
 		});
@@ -95,15 +100,15 @@ public class FiltersMenu extends JMenu {
 			}
 		});
 
-		JMenuItem aFilter = new JMenuItem("A filter");
-		aFilter.addActionListener(new ActionListener() {
+		JMenuItem directionalPrewittFilter = new JMenuItem("Prewitt");
+		directionalPrewittFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				if (panel.getImage() == null) {
 					return;
 				}
-				JDialog dialog = new AFilterDialog(panel);
+				JDialog dialog = new DirectionalPrewittFilterDialog(panel);
 				dialog.setVisible(true);
 			}
 		});
@@ -204,16 +209,18 @@ public class FiltersMenu extends JMenu {
 		add(gaussianFilter);
 		add(new JSeparator());
 		add(edgeEnhancement);
-		add(robertsFilter);
-		add(prewittFilter);
-		add(sobelFilter);
-		add(new JSeparator());
-		add(kirshFilter);
-		add(aFilter);
-		add(anOtherFilter);
-		add(aDifferentFilter);
-		add(new JSeparator());
-		add(laplacianFilter);
-		add(logFilter);
+		add(secodDerivate);
+		
+		secodDerivate.add(robertsFilter);
+		secodDerivate.add(prewittFilter);
+		secodDerivate.add(sobelFilter);
+		add(directionalFilters);
+		directionalFilters.add(kirshFilter);
+		directionalFilters.add(directionalPrewittFilter);
+		directionalFilters.add(anOtherFilter);
+		directionalFilters.add(aDifferentFilter);
+		add(laplacian);
+		laplacian.add(laplacianFilter);
+		laplacian.add(logFilter);
 	}
 }

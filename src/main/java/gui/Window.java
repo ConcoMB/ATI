@@ -12,14 +12,16 @@ public class Window extends JFrame {
 	private Panel panel = new Panel(this);
 	private MenuBar menuBar = new MenuBar();
     private GraphicsConfiguration config;
-
+    private Point location;
+    
 	public Window() {
         config = getGraphicsConfiguration();
 		setTitle("Images Analysis and Treatment");
 		setBounds(1, 1, 500, 500);
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation(size.width / 3 - getWidth() / 3, size.height / 3
+		location = new Point(size.width / 3 - getWidth() / 3, size.height / 3
 				- getHeight() / 2);
+		setLocation(location);
 		setResizable(true);
 		setMinimumSize(new Dimension(600, 600));
 		panel.setBackground(Color.WHITE);
@@ -29,6 +31,10 @@ public class Window extends JFrame {
 		add(panel);
 	}
 
+	public Point getLocation() {
+		return location;
+	}
+	
 	public Panel getPanel() {
 		return panel;
 	}

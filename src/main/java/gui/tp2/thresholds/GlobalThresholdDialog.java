@@ -18,9 +18,9 @@ import domain.Image;
 
 @SuppressWarnings("serial")
 public class GlobalThresholdDialog extends JDialog {
-	
+
 	public GlobalThresholdDialog(final Panel panel) {
-		
+
 		setTitle("Global Threshold");
 		setBounds(1, 1, 250, 150);
 		Dimension size = getToolkit().getScreenSize();
@@ -31,15 +31,15 @@ public class GlobalThresholdDialog extends JDialog {
 
 		JPanel pan = new JPanel();
 		pan.setBounds(0, 0, 250, 75);
-		
+
 		JLabel tLabel = new JLabel("T = ");
 		final JTextField tTextField = new JTextField("128");
 		tTextField.setColumns(3);
-		
+
 		JLabel deltaLabel = new JLabel("delta = ");
 		final JTextField deltaTextField = new JTextField("1");
 		deltaTextField.setColumns(3);
-		
+
 		JButton okButton = new JButton("OK");
 		okButton.setSize(250, 40);
 		okButton.setBounds(0, 75, 250, 40);
@@ -60,13 +60,14 @@ public class GlobalThresholdDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-				Image image = panel.getImage();
-				panel.setImage(ThresholdUtils.globalThreshold(image, T, delta));
+				Image thresholded = ThresholdUtils.globalThreshold(
+						panel.getImage(), T, delta);
+				panel.setImage(thresholded);
 				panel.repaint();
 				dispose();
 			}
 		});
-		
+
 		pan.add(tLabel);
 		pan.add(tTextField);
 		pan.add(deltaLabel);
@@ -74,7 +75,7 @@ public class GlobalThresholdDialog extends JDialog {
 
 		this.add(pan);
 		this.add(okButton);
-		
+
 	}
 
 }

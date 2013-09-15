@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -119,11 +120,10 @@ public class Panel extends JPanel {
 
 	public void loadImage(Image image) {
 		setImage(image);
-		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		window.setBounds(size.width / 3 - window.getWidth() / 3, size.height / 3
-				- window.getHeight() / 2, image.getWidth() + 5, image.getHeight() + 5);
+		window.setBounds(new Rectangle(window.getLocation(), new Dimension(
+				image.getWidth() + 5, image.getHeight() + 5)));
 	}
-	
+
 	public void undo() {
 		if (!imageHistory.isEmpty()) {
 			undoStack.push(imageHistory.pop());

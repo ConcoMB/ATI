@@ -41,17 +41,15 @@ public class ThresholdUtils {
 
 	private static int getGlobalThresholdValue(int T, Image img, int delta,
 			ColorChannel c) {
-		// Step 1
 		int currentT = T;
 		int previousT = 0;
-
-		// Step 5
 		int i = 0;
 		do {
 			previousT = currentT;
 			currentT = getAdjustedThreshold(currentT, img, c);
 			i++;
 		} while (Math.abs((currentT - previousT)) >= delta);
+//		currentT -= 30;
 		System.out.println(c);
 		System.out.println("Iteraciones: " + i);
 		System.out.println("T: " + currentT);
@@ -60,8 +58,8 @@ public class ThresholdUtils {
 
 	private static int getAdjustedThreshold(int previousThreshold, Image img,
 			ColorChannel c) {
-		double amountOfHigher = 0;
-		double amountOfLower = 0;
+		int amountOfHigher = 0;
+		int amountOfLower = 0;
 		double sumOfHigher = 0;
 		double sumOfLower = 0;
 
@@ -69,20 +67,17 @@ public class ThresholdUtils {
 			for (int y = 0; y < img.getHeight(); y++) {
 				double aPixel = img.getPixel(x, y, c);
 				if (aPixel >= previousThreshold) {
-					amountOfHigher += 1;
-					sumOfHigher += aPixel;
-				}
-				if (aPixel < previousThreshold) {
-					amountOfLower += 1;
-					sumOfLower += aPixel;
+					amountOfHigher++;
+					sumOfHigher += (int)aPixel;
+				} else {
+					amountOfLower++;
+					sumOfLower += (int)aPixel;
 				}
 			}
 		}
-
-		double m1 = (1 / amountOfHigher) * sumOfHigher;
-		double m2 = (1 / amountOfLower) * sumOfLower;
-
-		return (int) (0.5 * (m1 + m2));
+		double m1 = sumOfHigher / amountOfHigher;
+		double m2 = sumOfLower / amountOfLower;
+		return (int) ((m1 + m2) / 2);
 	}
 
 	public static Image otsuThreshold(Image img) {
@@ -131,9 +126,8 @@ public class ThresholdUtils {
 			}
 		}
 		double mu_t = mu1 * w1 + mu2 * w2;
-		double sigma_B = w1 * Math.pow((mu1 - mu_t), 2) + w2
+		return w1 * Math.pow((mu1 - mu_t), 2) + w2
 				* Math.pow((mu2 - mu_t), 2);
-		return sigma_B;
 	}
 
 	private static double[] getProbabilitiesOfColorLevel(Image img,
@@ -143,11 +137,12 @@ public class ThresholdUtils {
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
 				int aColorPixel = (int) img.getPixel(x, y, c);
-				probabilities[aColorPixel] += 1;
+				probabilities[aColorPixel]++;
 			}
 		}
+		int size = (img.getWidth() * img.getHeight());
 		for (int i = 0; i < probabilities.length; i++) {
-			probabilities[i] /= (img.getWidth() * img.getHeight());
+			probabilities[i] /= size;
 		}
 		return probabilities;
 	}

@@ -12,8 +12,7 @@ public class PunctualOperationsUtils {
 		if (original == null) {
 			return null;
 		}
-		Image inverse = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image inverse = original.shallowClone();
 		for (int x = 0; x < original.getWidth(); x++) {
 			for (int y = 0; y < original.getHeight(); y++) {
 				double red = original.getPixel(x, y, RED);
@@ -31,8 +30,7 @@ public class PunctualOperationsUtils {
 		if (img1 == null || img2 == null) {
 			return null;
 		}
-		Image img = new Image(img1.getWidth(), img2.getHeight(),
-				img1.getImageFormat(), img1.getType());
+		Image img = img1.shallowClone();
 		double min = 0, max = 255;
 		for (int x = 0; x < img1.getWidth(); x++) {
 			for (int y = 0; y < img1.getHeight(); y++) {
@@ -57,8 +55,7 @@ public class PunctualOperationsUtils {
 		if (img1 == null || img2 == null) {
 			return null;
 		}
-		Image img = new Image(img1.getWidth(), img2.getHeight(),
-				img1.getImageFormat(), img1.getType());
+		Image img = img1.shallowClone();
 		double min = 0, max = 255;
 		for (int x = 0; x < img1.getWidth(); x++) {
 			for (int y = 0; y < img1.getHeight(); y++) {
@@ -83,8 +80,7 @@ public class PunctualOperationsUtils {
 		if (img1 == null || img2 == null) {
 			return null;
 		}
-		Image img = new Image(img1.getWidth(), img2.getHeight(),
-				img1.getImageFormat(), img1.getType());
+		Image img = img1.shallowClone();
 		double min = 0, max = 255;
 		for (int x = 0; x < img1.getWidth(); x++) {
 			for (int y = 0; y < img1.getHeight(); y++) {
@@ -109,8 +105,7 @@ public class PunctualOperationsUtils {
 		if (original == null) {
 			return null;
 		}
-		Image img = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image img = original.shallowClone();
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
 				double red = original.getPixel(x, y, RED) * value;
@@ -238,8 +233,7 @@ public class PunctualOperationsUtils {
 		double cRed = (L - 1) / Math.log(1 + RRed);
 		double cGreen = (L - 1) / Math.log(1 + RGreen);
 		double cBlue = (L - 1) / Math.log(1 + RBlue);
-		Image image = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image image = original.shallowClone();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				double rRed = original.getPixel(x, y, RED);
@@ -260,8 +254,7 @@ public class PunctualOperationsUtils {
 		if (original == null) {
 			return null;
 		}
-		Image img = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image img = original.shallowClone();
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
 				double red = contrastValue(original.getPixel(x, y, RED), r1,
@@ -296,8 +289,7 @@ public class PunctualOperationsUtils {
 	}
 
 	public static Image ecualizate(Image original) {
-		Image image = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image image = original.shallowClone();
 		equalizeChannel(original, image, RED);
 		equalizeChannel(original, image, GREEN);
 		equalizeChannel(original, image, BLUE);
@@ -311,17 +303,13 @@ public class PunctualOperationsUtils {
 		double[] levels = new double[totalPixels];
 		double s_min = 0;
 		double s_max = Image.MAX_VAL;
-
 		for (int i = 0; i < levels.length; i++) {
-
 			int level = (int) Math.floor(original.getPixel(
 					i / image.getHeight(), i % image.getWidth(), color));
-
 			double levelVal = 0;
 			for (int k = 0; k < level; k++) {
 				levelVal += ocurrences[k];
 			}
-
 			levels[i] = levelVal / totalPixels;
 			s_min = Math.min(s_min, levels[i]);
 			s_max = Math.max(s_max, levels[i]);

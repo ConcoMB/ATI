@@ -15,9 +15,7 @@ public class DiffusionUtils {
 	}
 		
 	public static Image anisotropicDiffusion(Image original, int iterations, BorderDetector pf) {
-		Image diffused = new Image(original.getWidth(),
-				original.getHeight(), original.getImageFormat(),
-				original.getType());
+		Image diffused = original.shallowClone();
 		for(int i = 0; i < iterations; i++) {
 			for(int x = 0; x < diffused.getWidth(); x++) {
 				for(int y = 0; y < diffused.getHeight(); y++) {
@@ -61,11 +59,9 @@ public class DiffusionUtils {
 	
 	public static class LeclercDetector implements BorderDetector {
 		private double sigma;
-
 		public LeclercDetector(double sigma){
 			this.sigma = sigma;
 		}
-
 		@Override
 		public double g(double x) {
 			return Math.exp(-Math.pow(Math.abs(x), 2) / Math.pow(sigma, 2));

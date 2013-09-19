@@ -1,10 +1,14 @@
 package gui;
 
-import gui.menus.FileMenu;
 import gui.menus.MenuBar;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.Point;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame {
@@ -37,12 +41,6 @@ public class Window extends JFrame {
 	
 	public Panel getPanel() {
 		return panel;
-	}
-
-	public void enableTools() {
-		menuBar.getComponent(0).setEnabled(true);
-		((FileMenu) menuBar.getComponent(0)).saveImage.setEnabled(true);
-		((FileMenu) menuBar.getComponent(0)).cropImage.setEnabled(true);
 	}
 
     public GraphicsConfiguration getConfig() {

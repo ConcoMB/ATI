@@ -86,7 +86,7 @@ public class ColorGlobalThresholdDialog extends JDialog {
 					return;
 				}
 
-				if (invalidT(redT) || invalidT(greenT) || invalidT(blueT)) {
+				if (invalidT(redT, redDelta) || invalidT(greenT, greenDelta) || invalidT(blueT, blueDelta)) {
 					new MessageFrame("Invalid values");
 					return;
 				}
@@ -123,8 +123,8 @@ public class ColorGlobalThresholdDialog extends JDialog {
 		
 	}
 	
-	private boolean invalidT(int t) {
-		return t > 255 || t < 1 || t > 255 || t < 1;
+	private boolean invalidT(int t, int delta) {
+		return t > 255 || t < 0 || delta > 255 || delta < 1;
 	}
 
 }

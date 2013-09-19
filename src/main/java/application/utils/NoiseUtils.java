@@ -11,9 +11,7 @@ public class NoiseUtils {
 	public static Image saltAndPepper(Image original, double minP, double maxP) {
 		if (original == null)
 			return null;
-		Image saltAndPepper = new Image(original.getWidth(),
-				original.getHeight(), original.getImageFormat(),
-				original.getType());
+		Image saltAndPepper = original.shallowClone();
 		for (int x = 0; x < original.getWidth(); x++) {
 			for (int y = 0; y < original.getHeight(); y++) {
 				double p = Math.random();
@@ -46,8 +44,7 @@ public class NoiseUtils {
 			double p) {
 		if (original == null)
 			return null;
-		Image gaussian = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image gaussian = original.shallowClone();
 		for (int x = 0; x < original.getWidth(); x++) {
 			for (int y = 0; y < original.getHeight(); y++) {
 				double rand = Math.random();
@@ -74,8 +71,7 @@ public class NoiseUtils {
 	public static Image exponentialNoise(Image original, double lambda, double p) {
 		if (original == null)
 			return null;
-		Image expo = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image expo = original.shallowClone();
 		for (int x = 0; x < original.getWidth(); x++) {
 			for (int y = 0; y < original.getHeight(); y++) {
 				double rand = Math.random();
@@ -99,8 +95,7 @@ public class NoiseUtils {
 	public static Image rayleighNoise(Image original, double psi, double p) {
 		if (original == null)
 			return null;
-		Image rayleigh = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image rayleigh = original.shallowClone();
 		for (int x = 0; x < original.getWidth(); x++) {
 			for (int y = 0; y < original.getHeight(); y++) {
 				double rand = Math.random();

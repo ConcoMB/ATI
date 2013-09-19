@@ -24,6 +24,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import application.utils.FilterUtils;
+import domain.Image;
+
 @SuppressWarnings("serial")
 public class FiltersMenu extends JMenu {
 
@@ -35,6 +38,20 @@ public class FiltersMenu extends JMenu {
 		JMenu secodDerivate = new JMenu("Second derivate filters");
 		JMenu laplacian = new JMenu("Laplacian filters");
 
+		JMenu canny = new JMenu("Canny");
+		canny.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				Image image = panel.getImage();
+				if (image == null) {
+					return;
+				}
+				panel.setImage(FilterUtils.applyCannyFilter(image));
+				panel.repaint();
+			}
+		});
 		
 		JMenuItem laplacianFilter = new JMenuItem("Laplacian");
 		laplacianFilter.addActionListener(new ActionListener() {
@@ -74,8 +91,8 @@ public class FiltersMenu extends JMenu {
 			}
 		});
 
-		JMenuItem aDifferentFilter = new JMenuItem("Sobel");
-		aDifferentFilter.addActionListener(new ActionListener() {
+		JMenuItem directionalSobelFilter = new JMenuItem("Sobel");
+		directionalSobelFilter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
@@ -215,10 +232,10 @@ public class FiltersMenu extends JMenu {
 		secodDerivate.add(prewittFilter);
 		secodDerivate.add(sobelFilter);
 		add(directionalFilters);
+		directionalFilters.add(anOtherFilter);
 		directionalFilters.add(kirshFilter);
 		directionalFilters.add(directionalPrewittFilter);
-		directionalFilters.add(anOtherFilter);
-		directionalFilters.add(aDifferentFilter);
+		directionalFilters.add(directionalSobelFilter);
 		add(laplacian);
 		laplacian.add(laplacianFilter);
 		laplacian.add(logFilter);

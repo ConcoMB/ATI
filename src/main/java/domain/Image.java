@@ -46,6 +46,11 @@ public class Image implements Cloneable {
 		initRGB(bi);
 		changed = true;
 	}
+	
+	public Image shallowClone(){
+		return new Image(getWidth(), getHeight(),
+				getImageFormat(), getType());
+	}
 
 	public static Image reuse(Image img, BufferedImage newImg) {
 		img.bufferedImage = newImg;

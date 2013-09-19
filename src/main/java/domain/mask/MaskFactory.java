@@ -82,10 +82,10 @@ public class MaskFactory {
 
 	public static Mask buildKirshMask(Direction d) {
 		switch (d) {
-		case VERTICAL:
+		case HORIZONTAL:
 			double[][] dValues = { { 5, -3, -3 }, { 5, 0, -3 }, { 5, -3, -3 } };
 			return new Mask(dValues);
-		case HORIZONTAL:
+		case VERTICAL:
 			double[][] aValues = { { 5, 5, 5 }, { -3, 0, -3 }, { -3, -3, -3 } };
 			return new Mask(aValues);
 		case DIAGONAL:
@@ -93,6 +93,33 @@ public class MaskFactory {
 			return new Mask(bValues);
 		case INVERSE_DIAGONAL:
 			double[][] cValues = { { -3, -3, -3 }, { 5, 0, -3 }, { 5, 5, -3 } };
+			return new Mask(cValues);
+		}
+		return null;
+	}
+
+	public static List<Mask> buildAllAnOtherMasks() {
+		List<Mask> list = new ArrayList<Mask>();
+		list.add(buildAnOtherMask(Direction.VERTICAL));
+		list.add(buildAnOtherMask(Direction.HORIZONTAL));
+		list.add(buildAnOtherMask(Direction.DIAGONAL));
+		list.add(buildAnOtherMask(Direction.INVERSE_DIAGONAL));
+		return list;
+	}
+	
+	public static Mask buildAnOtherMask(Direction d) {
+		switch (d) {
+		case HORIZONTAL:
+			double[][] dValues = { { 1, 1, -1 }, { 1, -2, -1 }, { 1, 1, -1 } };
+			return new Mask(dValues);
+		case VERTICAL:
+			double[][] aValues = { { 1, 1, 1 }, { 1, -2, 1 }, { -1, -1, -1 } };
+			return new Mask(aValues);
+		case DIAGONAL:
+			double[][] bValues = { { 1, 1, 1 }, { 1, -2, -1 }, { 1, -1, -1 } };
+			return new Mask(bValues);
+		case INVERSE_DIAGONAL:
+			double[][] cValues = { { 1, -1, -1 }, { 1, -2, -1 }, { 1, 1, 1 } };
 			return new Mask(cValues);
 		}
 		return null;
@@ -106,40 +133,13 @@ public class MaskFactory {
 		list.add(buildPrewittMask(Direction.INVERSE_DIAGONAL));
 		return list;
 	}
-	
+
 	public static Mask buildPrewittMask(Direction d) {
 		switch (d) {
-		case VERTICAL:
-			double[][] dValues = { { 1, 1, -1 }, { 1, -2, -1 }, { 1, 1, -1 } };
-			return new Mask(dValues);
 		case HORIZONTAL:
-			double[][] aValues = { { 1, 1, 1 }, { 1, -2, 1 }, { -1, -1, -1 } };
-			return new Mask(aValues);
-		case DIAGONAL:
-			double[][] bValues = { { 1, 1, 1 }, { 1, -2, -1 }, { 1, -1, -1 } };
-			return new Mask(bValues);
-		case INVERSE_DIAGONAL:
-			double[][] cValues = { { 1, -1, -1 }, { 1, -2, -1 }, { 1, 1, 1 } };
-			return new Mask(cValues);
-		}
-		return null;
-	}
-
-	public static List<Mask> buildAnOtherMasks() {
-		List<Mask> list = new ArrayList<Mask>();
-		list.add(buildAnOtherMask(Direction.VERTICAL));
-		list.add(buildAnOtherMask(Direction.HORIZONTAL));
-		list.add(buildAnOtherMask(Direction.DIAGONAL));
-		list.add(buildAnOtherMask(Direction.INVERSE_DIAGONAL));
-		return list;
-	}
-
-	public static Mask buildAnOtherMask(Direction d) {
-		switch (d) {
-		case VERTICAL:
 			double[][] dValues = { { 1, 0, -1 }, { 1, 0, -1 }, { 1, 0, -1 } };
 			return new Mask(dValues);
-		case HORIZONTAL:
+		case VERTICAL:
 			double[][] aValues = { { 1, 1, 1 }, { 0, 0, 0 }, { -1, -1, -1 } };
 			return new Mask(aValues);
 		case DIAGONAL:

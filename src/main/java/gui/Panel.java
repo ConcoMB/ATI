@@ -29,7 +29,7 @@ import domain.Image;
 @SuppressWarnings("serial")
 public class Panel extends JPanel {
 
-	private static final int STACK_MAX_SIZE = 10;
+	private static final int STACK_MAX_SIZE = 5;
 
 	private Image workingImage = null;
 	private Deque<Image> imageHistory = new LinkedList<Image>();
@@ -125,7 +125,7 @@ public class Panel extends JPanel {
 	}
 
 	public void undo() {
-		if (!imageHistory.isEmpty()) {
+		if (imageHistory.size() > 1) {
 			undoStack.push(imageHistory.pop());
 			workingImage = imageHistory.peek();
 		}

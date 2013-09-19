@@ -31,11 +31,11 @@ import domain.Image;
 @SuppressWarnings("serial")
 public class FileMenu extends JMenu {
 
-	public JMenuItem saveImage = new JMenuItem("Save image");
-	public JMenuItem cropImage = new JMenuItem("Crop image");
 	
 	public FileMenu() {
 		super("File");
+		JMenuItem saveImage = new JMenuItem("Save image");
+		JMenuItem cropImage = new JMenuItem("Crop image");
 		this.setEnabled(true);
 		JMenuItem undo = new JMenuItem("Undo");
 		undo.addActionListener(new ActionListener() {
@@ -106,7 +106,6 @@ public class FileMenu extends JMenu {
 			}
 		});
 
-		saveImage.setEnabled(false);
 		saveImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser selector = new JFileChooser();
@@ -127,7 +126,6 @@ public class FileMenu extends JMenu {
 			}
 		});
 
-		cropImage.setEnabled(false);
 		cropImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());

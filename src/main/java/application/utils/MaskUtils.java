@@ -20,8 +20,7 @@ public class MaskUtils {
 		if (original == null || mask == null) {
 			return null;
 		}
-		Image image = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image image = original.shallowClone();
 		applyMask(original, image, mask, RED);
 		applyMask(original, image, mask, GREEN);
 		applyMask(original, image, mask, BLUE);
@@ -65,8 +64,7 @@ public class MaskUtils {
 		if (original == null) {
 			return null;
 		}
-		Image image = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image image = original.shallowClone();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				image.setPixel(
@@ -123,8 +121,7 @@ public class MaskUtils {
 		if (original == null) {
 			return null;
 		}
-		Image image = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image image = original.shallowClone();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				image.setPixel(
@@ -177,8 +174,7 @@ public class MaskUtils {
 	}
 
 	private static Image createImageAndApplyMask(Image original, Mask mask) {
-		Image image = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image image = original.shallowClone();
 		applyMask(original, image, mask, RED);
 		applyMask(original, image, mask, GREEN);
 		applyMask(original, image, mask, BLUE);
@@ -188,8 +184,7 @@ public class MaskUtils {
 	public static Image applyMaskAndZeroCross(Image original, Mask mask,
 			int threshold) {
 		Image masked = applyMask(original, mask);
-		Image image = new Image(original.getWidth(), original.getHeight(),
-				original.getImageFormat(), original.getType());
+		Image image = original.shallowClone();
 		zeroCross(masked, image, threshold, RED);
 		zeroCross(masked, image, threshold, GREEN);
 		zeroCross(masked, image, threshold, BLUE);
@@ -209,7 +204,6 @@ public class MaskUtils {
 				double pastY = 0;
 				double lastY;
 				double currentY = 0;
-
 				if (x + 1 < width) {
 					currentX = masked.getPixel(x + 1, y, color);
 					lastX = pastX;
@@ -238,7 +232,6 @@ public class MaskUtils {
 						image.setPixel(x, y, color, Image.MAX_VAL);
 					}
 				}
-				
 			}
 		}
 

@@ -56,7 +56,7 @@ public class GlobalThresholdDialog extends JDialog {
 					return;
 				}
 
-				if (T > 255 || T < 1 || delta > 255 || delta < 1) {
+				if (T > 255 || T < 0 || delta > 255 || delta < 1) {
 					new MessageFrame("Invalid values");
 					return;
 				}

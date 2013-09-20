@@ -337,4 +337,18 @@ public class PunctualOperationsUtils {
 		return dataset;
 	}
 
+	public static void maximize(Image image) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				double val = Math.max(
+						image.getPixel(x, y, RED),
+						Math.max(image.getPixel(x, y, GREEN),
+								image.getPixel(x, y, BLUE)));
+				image.setPixel(x, y, RED, val);
+				image.setPixel(x, y, GREEN, val);
+				image.setPixel(x, y, BLUE, val);
+			}
+		}
+	}
+
 }

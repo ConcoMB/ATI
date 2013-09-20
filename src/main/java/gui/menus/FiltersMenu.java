@@ -38,7 +38,7 @@ public class FiltersMenu extends JMenu {
 		JMenu secodDerivate = new JMenu("Second derivate filters");
 		JMenu laplacian = new JMenu("Laplacian filters");
 
-		JMenu canny = new JMenu("Canny");
+		JMenuItem canny = new JMenuItem("Canny");
 		canny.addActionListener(new ActionListener() {
 			
 			@Override
@@ -239,5 +239,7 @@ public class FiltersMenu extends JMenu {
 		add(laplacian);
 		laplacian.add(laplacianFilter);
 		laplacian.add(logFilter);
+		add(new JSeparator());
+		add(canny);
 	}
 }

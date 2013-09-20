@@ -38,8 +38,8 @@ public class ThresholdUtils {
 		int globalThreshold = getGlobalThresholdValue(T, image, delta, c);
 		threshold(image, globalThreshold, c);
 	}
-
-	private static int getGlobalThresholdValue(int T, Image img, int delta,
+	
+	static int getGlobalThresholdValue(int T, Image img, int delta,
 			ColorChannel c) {
 		int currentT = T;
 		int previousT = 0;
@@ -147,4 +147,46 @@ public class ThresholdUtils {
 		return probabilities;
 	}
 
+	public static void thresholdWithHisteresis(Image image, ColorChannel c,
+			double t1, double t2) {
+		int height = image.getHeight();
+		int width = image.getWidth();
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				double pixel = image.getPixel(x, y, c);
+				double val = pixel;
+				if (pixel < t1) {
+					val = 0;
+				} else if (pixel > t2) {
+					// Correct pixels (Border pixels)
+					val = Image.MAX_VAL;
+				}
+				image.setPixel(x, y, c, val);
+			}
+		}
+
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				double pixel = image.getPixel(x, y, c);
+				if (pixel >= t1 && pixel <= t2) {
+					// Analyze if the pixel is neighbour of a border (a correct
+					// pixel)
+					boolean isBorderNeighbor1 = y > 0
+							&& image.getPixel(x, y - 1, c) == Image.MAX_VAL;
+					boolean isBorderNeighbor2 = x > 0
+							&& image.getPixel(x - 1, y, c) == Image.MAX_VAL;
+					boolean isBorderNeighbor3 = y < height - 1
+							&& image.getPixel(x, y + 1, c) == Image.MAX_VAL;
+					boolean isBorderNeighbor4 = x < width - 1
+							&& image.getPixel(x + 1, y, c) == Image.MAX_VAL;
+					if (isBorderNeighbor1 || isBorderNeighbor2
+							|| isBorderNeighbor3 || isBorderNeighbor4) {
+						image.setPixel(x, y, Image.MAX_VAL);
+					} else {
+						image.setPixel(x, y, 0);
+					}
+				}
+			}
+		}
+	}
 }

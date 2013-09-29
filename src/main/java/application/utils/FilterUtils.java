@@ -1,11 +1,14 @@
 package application.utils;
 
+import static domain.Image.ColorChannel.BLUE;
+import static domain.Image.ColorChannel.GREEN;
+import static domain.Image.ColorChannel.RED;
 import domain.Image;
 import domain.Image.ColorChannel;
 import domain.SynthetizationType;
+import domain.mask.Mask;
 import domain.mask.MaskFactory;
 import domain.mask.MaskFactory.Direction;
-import static domain.Image.ColorChannel.*;
 
 public class FilterUtils {
 
@@ -14,8 +17,10 @@ public class FilterUtils {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		MaskUtils.applyMask(image, MaskFactory.buildGaussianMask(5, 0.2));
-		Image Gx = MaskUtils.applyMask((Image)image.clone(), MaskFactory.buildSobelMask(Direction.HORIZONTAL));
-		Image Gy = MaskUtils.applyMask((Image)image.clone(), MaskFactory.buildSobelMask(Direction.VERTICAL));
+		Image Gx = MaskUtils.applyMask((Image) image.clone(),
+				MaskFactory.buildSobelMask(Direction.HORIZONTAL));
+		Image Gy = MaskUtils.applyMask((Image) image.clone(),
+				MaskFactory.buildSobelMask(Direction.VERTICAL));
 		Image direction = image.shallowClone();
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
@@ -31,12 +36,14 @@ public class FilterUtils {
 				}
 			}
 		}
-		Image[] Gs = {Gx, Gy};
+		Image[] Gs = { Gx, Gy };
 		image = SynthesizationUtils.synthesize(SynthetizationType.ABS, Gs);
 		image = supressNoMaximums(image, direction);
 		for (ColorChannel c : ColorChannel.values()) {
-			double thresholdVal = ThresholdUtils.getGlobalThresholdValue(128, image, 1, c);
-			ThresholdUtils.thresholdWithHisteresis(image, c, thresholdVal, thresholdVal + 30);
+			double thresholdVal = ThresholdUtils.getGlobalThresholdValue(128,
+					image, 1, c);
+			ThresholdUtils.thresholdWithHisteresis(image, c, thresholdVal,
+					thresholdVal + 30);
 		}
 		PunctualOperationsUtils.maximize(image);
 		return image;
@@ -50,7 +57,8 @@ public class FilterUtils {
 		return SynthesizationUtils.synthesize(SynthetizationType.MAX, images);
 	}
 
-	private static Image supressNoMaximums(Image original, Image directionImage, ColorChannel c) {
+	private static Image supressNoMaximums(Image original,
+			Image directionImage, ColorChannel c) {
 		Image image = original.shallowClone();
 		for (int x = 1; x < original.getWidth() - 1; x++) {
 			for (int y = 1; y < original.getHeight() - 1; y++) {
@@ -82,11 +90,28 @@ public class FilterUtils {
 				if (neighbor1 > pixel || neighbor2 > pixel) {
 					image.setPixel(x, y, c, 0);
 				} else {
-					image.setPixel(x, y,c, pixel);
+					image.setPixel(x, y, c, pixel);
 				}
 			}
-		}		
+		}
 		return image;
 	}
 
+	public static Image applySusanFilter(Image image, double min, double max) {
+		Mask mask = MaskFactory.buildSusanMask();
+		Image susaned = (Image) image.shallowClone();
+		for (int x = 0; x < susaned.getWidth(); x++) {
+			for (int y = 0; y < susaned.getHeight(); y++) {
+				for (ColorChannel c : ColorChannel.values()) {
+					double value = c == RED ? 255 : 0;
+					double s_ro = MaskUtils.applySusanPixelMask(x, y, mask,
+							image, c);
+					if (s_ro < max && s_ro > min) {
+						susaned.setPixel(x, y, c, value);
+					}
+				}
+			}
+		}
+		return susaned;
+	}
 }

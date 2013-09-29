@@ -15,6 +15,7 @@ import gui.tp2.filters.LogDialog;
 import gui.tp2.filters.PrewittBorderDetectorDialog;
 import gui.tp2.filters.RobertsBorderDetectorDialog;
 import gui.tp2.filters.SobelBorderDetectorDialog;
+import gui.tp3.SusanDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,9 +39,22 @@ public class FiltersMenu extends JMenu {
 		JMenu secodDerivate = new JMenu("Second derivate filters");
 		JMenu laplacian = new JMenu("Laplacian filters");
 
+		JMenuItem susan = new JMenuItem("Susan");
+		susan.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				Image image = panel.getImage();
+				if (image == null) {
+					return;
+				}
+				JDialog dialog = new SusanDialog(panel);
+				dialog.setVisible(true);
+			}
+		});
+
 		JMenuItem canny = new JMenuItem("Canny");
 		canny.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
@@ -52,7 +66,7 @@ public class FiltersMenu extends JMenu {
 				panel.repaint();
 			}
 		});
-		
+
 		JMenuItem laplacianFilter = new JMenuItem("Laplacian");
 		laplacianFilter.addActionListener(new ActionListener() {
 			@Override
@@ -65,6 +79,7 @@ public class FiltersMenu extends JMenu {
 				dialog.setVisible(true);
 			}
 		});
+
 		JMenuItem logFilter = new JMenuItem("LoG");
 		logFilter.addActionListener(new ActionListener() {
 			@Override
@@ -227,7 +242,7 @@ public class FiltersMenu extends JMenu {
 		add(new JSeparator());
 		add(edgeEnhancement);
 		add(secodDerivate);
-		
+
 		secodDerivate.add(robertsFilter);
 		secodDerivate.add(prewittFilter);
 		secodDerivate.add(sobelFilter);
@@ -241,5 +256,8 @@ public class FiltersMenu extends JMenu {
 		laplacian.add(logFilter);
 		add(new JSeparator());
 		add(canny);
+		add(new JSeparator());
+		add(susan);
+
 	}
 }

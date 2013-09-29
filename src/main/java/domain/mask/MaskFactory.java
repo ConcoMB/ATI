@@ -8,6 +8,13 @@ public class MaskFactory {
 	public enum Direction {
 		VERTICAL, HORIZONTAL, DIAGONAL, INVERSE_DIAGONAL
 	}
+	
+	public static Mask buildSusanMask() {
+		double[][] values = {{0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0}, {0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0},
+				{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
+				{0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0}, {0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0}};
+		return new Mask(values);
+	}
 
 	public static Mask buildEdgeEnhancementMask(int width, int height) {
 		Mask mask = new Mask(width, height);

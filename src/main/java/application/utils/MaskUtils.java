@@ -16,6 +16,35 @@ import domain.mask.Mask;
 
 public class MaskUtils {
 
+	
+	public static double applySusanPixelMask(int x, int y, Mask mask, Image img, ColorChannel color) {
+		boolean ignoreByX = x < mask.getWidth() / 2
+				|| x > img.getWidth() - mask.getWidth() / 2;
+		boolean ignoreByY = y < mask.getHeight() / 2
+				|| y > img.getHeight() - mask.getHeight() / 2;
+		if (ignoreByX || ignoreByY) {
+			return 1;
+		}
+
+		// Step 2.
+		final int threshold = 27;
+		int n_ro = 0;
+		double ro = img.getPixel(x, y, color);
+		for (int i = -mask.getWidth() / 2; i <= mask.getWidth() / 2; i++) {
+			for (int j = -mask.getHeight() / 2; j <= mask.getHeight() / 2; j++) {
+				if (img.validPixel(x + i, y + j) && mask.getValue(i, j) == 1) {
+					double eachPixel = img.getPixel(x + i, y + j, color);
+					if (Math.abs(ro - eachPixel) < threshold) {
+						n_ro += 1;
+					}
+				}
+			}
+		}
+		double s_ro = 1 - n_ro / 37.0;
+		return s_ro;
+	}
+	
+	
 	public static Image applyMask(Image original, Mask mask) {
 		if (original == null || mask == null) {
 			return null;

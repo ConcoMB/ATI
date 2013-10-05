@@ -13,7 +13,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import application.utils.TrackingUtils;
-import domain.Image;
 import domain.tracking.Frontier;
 
 @SuppressWarnings("serial")

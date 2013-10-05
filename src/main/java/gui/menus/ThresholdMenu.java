@@ -5,6 +5,7 @@ import gui.Window;
 import gui.tp1.punctual.ThresholdDialog;
 import gui.tp2.thresholds.ColorGlobalThresholdDialog;
 import gui.tp2.thresholds.GlobalThresholdDialog;
+import gui.tp3.HysteresisThresholdDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +37,7 @@ public class ThresholdMenu extends JMenu {
 			}
 		});
 		
-		JMenuItem globalThreshold = new JMenuItem("Global Threshold");
+		JMenuItem globalThreshold = new JMenuItem("Global");
 		globalThreshold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
@@ -54,21 +55,35 @@ public class ThresholdMenu extends JMenu {
 			}
 		});
 		
-		JMenuItem otsuThreshold = new JMenuItem("Otsu Threshold");
+		JMenuItem otsuThreshold = new JMenuItem("Otsu");
 		otsuThreshold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				if (panel.getImage() == null) {
 					return;
 				}
-				panel.setImage(ThresholdUtils.otsuThreshold(panel.getImage()));
+				panel.setImage(ThresholdUtils.otsu(panel.getImage()));
 				panel.repaint();
 			}
 		});
 		
+		JMenuItem hysteresis = new JMenuItem("Hysteresis");
+		hysteresis.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog dialog = new HysteresisThresholdDialog(panel);
+				dialog.setVisible(true);
+			}
+		});
+		
+		
 		add(threshold);
 		add(globalThreshold);
 		add(otsuThreshold);
+		add(hysteresis);
 
 	}
 }

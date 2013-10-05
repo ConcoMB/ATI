@@ -53,6 +53,19 @@ public class FiltersMenu extends JMenu {
 			}
 		});
 
+		JMenuItem noMax = new JMenuItem("No maximums supression");
+		noMax.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				Image image = panel.getImage();
+				if (image == null) {
+					return;
+				}
+				panel.setImage(FilterUtils.supressNoMaximums(image));
+				panel.repaint();
+			}
+		});
 		JMenuItem canny = new JMenuItem("Canny");
 		canny.addActionListener(new ActionListener() {
 			@Override
@@ -256,6 +269,7 @@ public class FiltersMenu extends JMenu {
 		laplacian.add(logFilter);
 		add(new JSeparator());
 		add(canny);
+		add(noMax);
 		add(new JSeparator());
 		add(susan);
 

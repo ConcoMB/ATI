@@ -60,7 +60,7 @@ public class GlobalThresholdDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-				Image thresholded = ThresholdUtils.globalThreshold(
+				Image thresholded = ThresholdUtils.global(
 						panel.getImage(), T, delta);
 				panel.setImage(thresholded);
 				panel.repaint();

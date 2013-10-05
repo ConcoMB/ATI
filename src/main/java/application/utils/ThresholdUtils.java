@@ -28,17 +28,16 @@ public class ThresholdUtils {
 		}
 	}
 
-	public static Image globalThreshold(Image image, int T, int delta) {
+	public static Image global(Image image, int T, int delta) {
 		int globalThreshold = getGlobalThresholdValue(T, image, delta, RED);
 		return threshold(image, globalThreshold);
 	}
 
-	public static void globalThreshold(Image image, ColorChannel c, int T,
-			int delta) {
+	public static void global(Image image, ColorChannel c, int T, int delta) {
 		int globalThreshold = getGlobalThresholdValue(T, image, delta, c);
 		threshold(image, globalThreshold, c);
 	}
-	
+
 	static int getGlobalThresholdValue(int T, Image img, int delta,
 			ColorChannel c) {
 		int currentT = T;
@@ -49,7 +48,7 @@ public class ThresholdUtils {
 			currentT = getAdjustedThreshold(currentT, img, c);
 			i++;
 		} while (Math.abs((currentT - previousT)) >= delta);
-//		currentT -= 30;
+		// currentT -= 30;
 		System.out.println(c);
 		System.out.println("Iteraciones: " + i);
 		System.out.println("T: " + currentT);
@@ -68,10 +67,10 @@ public class ThresholdUtils {
 				double aPixel = img.getPixel(x, y, c);
 				if (aPixel >= previousThreshold) {
 					amountOfHigher++;
-					sumOfHigher += (int)aPixel;
+					sumOfHigher += (int) aPixel;
 				} else {
 					amountOfLower++;
-					sumOfLower += (int)aPixel;
+					sumOfLower += (int) aPixel;
 				}
 			}
 		}
@@ -80,15 +79,15 @@ public class ThresholdUtils {
 		return (int) ((m1 + m2) / 2);
 	}
 
-	public static Image otsuThreshold(Image img) {
+	public static Image otsu(Image img) {
 		Image thresholded = (Image) img.clone();
-		otsuThreshold(thresholded, RED);
-		otsuThreshold(thresholded, GREEN);
-		otsuThreshold(thresholded, BLUE);
+		otsu(thresholded, RED);
+		otsu(thresholded, GREEN);
+		otsu(thresholded, BLUE);
 		return thresholded;
 	}
 
-	public static void otsuThreshold(Image img, ColorChannel c) {
+	public static void otsu(Image img, ColorChannel c) {
 		double maxSigma = 0;
 		int threshold = 0;
 		double[] probabilities = getProbabilitiesOfColorLevel(img, c);
@@ -126,8 +125,7 @@ public class ThresholdUtils {
 			}
 		}
 		double mu_t = mu1 * w1 + mu2 * w2;
-		return w1 * Math.pow((mu1 - mu_t), 2) + w2
-				* Math.pow((mu2 - mu_t), 2);
+		return w1 * Math.pow((mu1 - mu_t), 2) + w2 * Math.pow((mu2 - mu_t), 2);
 	}
 
 	private static double[] getProbabilitiesOfColorLevel(Image img,
@@ -147,46 +145,76 @@ public class ThresholdUtils {
 		return probabilities;
 	}
 
-	public static void thresholdWithHisteresis(Image image, ColorChannel c,
-			double t1, double t2) {
+	public static Image hysteresis(Image image, double t1, double t2) {
+		Image t = (Image) image.clone();
+		hysteresis(t, null, t1, t2);
+		return t;
+	}
+
+	public static void hysteresis(Image image, ColorChannel c, double t1,
+			double t2) {
+		applyHysteresis(image, t1, t2, c);
+		checkHysteresisNeighbors(image, t1, t2);
+	}
+
+	private static void checkHysteresisNeighbors(Image image, double t1,
+			double t2) {
 		int height = image.getHeight();
 		int width = image.getWidth();
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				double pixel = image.getPixel(x, y, c);
-				double val = pixel;
-				if (pixel < t1) {
-					val = 0;
-				} else if (pixel > t2) {
-					// Correct pixels (Border pixels)
-					val = Image.MAX_VAL;
-				}
-				image.setPixel(x, y, c, val);
-			}
-		}
-
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				double pixel = image.getPixel(x, y, c);
-				if (pixel >= t1 && pixel <= t2) {
-					// Analyze if the pixel is neighbour of a border (a correct
-					// pixel)
-					boolean isBorderNeighbor1 = y > 0
-							&& image.getPixel(x, y - 1, c) == Image.MAX_VAL;
-					boolean isBorderNeighbor2 = x > 0
-							&& image.getPixel(x - 1, y, c) == Image.MAX_VAL;
-					boolean isBorderNeighbor3 = y < height - 1
-							&& image.getPixel(x, y + 1, c) == Image.MAX_VAL;
-					boolean isBorderNeighbor4 = x < width - 1
-							&& image.getPixel(x + 1, y, c) == Image.MAX_VAL;
-					if (isBorderNeighbor1 || isBorderNeighbor2
-							|| isBorderNeighbor3 || isBorderNeighbor4) {
-						image.setPixel(x, y, Image.MAX_VAL);
-					} else {
-						image.setPixel(x, y, 0);
+				for (ColorChannel c : ColorChannel.values()) {
+					double pixel = image.getPixel(x, y, c);
+					if (pixel >= t1 && pixel <= t2) {
+						boolean isBorderNeighbor1 = y > 0
+								&& image.getPixel(x, y - 1, c) == Image.MAX_VAL;
+						boolean isBorderNeighbor2 = x > 0
+								&& image.getPixel(x - 1, y, c) == Image.MAX_VAL;
+						boolean isBorderNeighbor3 = y < height - 1
+								&& image.getPixel(x, y + 1, c) == Image.MAX_VAL;
+						boolean isBorderNeighbor4 = x < width - 1
+								&& image.getPixel(x + 1, y, c) == Image.MAX_VAL;
+						if (isBorderNeighbor1 || isBorderNeighbor2
+								|| isBorderNeighbor3 || isBorderNeighbor4) {
+							image.setPixel(x, y, c, Image.MAX_VAL);
+						} else {
+							image.setPixel(x, y, c, 0);
+						}
 					}
 				}
 			}
 		}
 	}
+
+	private static void applyHysteresis(Image image, double t1, double t2,
+			ColorChannel c) {
+		ColorChannel color = c == null ? RED : c;
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				double pixel = image.getPixel(x, y, color);
+				double val = pixel;
+				if (pixel < t1) {
+					val = 0;
+				} else if (pixel > t2) {
+					val = Image.MAX_VAL;
+				}
+				if (c == null) {
+					image.setPixel(x, y, RED, val);
+					image.setPixel(x, y, GREEN, val);
+					image.setPixel(x, y, BLUE, val);
+				} else {
+					image.setPixel(x, y, c, val);
+				}
+			}
+		}
+	}
+
+	public static void hysteresis(Image image) {
+		for (ColorChannel c : ColorChannel.values()) {
+			double thresholdVal = ThresholdUtils.getGlobalThresholdValue(128,
+					image, 1, c);
+			hysteresis(image, c, thresholdVal, thresholdVal + 30);
+		}
+	}
+
 }

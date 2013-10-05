@@ -14,16 +14,17 @@ public class FilterUtils {
 
 	public static Image applyCannyFilter(Image original) {
 		Image image = (Image) original.clone();
-		int width = image.getWidth();
-		int height = image.getHeight();
 		MaskUtils.applyMask(image, MaskFactory.buildGaussianMask(5, 0.2));
-		Image Gx = MaskUtils.applyMask((Image) image.clone(),
-				MaskFactory.buildSobelMask(Direction.HORIZONTAL));
-		Image Gy = MaskUtils.applyMask((Image) image.clone(),
-				MaskFactory.buildSobelMask(Direction.VERTICAL));
+		image = supressNoMaximums(image);
+		ThresholdUtils.hysteresis(image);
+		PunctualOperationsUtils.maximize(image);
+		return image;
+	}
+	
+	private static Image buildDirectionsImage(Image image, Image Gx, Image Gy) {
 		Image direction = image.shallowClone();
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
 				for (ColorChannel c : ColorChannel.values()) {
 					double pxGx = Gx.getPixel(x, y, c);
 					double pxGy = Gy.getPixel(x, y, c);
@@ -36,19 +37,20 @@ public class FilterUtils {
 				}
 			}
 		}
-		Image[] Gs = { Gx, Gy };
-		image = SynthesizationUtils.synthesize(SynthetizationType.ABS, Gs);
-		image = supressNoMaximums(image, direction);
-		for (ColorChannel c : ColorChannel.values()) {
-			double thresholdVal = ThresholdUtils.getGlobalThresholdValue(128,
-					image, 1, c);
-			ThresholdUtils.thresholdWithHisteresis(image, c, thresholdVal,
-					thresholdVal + 30);
-		}
-		PunctualOperationsUtils.maximize(image);
-		return image;
+		return direction;
 	}
 
+	public static Image supressNoMaximums(Image image) {
+		Image Gx = MaskUtils.applyMask((Image) image.clone(),
+				MaskFactory.buildSobelMask(Direction.HORIZONTAL));
+		Image Gy = MaskUtils.applyMask((Image) image.clone(),
+				MaskFactory.buildSobelMask(Direction.VERTICAL));
+		Image direction = buildDirectionsImage(image, Gx, Gy);
+		Image[] Gs = { Gx, Gy };
+		image = SynthesizationUtils.synthesize(SynthetizationType.ABS, Gs);
+		return supressNoMaximums(image, direction);
+	}
+	
 	private static Image supressNoMaximums(Image image, Image direction) {
 		Image[] images = new Image[3];
 		images[0] = supressNoMaximums(image, direction, RED);

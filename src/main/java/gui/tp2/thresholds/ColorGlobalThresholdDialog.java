@@ -91,9 +91,9 @@ public class ColorGlobalThresholdDialog extends JDialog {
 					return;
 				}
 				Image image = panel.getImage();
-				ThresholdUtils.globalThreshold(image, RED, redT, redDelta);
-				ThresholdUtils.globalThreshold(image, GREEN, greenT, greenDelta);
-				ThresholdUtils.globalThreshold(image, BLUE, blueT, blueDelta);
+				ThresholdUtils.global(image, RED, redT, redDelta);
+				ThresholdUtils.global(image, GREEN, greenT, greenDelta);
+				ThresholdUtils.global(image, BLUE, blueT, blueDelta);
 				panel.setImage(image);
 				panel.repaint();
 				dispose();

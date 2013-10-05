@@ -22,11 +22,10 @@ public class TrackingUtils {
 		boolean changed = true;
 		while (i < Na && changed) {
 			System.out.println(i);
-			changed = handleLOut(frontier);
+			changed = handleExpand(frontier);
 			System.out.println("lOut");
-			changed = handleLIn(frontier) || changed;
+			changed = handleContract(frontier) || changed;
 			System.out.println("lIn");
-			
 			panel.loadImage(drawBorder(frontier, (Image)frontier.getImage().clone()));
 			panel.paintImmediately(0, 0, image.getWidth(), image.getWidth());
 			System.out.println("draw");
@@ -49,7 +48,7 @@ public class TrackingUtils {
 		return image;
 	}
 
-	private static boolean handleLOut(Frontier frontier) {
+	private static boolean handleExpand(Frontier frontier) {
 		boolean changed = false;
 		for (Point p : new HashSet<Point>(frontier.getOuterBorder())) {
 			if (velocity(frontier, p) > 0) {
@@ -60,7 +59,7 @@ public class TrackingUtils {
 		return changed;
 	}
 
-	private static boolean handleLIn(Frontier frontier) {
+	private static boolean handleContract(Frontier frontier) {
 		boolean changed = false;
 		for (Point p : new HashSet<Point>(frontier.getInnerBorder())) {
 			if (velocity(frontier, p) < 0) {

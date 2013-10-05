@@ -35,9 +35,11 @@ public class TrackingMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				Point p = new Point(140, 140);
-				Point q = new Point(160, 160);
+				Point p = new Point(10, 10);
+				Point q = new Point(290, 290);
 
+				//Point p = new Point(140, 140);
+				//Point q = new Point(144, 144);
 				Set<Point> outer = new HashSet<Point>();
 				Set<Point> outerBorder = new HashSet<Point>();
 				Set<Point> innerBorder = new HashSet<Point>();

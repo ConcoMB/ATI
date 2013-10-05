@@ -61,15 +61,25 @@ public class Frontier {
 			return;
 		}
 		innerBorder.add(p);
-		for(Point n : n4(p)) {
+		for(Point n : n8(p)) {
 			if (outer.contains(n)) {
 				outerBorder.add(n);
 				outer.remove(n);
 			}
-			//??
+		}
+		for(Point n : n8(p)) {
 			if (innerBorder.contains(n)) {
-				inner.add(n);
-				innerBorder.remove(n);
+				boolean reallyInnerBorder = false;
+				for(Point nn : n8(n)) {
+					if (outerBorder.contains(nn)) {
+						reallyInnerBorder = true;
+						break;
+					}
+				}
+				if (!reallyInnerBorder) {
+					inner.add(n);
+					innerBorder.remove(n);
+				}
 			}
 		}
 	}
@@ -80,34 +90,56 @@ public class Frontier {
 			return;
 		}
 		outerBorder.add(p);
-		for(Point n : n4(p)) {
+		for(Point n : n8(p)) {
 			if (inner.contains(n)) {
 				innerBorder.add(n);
 				inner.remove(n);
 			}
-			//??
+		}
+		for(Point n : n8(p)) {
 			if (outerBorder.contains(n)) {
-				outer.add(n);
-				outerBorder.remove(n);
+				boolean reallOuterBorder = false;
+				for(Point nn : n8(n)) {
+					if (innerBorder.contains(nn)) {
+						reallOuterBorder = true;
+						break;
+					}
+				}
+				if (!reallOuterBorder) {
+					outer.add(n);
+					outerBorder.remove(n);
+				}
 			}
 		}
 	}
 	
-	private Set<Point> n4(Point p) {
-		Set<Point> n4 = new HashSet<Point>();
+	private Set<Point> n8(Point p) {
+		Set<Point> n8 = new HashSet<Point>();
 		if (p.x > 0) {
-			n4.add(new Point(p.x - 1, p.y));
+			n8.add(new Point(p.x - 1, p.y));
+			if (p.y > 0) {
+				n8.add(new Point(p.x - 1, p.y - 1));
+			}
+			if (p.y < image.getHeight() -1) {
+				n8.add(new Point(p.x - 1, p.y + 1));
+			}
 		}
 		if (p.x < image.getWidth() - 1) {
-			n4.add(new Point(p.x + 1, p.y));
+			n8.add(new Point(p.x + 1, p.y));
+			if (p.y > 0) {
+				n8.add(new Point(p.x + 1, p.y - 1));
+			}
+			if (p.y < image.getHeight() - 1) {
+				n8.add(new Point(p.x + 1, p.y + 1));
+			}
 		}
 		if (p.y > 0) {
-			n4.add(new Point(p.x, p.y - 1));
+			n8.add(new Point(p.x, p.y - 1));
 		}
-		if (p.x < image.getHeight() - 1) {
-			n4.add(new Point(p.x, p.y + 1));
+		if (p.y < image.getHeight() - 1) {
+			n8.add(new Point(p.x, p.y + 1));
 		}
-		return n4;
+		return n8;
 	}
 	
 	public double averageInner(ColorChannel channel) {

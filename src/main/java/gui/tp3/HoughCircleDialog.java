@@ -19,7 +19,6 @@ import domain.Image;
 @SuppressWarnings("serial")
 public class HoughCircleDialog extends JDialog {
 	
-	protected JPanel pan;
 
 	public HoughCircleDialog(final Panel panel) {
 
@@ -31,7 +30,7 @@ public class HoughCircleDialog extends JDialog {
 		this.setResizable(false);
 		setLayout(null);
 
-		pan = new JPanel();
+		JPanel pan = new JPanel();
 		pan.setBounds(0, 0, 300, 100);
 
 		JLabel epsLabel = new JLabel("Epsilon = ");

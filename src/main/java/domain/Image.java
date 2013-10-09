@@ -5,6 +5,7 @@ import static domain.Image.ColorChannel.GREEN;
 import static domain.Image.ColorChannel.RED;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 public class Image implements Cloneable {
@@ -199,5 +200,12 @@ public class Image implements Cloneable {
 
 	public boolean validPixel(int i, int j) {
 		return i >= 0 && j >= 0 && i < getWidth() && j < getHeight();
+	}
+
+	public double getPixel(Point p, ColorChannel c) {
+		return getPixel(p.x, p.y, c);
+	}
+	public void setPixel(Point p, ColorChannel c, double val) {
+		setPixel(p.x, p.y, c, val);
 	}
 }

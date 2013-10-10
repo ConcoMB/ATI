@@ -21,14 +21,10 @@ public class TrackingUtils {
 		int Na = Math.max(image.getHeight(), image.getWidth());
 		boolean changed = true;
 		while (i < Na && changed) {
-			System.out.println(i);
 			changed = handleExpand(frontier);
-			System.out.println("lOut");
 			changed = handleContract(frontier) || changed;
-			System.out.println("lIn");
-			panel.loadImage(drawBorder(frontier, (Image)frontier.getImage().clone()));
+			panel.setTempImage(drawBorder(frontier, (Image)frontier.getImage().clone()));
 			panel.paintImmediately(0, 0, image.getWidth(), image.getWidth());
-			System.out.println("draw");
 			i++;
 		}
 		return image;

@@ -11,32 +11,38 @@ import static domain.tracking.Frontier.Side.*;
 
 public class Frontier {
 
-	public enum Side {INNER, OUTER};
-	
-	private Set<Point> outer;
-	private Set<Point> inner;
-	private Set<Point> innerBorder;
-	private Set<Point> outerBorder;
+	public enum Side {
+		INNER, OUTER
+	};
+
+	private Set<Point> outer = new HashSet<Point>();
+	private Set<Point> inner = new HashSet<Point>();
+	private Set<Point> innerBorder = new HashSet<Point>();
+	private Set<Point> outerBorder = new HashSet<Point>();
 	private Image image;
 	// Arrays x color: 0 -> RED, 1 -> GREEN, 2 -> BLUE
 	private double[] innerSum;
 	private double[] outerSum;
-	
-	
-	public Frontier(Image image, Set<Point> outer, Set<Point> outerBorder, Set<Point> innerBorder, Set<Point> inner) {
-		this.image = image;
-		this.outer = outer;
-		this.inner = inner;
-		this.innerBorder = innerBorder;
-		this.outerBorder = outerBorder;
-		innerSum = new double[3];
-		outerSum = new double[3];
-		innerSum[0] = sum(RED, INNER);
-		innerSum[1] = sum(GREEN, INNER);
-		innerSum[2] = sum(BLUE, INNER);
-		outerSum[0] = sum(RED, OUTER);
-		outerSum[1] = sum(GREEN, OUTER);
-		outerSum[2] = sum(BLUE, OUTER);
+
+	public Frontier(Point p, Point q, Image image) {
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				Point r = new Point(x, y);
+				if (x < p.x || x > q.x || y < p.y || y > q.y) {
+					outer.add(r);
+				} else if ((between(y, p.y, q.y) && (x == p.x || x == q.x))
+						|| (between(x, p.x, q.x) && (y == p.y || y == q.y))) {
+					outerBorder.add(r);
+				} else if ((between(y, p.y + 1, q.y - 1) && (x == p.x + 1 || x == q.x - 1))
+						|| (between(x, p.x + 1, q.x - 1) && (y == p.y + 1 || y == q.y - 1))) {
+					innerBorder.add(r);
+				} else {
+					inner.add(r);
+				}
+			}
+		}
+		setImage(image);
+		init();
 	}
 
 	public int tita(Point p) {
@@ -73,87 +79,103 @@ public class Frontier {
 
 	public void expand(Point p) {
 		if (!outerBorder.remove(p)) {
-//			throw new IllegalArgumentException();
+			// throw new IllegalArgumentException();
 			return;
 		}
 		innerBorder.add(p);
-		for(Point n : n8(p)) {
+		for (Point n : n8(p)) {
 			if (outer.contains(n)) {
 				outerBorder.add(n);
-				removeFromOuter(n);
+				removeFromOuterAndRecalculate(n);
 			}
 		}
-		for(Point n : n8(p)) {
+		for (Point n : n8(p)) {
 			if (innerBorder.contains(n)) {
 				boolean reallyInnerBorder = false;
-				for(Point nn : n8(n)) {
+				for (Point nn : n8(n)) {
 					if (outerBorder.contains(nn)) {
 						reallyInnerBorder = true;
 						break;
 					}
 				}
 				if (!reallyInnerBorder) {
-					addToInner(n);
+					addToInnerAndRecalculate(n);
 					innerBorder.remove(n);
 				}
 			}
 		}
 	}
-	
+
 	public void contract(Point p) {
 		if (!innerBorder.remove(p)) {
-//			throw new IllegalArgumentException();
+			// throw new IllegalArgumentException();
 			return;
 		}
 		outerBorder.add(p);
-		for(Point n : n8(p)) {
+		for (Point n : n8(p)) {
 			if (inner.contains(n)) {
 				innerBorder.add(n);
-				removeFromInner(n);
+				removeFromInnerAndRecalculate(n);
 			}
 		}
-		for(Point n : n8(p)) {
+		for (Point n : n8(p)) {
 			if (outerBorder.contains(n)) {
-				boolean reallOuterBorder = false;
-				for(Point nn : n8(n)) {
+				boolean realOuterBorder = false;
+				for (Point nn : n8(n)) {
 					if (innerBorder.contains(nn)) {
-						reallOuterBorder = true;
+						realOuterBorder = true;
 						break;
 					}
 				}
-				if (!reallOuterBorder) {
-					addToOuter(n);
+				if (!realOuterBorder) {
+					addToOuterAndRecalculate(n);
 					outerBorder.remove(n);
 				}
 			}
 		}
 	}
 
-	private void removeFromOuter(Point p) {
+	public double averageInner(ColorChannel channel) {
+		return innerSum[getAvgIndex(channel)] / inner.size();
+	}
+
+	public double averageOuter(ColorChannel channel) {
+		return outerSum[getAvgIndex(channel)] / outer.size();
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	private void removeFromOuterAndRecalculate(Point p) {
 		if (outer.remove(p)) {
 			outerSum[0] -= image.getPixel(p, RED);
 			outerSum[1] -= image.getPixel(p, GREEN);
 			outerSum[2] -= image.getPixel(p, BLUE);
 		}
 	}
-	
-	private void removeFromInner(Point p) {
+
+	private void removeFromInnerAndRecalculate(Point p) {
 		if (inner.remove(p)) {
 			innerSum[0] -= image.getPixel(p, RED);
 			innerSum[1] -= image.getPixel(p, GREEN);
 			innerSum[2] -= image.getPixel(p, BLUE);
 		}
 	}
-	
-	private void addToOuter(Point p) {
+
+	private void addToOuterAndRecalculate(Point p) {
 		if (outer.add(p)) {
 			outerSum[0] += image.getPixel(p, RED);
 			outerSum[1] += image.getPixel(p, GREEN);
 			outerSum[2] += image.getPixel(p, BLUE);
 		}
 	}
-	
-	private void addToInner(Point p) {
+
+	private void addToInnerAndRecalculate(Point p) {
 		if (inner.add(p)) {
 			innerSum[0] += image.getPixel(p, RED);
 			innerSum[1] += image.getPixel(p, GREEN);
@@ -168,7 +190,7 @@ public class Frontier {
 			if (p.y > 0) {
 				n8.add(new Point(p.x - 1, p.y - 1));
 			}
-			if (p.y < image.getHeight() -1) {
+			if (p.y < image.getHeight() - 1) {
 				n8.add(new Point(p.x - 1, p.y + 1));
 			}
 		}
@@ -190,8 +212,10 @@ public class Frontier {
 		return n8;
 	}
 	
+	
+
 	private int getAvgIndex(ColorChannel c) {
-		switch(c) {
+		switch (c) {
 		case RED:
 			return 0;
 		case GREEN:
@@ -202,26 +226,30 @@ public class Frontier {
 			throw new IllegalArgumentException();
 		}
 	}
-	
-	public double averageInner(ColorChannel channel) {
-		return innerSum[getAvgIndex(channel)] / inner.size();
-	}
-	
-	public double averageOuter(ColorChannel channel) {
-		return outerSum[getAvgIndex(channel)] / outer.size();
-	}
-	
+
 	private double sum(ColorChannel channel, Side side) {
 		double sum = 0;
 		Set<Point> points = side == INNER ? inner : outer;
-		for(Point p : points) {
-			sum += image.getPixel(p, channel);  
+		for (Point p : points) {
+			sum += image.getPixel(p, channel);
 		}
 		return sum;
 	}
 
-	public Image getImage() {
-		return image;
+	private boolean between(int m, int a, int b) {
+		int min = Math.min(a, b);
+		int max = Math.max(a, b);
+		return m >= min && m <= max;
 	}
-	
+
+	private void init() {
+		innerSum = new double[3];
+		outerSum = new double[3];
+		innerSum[0] = sum(RED, INNER);
+		innerSum[1] = sum(GREEN, INNER);
+		innerSum[2] = sum(BLUE, INNER);
+		outerSum[0] = sum(RED, OUTER);
+		outerSum[1] = sum(GREEN, OUTER);
+		outerSum[2] = sum(BLUE, OUTER);
+	}
 }

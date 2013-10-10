@@ -24,7 +24,7 @@ import domain.tracking.Frontier;
 public class ImageTrackingDialog extends JDialog{
 	
 	private Panel panel;
-	private MouseListener dragAndDropListener;
+	private DragAndDropListener dragAndDropListener;
 	
 	public ImageTrackingDialog(final Panel panel) {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -120,6 +120,7 @@ public class ImageTrackingDialog extends JDialog{
 		
 		dragAndDropListener = new DragAndDropListener(panel, pxTextField, pyTextField, qxTextField, qyTextField);
 		panel.addMouseListener(dragAndDropListener);
+		panel.addMouseMotionListener(dragAndDropListener);
 
 		this.add(pan1);
 		this.add(pan2);

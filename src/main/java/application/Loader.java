@@ -18,14 +18,12 @@ import domain.Image;
 
 public class Loader {
 
-	// TODO: remove this wire
-	public static File currentFile;
+	private static File currentFile;
 
 	public static Image loadImage(File arch) throws ImageReadException,
 			IOException {
 
 		currentFile = arch;
-
 		BufferedImage bi  = ImageIO.read(arch);
 
 		if (bi.getType() == BufferedImage.TYPE_INT_RGB || 
@@ -87,4 +85,8 @@ public class Loader {
 		return bytes;
 	}
 
+	
+	public static File getCurrentFile() {
+		return currentFile;
+	}
 }

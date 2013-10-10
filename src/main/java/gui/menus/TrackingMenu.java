@@ -3,6 +3,7 @@ package gui.menus;
 import gui.Panel;
 import gui.Window;
 import gui.tp3.ImageTrackingDialog;
+import gui.tp3.VideoTrackingDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +39,7 @@ public class TrackingMenu extends JMenu {
 				if (panel.getImage() == null) {
 					return;
 				}
-				JDialog trackingDialog = new ImageTrackingDialog(panel);
+				JDialog trackingDialog = new VideoTrackingDialog(panel);
 				trackingDialog.setVisible(true);
 				
 			}

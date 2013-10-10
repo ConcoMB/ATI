@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,19 +16,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import listeners.DragAndDropListener;
+import application.Loader;
 import application.utils.TrackingUtils;
 import domain.tracking.Frontier;
 
 @SuppressWarnings("serial")
-public class ImageTrackingDialog extends JDialog {
+public class VideoTrackingDialog extends JDialog {
 
 	private Panel panel;
 	private DragAndDropListener dragAndDropListener;
 
-	public ImageTrackingDialog(final Panel panel) {
+	public VideoTrackingDialog(final Panel panel) {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.panel = panel;
-		setTitle("Image Tracking");
+		setTitle("Video Tracking");
 		setBounds(1, 1, 300, 200);
 		Dimension size = getToolkit().getScreenSize();
 		setLocation(size.width / 3 - getWidth() / 3 + panel.getWidth(),
@@ -90,10 +92,8 @@ public class ImageTrackingDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-				TrackingUtils.track(new Frontier(new Point(px, py), new Point(
-						qx, qy), panel.getImage()), panel);
-				panel.repaint();
-				dispose();
+
+				track(px, py, qx, qy);
 			}
 		});
 
@@ -120,4 +120,42 @@ public class ImageTrackingDialog extends JDialog {
 		super.dispose();
 	}
 
+	private void track(int px, int py, int qx, int qy) {
+		dispose();
+		String[] splitted = Loader.getCurrentFile().getAbsolutePath()
+				.split("1.");
+		if (splitted.length > 2) {
+			new MessageFrame("Invalid file");
+			return;
+		}
+		String filePrefix = splitted[0];
+		String extension = splitted[1];
+		Frontier frontier = new Frontier(new Point(px, py), new Point(qx, qy),
+				panel.getImage());
+		TrackingUtils.track(frontier, panel);
+		panel.repaint();
+		int i = 2;
+		boolean read = true;
+		int width = panel.getImage().getWidth();
+		int height = panel.getImage().getHeight();
+		while (read) {
+			try {
+				File currentFile = new File(filePrefix + i + "." + extension);
+				if (!currentFile.exists()) {
+					read = false;
+					break;
+				}
+				panel.setTempImage(Loader.loadImage(currentFile));
+				frontier.setImage(panel.getTempImage());
+				panel.paintImmediately(0, 0, width, height);
+				TrackingUtils.track(frontier, panel);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			i++;
+		}
+
+	}
+
+	
 }

@@ -1,6 +1,5 @@
 package application;
 
-import static domain.Image.ImageFormat.RAW;
 import static domain.Image.ImageType.COLOR;
 import static domain.Image.ImageType.GREYSCALE;
 
@@ -11,10 +10,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.sanselan.ImageFormat;
-import org.apache.sanselan.ImageInfo;
+import javax.imageio.ImageIO;
+
 import org.apache.sanselan.ImageReadException;
-import org.apache.sanselan.Sanselan;
 
 import domain.Image;
 
@@ -28,24 +26,21 @@ public class Loader {
 
 		currentFile = arch;
 
-		BufferedImage bi = Sanselan.getBufferedImage(arch);
-		ImageInfo info = Sanselan.getImageInfo(arch);
-		Image.ImageFormat format;
+		BufferedImage bi  = ImageIO.read(arch);
 
-		if (info.getFormat() == ImageFormat.IMAGE_FORMAT_BMP) {
-			format = Image.ImageFormat.BMP;
-		} else if (info.getFormat() == ImageFormat.IMAGE_FORMAT_PGM) {
-			format = Image.ImageFormat.PGM;
-		} else if (info.getFormat() == ImageFormat.IMAGE_FORMAT_PPM) {
-			format = Image.ImageFormat.PPM;
-		} else {
-			throw new IllegalStateException();
-		}
-
-		if (bi.getType() == BufferedImage.TYPE_INT_RGB) {
-			return new Image(bi, format, COLOR);
-		} else if (bi.getType() == BufferedImage.TYPE_BYTE_GRAY) {
-			return new Image(bi, format, GREYSCALE);
+		if (bi.getType() == BufferedImage.TYPE_INT_RGB || 
+				bi.getType() == BufferedImage.TYPE_USHORT_555_RGB ||
+				bi.getType() == BufferedImage.TYPE_USHORT_565_RGB ||
+				bi.getType() == BufferedImage.TYPE_3BYTE_BGR ||
+				bi.getType() == BufferedImage.TYPE_4BYTE_ABGR ||
+				bi.getType() == BufferedImage.TYPE_4BYTE_ABGR_PRE ||
+				bi.getType() == BufferedImage.TYPE_INT_ARGB ||
+				bi.getType() == BufferedImage.TYPE_INT_BGR ||
+				bi.getType() == BufferedImage.TYPE_INT_RGB) {
+			return new Image(bi, COLOR);
+		} else if (bi.getType() == BufferedImage.TYPE_BYTE_GRAY ||
+				bi.getType() == BufferedImage.TYPE_USHORT_GRAY) {
+			return new Image(bi, GREYSCALE);
 		} else {
 			throw new IllegalStateException("Image wasn't RGB nor Grayscale");
 		}
@@ -66,7 +61,7 @@ public class Loader {
 				k = k + 1;
 			}
 		} 
-		Image image = new Image(width, height, RAW, GREYSCALE);
+		Image image = new Image(width, height, GREYSCALE);
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				image.setPixel(i, j, ret.getRGB(i, j));

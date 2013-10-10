@@ -1,7 +1,5 @@
 package application.utils;
 
-import ij.plugin.frame.ThresholdAdjuster;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -12,16 +10,18 @@ import org.jfree.data.Range;
 
 import domain.Image;
 import domain.Image.ColorChannel;
-import domain.mask.MaskFactory;
 import domain.SynthetizationType;
+import domain.mask.MaskFactory;
 
 public class HoughUtils {
-	
-	public static Image houghLineDetector(Image original, double epsilon, double threshold) {
+
+	public static Image houghLineDetector(Image original, double epsilon,
+			double threshold) {
 		// Apply border detector
-		Image borderImage = MaskUtils.applyMasks(original, MaskFactory.buildSobelMasks(), SynthetizationType.ABS);
-		borderImage = ThresholdUtils.global(borderImage, Image.MAX_VAL/2, 1);
-		
+		Image borderImage = MaskUtils.applyMasks(original,
+				MaskFactory.buildSobelMasks(), SynthetizationType.ABS);
+		borderImage = ThresholdUtils.global(borderImage, Image.MAX_VAL / 2, 1);
+
 		double D = Math.max(borderImage.getWidth(), borderImage.getHeight());
 		Range roRange = new Range(-Math.sqrt(2) * D, Math.sqrt(2) * D);
 		Range thetaRange = new Range(-90, 90);
@@ -80,7 +80,7 @@ public class HoughUtils {
 			for (BucketForLines b : allBucketsAsList) {
 
 				// Only for those with max votes
-				if (b.votes < maxVotes*threshold) {
+				if (b.votes < maxVotes * threshold) {
 					break;
 				}
 
@@ -104,18 +104,20 @@ public class HoughUtils {
 
 			}
 		}
-		
+
 		return houghed;
-	
+
 	}
-	
-	public static Image houghCircleDetector(Image original, double epsilon, double threshold, int rMin, int rMax) {
+
+	public static Image houghCircleDetector(Image original, double epsilon,
+			double threshold, int rMin, int rMax) {
 		// Apply border detector
-		Image borderImage = MaskUtils.applyMasks(original, MaskFactory.buildSobelMasks(), SynthetizationType.ABS);
-		borderImage = ThresholdUtils.global(borderImage, Image.MAX_VAL/2, 1);
-		
-		Range aRange = new Range(rMin, borderImage.getWidth()-rMin);
-		Range bRange = new Range(rMin, borderImage.getHeight()-rMin);
+		Image borderImage = MaskUtils.applyMasks(original,
+				MaskFactory.buildSobelMasks(), SynthetizationType.ABS);
+		borderImage = ThresholdUtils.global(borderImage, Image.MAX_VAL / 2, 1);
+
+		Range aRange = new Range(rMin, borderImage.getWidth() - rMin);
+		Range bRange = new Range(rMin, borderImage.getHeight() - rMin);
 		Range rRange = new Range(rMin, rMax);
 
 		int aSize = (int) (Math.abs(aRange.getLength()));
@@ -145,13 +147,13 @@ public class HoughUtils {
 				}
 			}
 		}
-		
+
 		System.out.println("Voted");
 
 		Set<BucketForCircles> allBuckets = new HashSet<BucketForCircles>();
-		for (int a = 0; a < aSize; a++) {
-			for (int b = 0; b < bSize; b++) {
-				for (int r = 0; r < rSize; r++) {
+		for (int a = 0; a < aSize; a += 1) {
+			for (int b = 0; b < bSize; b += 1) {
+				for (int r = 0; r < rSize; r += 1) {
 					if (A[a][b][r] > 0) {
 						BucketForCircles newBucket = new BucketForCircles(a, b,
 								r, A[a][b][r]);
@@ -171,22 +173,23 @@ public class HoughUtils {
 		Collections.sort(allBucketsAsList);
 
 		int maxHits = allBucketsAsList.get(0).votes;
-		
-		System.out.println("maxHits:"+maxHits);
-		
+
+		System.out.println("maxHits:" + maxHits);
+
 		if (maxHits > 2)
 			for (BucketForCircles b : allBucketsAsList) {
 				if (b.votes < maxHits * threshold) {
 					break;
 				}
-				
+
 				double aValue = aRange.getLowerBound() + b.a;
 
 				double bValue = bRange.getLowerBound() + b.b;
 				double rValue = rRange.getLowerBound() + b.r;
-				
-				System.out.println("Circle: ("+aValue+","+bValue+","+rValue+")");
-				
+
+				System.out.println("Circle: (" + aValue + "," + bValue + ","
+						+ rValue + ")");
+
 				for (int x = 0; x < borderImage.getWidth(); x++) {
 					for (int y = 0; y < borderImage.getHeight(); y++) {
 						double aTerm = Math.pow(x - aValue, 2);
@@ -205,7 +208,7 @@ public class HoughUtils {
 
 		return houghed;
 	}
-	
+
 	private static boolean isWhite(Image image, int x, int y) {
 		return image.getGraylevelFromPixel(x, y) == Image.MAX_VAL;
 	}

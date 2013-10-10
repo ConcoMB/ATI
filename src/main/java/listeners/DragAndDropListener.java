@@ -9,14 +9,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JTextField;
 
 public class DragAndDropListener implements MouseMotionListener, MouseListener {
 	private JTextField px, py, qx, qy;
 	private Panel panel;
-	private boolean selecting;
 	private Point startPoint, endPoint;
 	
 	public DragAndDropListener(Panel panel, JTextField px, JTextField py, JTextField qx, JTextField qy) {
@@ -82,5 +80,6 @@ public class DragAndDropListener implements MouseMotionListener, MouseListener {
         g2.setColor(new Color(0, 0, 255, 40));
         g2.fill(prostokat);
         g2.dispose();
+        panel.repaint();
 	}
 }

@@ -31,10 +31,10 @@ public class HoughCircleDialog extends JDialog {
 		setLayout(null);
 
 		JPanel pan = new JPanel();
-		pan.setBounds(0, 0, 300, 100);
+		pan.setBounds(25, 0, 250, 100);
 
 		JLabel epsLabel = new JLabel("Epsilon = ");
-		final JTextField epsTextField = new JTextField("0.5");
+		final JTextField epsTextField = new JTextField("15");
 		epsTextField.setColumns(5);
 		
 		JLabel thresLabel = new JLabel("Threshold = ");
@@ -46,7 +46,7 @@ public class HoughCircleDialog extends JDialog {
 		minRTextField.setColumns(5);
 		
 		JLabel maxRLabel = new JLabel("Max R = ");
-		final JTextField maxRTextField = new JTextField("10");
+		final JTextField maxRTextField = new JTextField("20");
 		maxRTextField.setColumns(5);
 		
 

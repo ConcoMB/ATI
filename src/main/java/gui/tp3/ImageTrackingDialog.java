@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,25 +20,26 @@ import listeners.DragAndDropListener;
 import application.utils.TrackingUtils;
 import domain.tracking.Frontier;
 
-public class ImageTrackingDialog extends JDialog{
-	
+@SuppressWarnings("serial")
+public class ImageTrackingDialog extends JDialog {
+
 	private Panel panel;
 	private DragAndDropListener dragAndDropListener;
-	
+
 	public ImageTrackingDialog(final Panel panel) {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.panel = panel;
 		setTitle("Image Tracking");
 		setBounds(1, 1, 300, 200);
 		Dimension size = getToolkit().getScreenSize();
-		setLocation(size.width / 3 - getWidth() / 3, size.height / 3
+		setLocation(size.width / 3 - getWidth() / 3 + panel.getWidth(), size.height / 3
 				- getHeight() / 3);
 		this.setResizable(false);
 		setLayout(null);
 
 		JPanel pan1 = new JPanel();
 		pan1.setBounds(0, 0, 300, 50);
-		
+
 		JPanel pan2 = new JPanel();
 		pan2.setBounds(0, 50, 300, 50);
 
@@ -48,13 +48,12 @@ public class ImageTrackingDialog extends JDialog{
 		pxTextField.setColumns(5);
 		final JTextField pyTextField = new JTextField("0");
 		pyTextField.setColumns(5);
-		
+
 		JLabel qLabel = new JLabel("(x1,y1): ");
 		final JTextField qxTextField = new JTextField("0");
 		qxTextField.setColumns(5);
 		final JTextField qyTextField = new JTextField("0");
 		qyTextField.setColumns(5);
-		
 
 		JButton okButton = new JButton("OK");
 		okButton.setSize(300, 40);
@@ -76,8 +75,20 @@ public class ImageTrackingDialog extends JDialog{
 					return;
 				}
 
-				if (px < 0 || py < 0 || px > qx || py > qy ||
-						qx > panel.getImage().getWidth() || qy > panel.getImage().getHeight()) {
+				if (px > qx) {
+					int aux;
+					aux = qx;
+					qx = px;
+					px = aux;
+				}
+				if (py > qy ) {
+					int aux;
+					aux = qy;
+					qy = py;
+					py = aux;
+				}
+				if (px < 0 || py < 0 || qx > panel.getImage().getWidth()
+						|| qy > panel.getImage().getHeight()) {
 					new MessageFrame("Invalid values");
 					return;
 				}
@@ -117,8 +128,9 @@ public class ImageTrackingDialog extends JDialog{
 		pan2.add(qLabel);
 		pan2.add(qxTextField);
 		pan2.add(qyTextField);
-		
-		dragAndDropListener = new DragAndDropListener(panel, pxTextField, pyTextField, qxTextField, qyTextField);
+
+		dragAndDropListener = new DragAndDropListener(panel, pxTextField,
+				pyTextField, qxTextField, qyTextField);
 		panel.addMouseListener(dragAndDropListener);
 		panel.addMouseMotionListener(dragAndDropListener);
 
@@ -132,12 +144,11 @@ public class ImageTrackingDialog extends JDialog{
 		int max = Math.max(a, b);
 		return m >= min && m <= max;
 	}
-	
+
 	@Override
 	public void dispose() {
-		System.out.println("Disposed");
 		panel.removeMouseListener(dragAndDropListener);
 		super.dispose();
 	}
-	
+
 }

@@ -18,8 +18,21 @@ public class TrackingMenu extends JMenu {
 		super("Tracking");
 		setEnabled(true);
 
-		JMenuItem imageTracking = new JMenuItem("Image tracking");
+		JMenuItem imageTracking = new JMenuItem("Image");
 		imageTracking.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog trackingDialog = new ImageTrackingDialog(panel);
+				trackingDialog.setVisible(true);
+				
+			}
+		});
+		
+		JMenuItem videoTracking = new JMenuItem("Video");
+		videoTracking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				if (panel.getImage() == null) {
@@ -32,5 +45,6 @@ public class TrackingMenu extends JMenu {
 		});
 
 		add(imageTracking);
+		add(videoTracking);
 	}
 }

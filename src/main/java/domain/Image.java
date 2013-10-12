@@ -25,32 +25,29 @@ public class Image implements Cloneable {
 	public static final int MAX_VAL = 255;
 
 	private ImageType type;
-	private ImageFormat format;
 	private Channel red;
 	private Channel green;
 	private Channel blue;
 	private BufferedImage bufferedImage;
 	private boolean changed;
 	
-	public Image(int width, int height, ImageFormat format, ImageType type) {
+	public Image(int width, int height, ImageType type) {
 		this.red = new Channel(width, height);
 		this.green = new Channel(width, height);
 		this.blue = new Channel(width, height);
-		this.format = format;
 		this.type = type;
 		changed = false;
 	}
 
-	public Image(BufferedImage bi, ImageFormat format, ImageType type) {
-		this(bi.getWidth(), bi.getHeight(), format, type);
+	public Image(BufferedImage bi, ImageType type) {
+		this(bi.getWidth(), bi.getHeight(), type);
 		bufferedImage = bi;
 		initRGB(bi);
 		changed = true;
 	}
 	
 	public Image shallowClone(){
-		return new Image(getWidth(), getHeight(),
-				getImageFormat(), getType());
+		return new Image(getWidth(), getHeight(), getType());
 	}
 
 	public static Image reuse(Image img, BufferedImage newImg) {
@@ -143,11 +140,6 @@ public class Image implements Cloneable {
 		return type;
 	}
 
-	public ImageFormat getImageFormat() {
-		return format;
-	}
-
-	
 	public BufferedImage getBufferedImage() {
 		if (bufferedImage == null) {
 			bufferedImage = new BufferedImage(getWidth(), getHeight(), 1);
@@ -171,7 +163,7 @@ public class Image implements Cloneable {
 	public Object clone() {
 //		BufferedImage bi = ColorUtils.populateEmptyBufferedImage(this);
 //		return new Image(bi, format, type);
-		Image cloned = new Image(getWidth(), getHeight(), format, type);
+		Image cloned = new Image(getWidth(), getHeight(), type);
 		for (int x = 0; x < getWidth(); x++) {
 			for (int y = 0; y < getHeight(); y++) {
 				cloned.setPixel(x, y, RED, getPixel(x, y, RED));

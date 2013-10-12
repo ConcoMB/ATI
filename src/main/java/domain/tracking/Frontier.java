@@ -83,16 +83,16 @@ public class Frontier {
 			return;
 		}
 		innerBorder.add(p);
-		for (Point n : n8(p)) {
+		for (Point n : neighbors(p)) {
 			if (outer.contains(n)) {
 				outerBorder.add(n);
 				removeFromOuterAndRecalculate(n);
 			}
 		}
-		for (Point n : n8(p)) {
+		for (Point n : neighbors(p)) {
 			if (innerBorder.contains(n)) {
 				boolean reallyInnerBorder = false;
-				for (Point nn : n8(n)) {
+				for (Point nn : neighbors(n)) {
 					if (outerBorder.contains(nn)) {
 						reallyInnerBorder = true;
 						break;
@@ -112,16 +112,16 @@ public class Frontier {
 			return;
 		}
 		outerBorder.add(p);
-		for (Point n : n8(p)) {
+		for (Point n : neighbors(p)) {
 			if (inner.contains(n)) {
 				innerBorder.add(n);
 				removeFromInnerAndRecalculate(n);
 			}
 		}
-		for (Point n : n8(p)) {
+		for (Point n : neighbors(p)) {
 			if (outerBorder.contains(n)) {
 				boolean realOuterBorder = false;
-				for (Point nn : n8(n)) {
+				for (Point nn : neighbors(n)) {
 					if (innerBorder.contains(nn)) {
 						realOuterBorder = true;
 						break;
@@ -183,36 +183,21 @@ public class Frontier {
 		}
 	}
 
-	private Set<Point> n8(Point p) {
-		Set<Point> n8 = new HashSet<Point>();
-		if (p.x > 0) {
-			n8.add(new Point(p.x - 1, p.y));
-			if (p.y > 0) {
-				n8.add(new Point(p.x - 1, p.y - 1));
-			}
-			if (p.y < image.getHeight() - 1) {
-				n8.add(new Point(p.x - 1, p.y + 1));
+	private Set<Point> neighbors(Point p) {
+		Set<Point> neighbors = new HashSet<Point>();
+		for (int i = -2; i <= 2; i++) {
+			for (int j = -2; j <= 2; j++) {
+				addIfExists(neighbors, p.x + i, p.y + j);
 			}
 		}
-		if (p.x < image.getWidth() - 1) {
-			n8.add(new Point(p.x + 1, p.y));
-			if (p.y > 0) {
-				n8.add(new Point(p.x + 1, p.y - 1));
-			}
-			if (p.y < image.getHeight() - 1) {
-				n8.add(new Point(p.x + 1, p.y + 1));
-			}
-		}
-		if (p.y > 0) {
-			n8.add(new Point(p.x, p.y - 1));
-		}
-		if (p.y < image.getHeight() - 1) {
-			n8.add(new Point(p.x, p.y + 1));
-		}
-		return n8;
+		return neighbors;
 	}
-	
-	
+
+	private void addIfExists(Set<Point> neighbors, int x, int y) {
+		if (x >= 0 && x < image.getWidth() && y >=0 && y < image.getHeight()) {
+			neighbors.add(new Point(x, y));
+		}
+	}
 
 	private int getAvgIndex(ColorChannel c) {
 		switch (c) {

@@ -1,6 +1,5 @@
 package domain;
 
-
 public class Channel implements Cloneable {
 
 	static final int MIN_VAL = 0;
@@ -37,14 +36,16 @@ public class Channel implements Cloneable {
 
 	public void setPixel(int x, int y, double val) {
 		if (!validPixel(x, y)) {
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException(x + "," + y + ", tamanio es "
+					+ width + ", " + height);
 		}
 		channel[y * width + x] = val;
 	}
 
 	public double getPixel(int x, int y) {
 		if (!validPixel(x, y)) {
-			throw new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException(x + "," + y + ", tamanio es "
+					+ width + ", " + height);
 		}
 		return channel[y * width + x];
 	}
@@ -57,7 +58,7 @@ public class Channel implements Cloneable {
 		}
 		return (int) originalValue;
 	}
-	
+
 	@Override
 	public Channel clone() {
 		Channel newChannel = new Channel(width, height);

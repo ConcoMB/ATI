@@ -11,7 +11,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.sanselan.ImageWriteException;
 
-import domain.ColorUtils;
+import application.utils.ColorUtils;
+
 import domain.Image;
 
 public class Saver {

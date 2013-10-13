@@ -4,7 +4,6 @@ import gui.MessageFrame;
 import gui.Panel;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,19 +14,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import listeners.DragAndDropListener;
-import application.utils.TrackingUtils;
-import domain.tracking.Frontier;
 
 @SuppressWarnings("serial")
-public class ImageTrackingDialog extends JDialog {
+public abstract class TrackingDialog extends JDialog {
 
-	private Panel panel;
-	private DragAndDropListener dragAndDropListener;
+	protected Panel panel;
+	protected DragAndDropListener dragAndDropListener;
 
-	public ImageTrackingDialog(final Panel panel) {
+	public TrackingDialog(final Panel panel) {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.panel = panel;
-		setTitle("Image Tracking");
+		setTitle("Video Tracking");
 		setBounds(1, 1, 300, 200);
 		Dimension size = getToolkit().getScreenSize();
 		setLocation(size.width / 3 - getWidth() / 3 + panel.getWidth(),
@@ -90,10 +87,8 @@ public class ImageTrackingDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-				TrackingUtils.track(new Frontier(new Point(px, py), new Point(
-						qx, qy), panel.getImage()), panel);
-				panel.repaint();
-				dispose();
+
+				track(px, py, qx, qy);
 			}
 		});
 
@@ -119,5 +114,6 @@ public class ImageTrackingDialog extends JDialog {
 		panel.removeMouseListener(dragAndDropListener);
 		super.dispose();
 	}
-
+	
+	protected abstract void track(int px, int py, int qx, int qy);
 }

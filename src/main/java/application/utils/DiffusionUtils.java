@@ -1,7 +1,7 @@
 package application.utils;
 
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 
 public class DiffusionUtils {
 	
@@ -28,7 +28,7 @@ public class DiffusionUtils {
 	}
 	
 	private static void diffusePixel(Image original, Image diffused, int i, int j, BorderDetector pf) {
-		for(ColorChannel channel: ColorChannel.values()){
+		for(ChannelType channel: Image.rgbValues()){
 			double oldValueIJ = original.getPixel(i, j, channel);
 	
 			double DnIij = i > 0 ? original.getPixel(i - 1, j, channel)

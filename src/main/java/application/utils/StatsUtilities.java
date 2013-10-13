@@ -12,7 +12,7 @@ import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 
 public class StatsUtilities {
 
@@ -37,7 +37,7 @@ public class StatsUtilities {
 	/**
 	 * Color
 	 */
-	public static BufferedImage getHistogram(Image image, ColorChannel color) {
+	public static BufferedImage getHistogram(Image image, ChannelType color) {
 		String colorStr = null, title = null;
 		Color c = null;
 		switch (color) {
@@ -56,6 +56,8 @@ public class StatsUtilities {
 			title = "Blue histogram";
 			c = Color.blue;
 			break;
+		default:
+			throw new IllegalStateException();
 		}
 		HistogramDataset dataset = new HistogramDataset();
 		dataset.setType(HistogramType.FREQUENCY);
@@ -90,6 +92,7 @@ public class StatsUtilities {
 	// return data;
 	// }
 
+
 	private static double[] getHistogramFrequencies(Image image) {
 		double[] result = new double[image.getHeight() * image.getWidth()];
 		for (int i = 0; i < result.length; i++) {
@@ -101,7 +104,7 @@ public class StatsUtilities {
 	}
 
 	private static double[] getHistogramFrequencies(Image image,
-			ColorChannel color) {
+			ChannelType color) {
 		double[] result = new double[image.getHeight() * image.getWidth()];
 		for (int i = 0; i < result.length; i++) {
 			result[i] = image.getPixel((int) Math.floor(i / image.getHeight()),

@@ -9,7 +9,7 @@ import java.util.Set;
 import org.jfree.data.Range;
 
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 import domain.SynthetizationType;
 import domain.mask.MaskFactory;
 
@@ -95,9 +95,9 @@ public class HoughUtils {
 						double total = roValue - thetaTerm;
 						// Step 6
 						if (Math.abs(total) < epsilon) {
-							houghed.setPixel(x, y, ColorChannel.RED, 255);
-							houghed.setPixel(x, y, ColorChannel.GREEN, 0);
-							houghed.setPixel(x, y, ColorChannel.BLUE, 0);
+							houghed.setPixel(x, y, ChannelType.RED, 255);
+							houghed.setPixel(x, y, ChannelType.GREEN, 0);
+							houghed.setPixel(x, y, ChannelType.BLUE, 0);
 						}
 					}
 				}
@@ -197,9 +197,9 @@ public class HoughUtils {
 						double rTerm = Math.pow(rValue, 2);
 						double total = rTerm - aTerm - bTerm;
 						if (Math.abs(total) < epsilon) {
-							houghed.setPixel(x, y, ColorChannel.RED, 255);
-							houghed.setPixel(x, y, ColorChannel.GREEN, 0);
-							houghed.setPixel(x, y, ColorChannel.BLUE, 0);
+							houghed.setPixel(x, y, ChannelType.RED, 255);
+							houghed.setPixel(x, y, ChannelType.GREEN, 0);
+							houghed.setPixel(x, y, ChannelType.BLUE, 0);
 						}
 					}
 				}

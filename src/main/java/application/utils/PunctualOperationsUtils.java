@@ -1,10 +1,10 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
+import static domain.Image.ChannelType.BLUE;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 
 public class PunctualOperationsUtils {
 
@@ -297,7 +297,7 @@ public class PunctualOperationsUtils {
 	}
 
 	public static void equalizeChannel(Image original, Image image,
-			ColorChannel color) {
+			ChannelType color) {
 		int[] ocurrences = getColorOccurrences(original, color);
 		int totalPixels = image.getWidth() * image.getHeight();
 		double[] levels = new double[totalPixels];
@@ -327,7 +327,7 @@ public class PunctualOperationsUtils {
 		}
 	}
 
-	private static int[] getColorOccurrences(Image image, ColorChannel color) {
+	private static int[] getColorOccurrences(Image image, ChannelType color) {
 		int[] dataset = new int[Image.MAX_VAL + 1];
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {

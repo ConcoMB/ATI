@@ -1,10 +1,10 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
+import static domain.Image.ChannelType.BLUE;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 import domain.SynthetizationType;
 import domain.mask.Mask;
 import domain.mask.MaskFactory;
@@ -25,7 +25,7 @@ public class FilterUtils {
 		Image direction = image.shallowClone();
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
-				for (ColorChannel c : ColorChannel.values()) {
+				for (ChannelType c : Image.rgbValues()) {
 					double pxGx = Gx.getPixel(x, y, c);
 					double pxGy = Gy.getPixel(x, y, c);
 					double anAngle = 0;
@@ -60,7 +60,7 @@ public class FilterUtils {
 	}
 
 	private static Image supressNoMaximums(Image original,
-			Image directionImage, ColorChannel c) {
+			Image directionImage, ChannelType c) {
 		Image image = original.shallowClone();
 		for (int x = 1; x < original.getWidth() - 1; x++) {
 			for (int y = 1; y < original.getHeight() - 1; y++) {
@@ -104,7 +104,7 @@ public class FilterUtils {
 		Image susaned = (Image) image.shallowClone();
 		for (int x = 0; x < susaned.getWidth(); x++) {
 			for (int y = 0; y < susaned.getHeight(); y++) {
-				for (ColorChannel c : ColorChannel.values()) {
+				for (ChannelType c : Image.rgbValues()) {
 					double value = c == RED ? 255 : 0;
 					double s_ro = MaskUtils.applySusanPixelMask(x, y, mask,
 							image, c);

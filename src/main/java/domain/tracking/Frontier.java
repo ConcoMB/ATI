@@ -1,28 +1,25 @@
 package domain.tracking;
 
+import static domain.tracking.Frontier.Side.INNER;
+
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
 import domain.Image;
-import domain.Image.ColorChannel;
-import static domain.Image.ColorChannel.*;
-import static domain.tracking.Frontier.Side.*;
+import domain.Image.ChannelType;
 
-public class Frontier {
+public abstract class Frontier {
 
 	public enum Side {
 		INNER, OUTER
 	};
 
-	private Set<Point> outer = new HashSet<Point>();
-	private Set<Point> inner = new HashSet<Point>();
-	private Set<Point> innerBorder = new HashSet<Point>();
-	private Set<Point> outerBorder = new HashSet<Point>();
-	private Image image;
-	// Arrays x color: 0 -> RED, 1 -> GREEN, 2 -> BLUE
-	private double[] innerSum;
-	private double[] outerSum;
+	protected Set<Point> outer = new HashSet<Point>();
+	protected Set<Point> inner = new HashSet<Point>();
+	protected Set<Point> innerBorder = new HashSet<Point>();
+	protected Set<Point> outerBorder = new HashSet<Point>();
+	protected Image image;
 
 	public Frontier(Point p, Point q, Image image) {
 		for (int x = 0; x < image.getWidth(); x++) {
@@ -42,7 +39,6 @@ public class Frontier {
 			}
 		}
 		setImage(image);
-		init();
 	}
 
 	public int tita(Point p) {
@@ -135,53 +131,15 @@ public class Frontier {
 		}
 	}
 
-	public double averageInner(ColorChannel channel) {
-		return innerSum[getAvgIndex(channel)] / inner.size();
-	}
+	public abstract double averageInner(ChannelType channel);
 
-	public double averageOuter(ColorChannel channel) {
-		return outerSum[getAvgIndex(channel)] / outer.size();
-	}
+	public abstract double averageOuter(ChannelType channel);
 
 	public Image getImage() {
 		return image;
 	}
 
-	public void setImage(Image image) {
-		this.image = image;
-	}
-
-	private void removeFromOuterAndRecalculate(Point p) {
-		if (outer.remove(p)) {
-			outerSum[0] -= image.getPixel(p, RED);
-			outerSum[1] -= image.getPixel(p, GREEN);
-			outerSum[2] -= image.getPixel(p, BLUE);
-		}
-	}
-
-	private void removeFromInnerAndRecalculate(Point p) {
-		if (inner.remove(p)) {
-			innerSum[0] -= image.getPixel(p, RED);
-			innerSum[1] -= image.getPixel(p, GREEN);
-			innerSum[2] -= image.getPixel(p, BLUE);
-		}
-	}
-
-	private void addToOuterAndRecalculate(Point p) {
-		if (outer.add(p)) {
-			outerSum[0] += image.getPixel(p, RED);
-			outerSum[1] += image.getPixel(p, GREEN);
-			outerSum[2] += image.getPixel(p, BLUE);
-		}
-	}
-
-	private void addToInnerAndRecalculate(Point p) {
-		if (inner.add(p)) {
-			innerSum[0] += image.getPixel(p, RED);
-			innerSum[1] += image.getPixel(p, GREEN);
-			innerSum[2] += image.getPixel(p, BLUE);
-		}
-	}
+	public abstract void setImage(Image image);
 
 	private Set<Point> neighbors(Point p) {
 		Set<Point> neighbors = new HashSet<Point>();
@@ -199,20 +157,7 @@ public class Frontier {
 		}
 	}
 
-	private int getAvgIndex(ColorChannel c) {
-		switch (c) {
-		case RED:
-			return 0;
-		case GREEN:
-			return 1;
-		case BLUE:
-			return 2;
-		default:
-			throw new IllegalArgumentException();
-		}
-	}
-
-	private double sum(ColorChannel channel, Side side) {
+	protected double sum(ChannelType channel, Side side) {
 		double sum = 0;
 		Set<Point> points = side == INNER ? inner : outer;
 		for (Point p : points) {
@@ -226,15 +171,11 @@ public class Frontier {
 		int max = Math.max(a, b);
 		return m >= min && m <= max;
 	}
+	
+	protected abstract void removeFromOuterAndRecalculate(Point p);
+	protected abstract void removeFromInnerAndRecalculate(Point p);
+	protected abstract void addToOuterAndRecalculate(Point p);
+	protected abstract void addToInnerAndRecalculate(Point p);
 
-	private void init() {
-		innerSum = new double[3];
-		outerSum = new double[3];
-		innerSum[0] = sum(RED, INNER);
-		innerSum[1] = sum(GREEN, INNER);
-		innerSum[2] = sum(BLUE, INNER);
-		outerSum[0] = sum(RED, OUTER);
-		outerSum[1] = sum(GREEN, OUTER);
-		outerSum[2] = sum(BLUE, OUTER);
-	}
+
 }

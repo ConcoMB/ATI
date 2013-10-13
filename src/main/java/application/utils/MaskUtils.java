@@ -1,8 +1,8 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
+import static domain.Image.ChannelType.*;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,14 +10,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 import domain.SynthetizationType;
 import domain.mask.Mask;
 
 public class MaskUtils {
 
-	
-	public static double applySusanPixelMask(int x, int y, Mask mask, Image img, ColorChannel color) {
+	public static double applySusanPixelMask(int x, int y, Mask mask,
+			Image img, ChannelType color) {
 		boolean ignoreByX = x < mask.getWidth() / 2
 				|| x > img.getWidth() - mask.getWidth() / 2;
 		boolean ignoreByY = y < mask.getHeight() / 2
@@ -43,21 +43,27 @@ public class MaskUtils {
 		double s_ro = 1 - n_ro / 37.0;
 		return s_ro;
 	}
-	
-	
+
 	public static Image applyMask(Image original, Mask mask) {
 		if (original == null || mask == null) {
 			return null;
 		}
 		Image image = original.shallowClone();
-		applyMask(original, image, mask, RED);
-		applyMask(original, image, mask, GREEN);
-		applyMask(original, image, mask, BLUE);
+		if (original.isRgb()) {
+			applyMask(original, image, mask, RED);
+			applyMask(original, image, mask, GREEN);
+			applyMask(original, image, mask, BLUE);
+		} else if (original.isHsv()) {
+			applyMask(original, image, mask, HUE);
+			applyMask(original, image, mask, SATURATION);
+			applyMask(original, image, mask, VALUE);
+
+		}
 		return image;
 	}
 
 	private static void applyMask(Image original, Image image, Mask mask,
-			ColorChannel color) {
+			ChannelType color) {
 		for (int x = 0; x < original.getWidth(); x++) {
 			for (int y = 0; y < original.getHeight(); y++) {
 				applyMask(original, image, mask, color, x, y);
@@ -66,7 +72,7 @@ public class MaskUtils {
 	}
 
 	private static void applyMask(Image original, Image image, Mask mask,
-			ColorChannel color, int x, int y) {
+			ChannelType color, int x, int y) {
 		double pix = 0;
 		int w = image.getWidth(), h = image.getHeight();
 		for (int i = -mask.getWidth() / 2; i <= mask.getWidth() / 2; i++) {
@@ -119,8 +125,8 @@ public class MaskUtils {
 		return image;
 	}
 
-	private static double getMedianPixel(Image image, ColorChannel color,
-			int x, int y, int maskWidth, int maskHeight) {
+	private static double getMedianPixel(Image image, ChannelType color, int x,
+			int y, int maskWidth, int maskHeight) {
 		List<Double> pixelsAffected = new ArrayList<Double>();
 		for (int i = -maskWidth / 2; i <= maskWidth / 2; i++) {
 			for (int j = -maskHeight / 2; j <= maskHeight / 2; j++) {
@@ -175,7 +181,7 @@ public class MaskUtils {
 		return image;
 	}
 
-	private static double getMeanPixel(Image image, ColorChannel color, int x,
+	private static double getMeanPixel(Image image, ChannelType color, int x,
 			int y, int maskWidth, int maskHeight) {
 		List<Double> pixelsAffected = new ArrayList<Double>();
 		for (int i = -maskWidth / 2; i <= maskWidth / 2; i++) {
@@ -204,9 +210,15 @@ public class MaskUtils {
 
 	private static Image createImageAndApplyMask(Image original, Mask mask) {
 		Image image = original.shallowClone();
-		applyMask(original, image, mask, RED);
-		applyMask(original, image, mask, GREEN);
-		applyMask(original, image, mask, BLUE);
+		if (original.isRgb()) {
+			applyMask(original, image, mask, RED);
+			applyMask(original, image, mask, GREEN);
+			applyMask(original, image, mask, BLUE);
+		} else if (original.isHsv()) {
+			applyMask(original, image, mask, HUE);
+			applyMask(original, image, mask, SATURATION);
+			applyMask(original, image, mask, VALUE);
+		}
 		return image;
 	}
 
@@ -214,14 +226,20 @@ public class MaskUtils {
 			int threshold) {
 		Image masked = applyMask(original, mask);
 		Image image = original.shallowClone();
-		zeroCross(masked, image, threshold, RED);
-		zeroCross(masked, image, threshold, GREEN);
-		zeroCross(masked, image, threshold, BLUE);
+		if (original.isRgb()) {
+			zeroCross(masked, image, threshold, RED);
+			zeroCross(masked, image, threshold, GREEN);
+			zeroCross(masked, image, threshold, BLUE);
+		} else if (original.isHsv()) {
+			zeroCross(masked, image, threshold, HUE);
+			zeroCross(masked, image, threshold, SATURATION);
+			zeroCross(masked, image, threshold, VALUE);
+		}
 		return image;
 	}
 
 	private static void zeroCross(Image masked, Image image, int threshold,
-			ColorChannel color) {
+			ChannelType color) {
 
 		int width = image.getWidth();
 		int height = image.getHeight();

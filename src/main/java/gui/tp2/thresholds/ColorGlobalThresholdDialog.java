@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 
 import application.utils.ThresholdUtils;
 import domain.Image;
-import static domain.Image.ColorChannel.*;
+import static domain.Image.ChannelType.*;
 
 
 @SuppressWarnings("serial")

@@ -1,19 +1,17 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
-import static domain.Image.ImageFormat.BMP;
-import static domain.Image.ImageType.COLOR;
-import static domain.Image.ImageType.GREYSCALE;
+import static domain.Image.ChannelType.BLUE;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 
 import java.awt.Color;
 
 import domain.Image;
+import domain.RgbImage;
 public class BasicImageUtils {
 	
 	public static Image createSquareImage(int height, int width) {
-		Image binaryImage = new Image(width, height, BMP, GREYSCALE);
+		Image binaryImage = new RgbImage(width, height);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				// Analyzes if the point is in the black or white square
@@ -31,7 +29,7 @@ public class BasicImageUtils {
 	}
 	
 	public static Image createWhiteImage(int height, int width) {
-		Image whiteImage = new Image(width, height, BMP, GREYSCALE);
+		Image whiteImage = new RgbImage(width, height);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				whiteImage.setPixel(x, y, Color.WHITE.getRGB());
@@ -44,9 +42,9 @@ public class BasicImageUtils {
 			int color1, int color2) {
 		Image degradee = null;
 		if (isColor) {
-			degradee = new Image(width, height, BMP, COLOR);
+			degradee = new RgbImage(width, height);
 		} else {
-			degradee = new Image(width, height, BMP, GREYSCALE);
+			degradee = new RgbImage(width, height);
 		}
 		Color c1 = new Color(color1);
 		Color c2 = new Color(color2);
@@ -72,7 +70,7 @@ public class BasicImageUtils {
 	}
 
 	public static Image createCircleImage(int height, int width) {
-		Image binaryImage = new Image(width, height, BMP, GREYSCALE);
+		Image binaryImage = new RgbImage(width, height);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				double aTerm = Math.pow(x - width / 2, 2);
@@ -86,7 +84,7 @@ public class BasicImageUtils {
 	}
 	
 	public static Image crop(int height, int width, int x, int y, Image original) {
-		Image image = new Image(width, height, original.getImageFormat(), original.getType());
+		Image image = new RgbImage(width, height);
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < height; j++) {
 				image.setPixel(i, j, RED, original.getPixel(i + x, j + y, RED));

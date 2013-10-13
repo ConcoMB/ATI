@@ -1,8 +1,5 @@
 package application;
 
-import static domain.Image.ImageType.COLOR;
-import static domain.Image.ImageType.GREYSCALE;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -15,6 +12,7 @@ import javax.imageio.ImageIO;
 import org.apache.sanselan.ImageReadException;
 
 import domain.Image;
+import domain.RgbImage;
 
 public class Loader {
 
@@ -35,10 +33,10 @@ public class Loader {
 				bi.getType() == BufferedImage.TYPE_INT_ARGB ||
 				bi.getType() == BufferedImage.TYPE_INT_BGR ||
 				bi.getType() == BufferedImage.TYPE_INT_RGB) {
-			return new Image(bi, COLOR);
+			return new RgbImage(bi);
 		} else if (bi.getType() == BufferedImage.TYPE_BYTE_GRAY ||
 				bi.getType() == BufferedImage.TYPE_USHORT_GRAY) {
-			return new Image(bi, GREYSCALE);
+			return new RgbImage(bi);
 		} else {
 			throw new IllegalStateException("Image wasn't RGB nor Grayscale");
 		}
@@ -59,7 +57,7 @@ public class Loader {
 				k = k + 1;
 			}
 		} 
-		Image image = new Image(width, height, GREYSCALE);
+		Image image = new RgbImage(width, height);
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				image.setPixel(i, j, ret.getRGB(i, j));

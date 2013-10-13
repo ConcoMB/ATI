@@ -1,10 +1,11 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
+import static domain.Image.ChannelType.BLUE;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
+import domain.RgbImage;
 import domain.SynthetizationType;
 
 public class SynthesizationUtils {
@@ -26,9 +27,8 @@ public class SynthesizationUtils {
 	}
 
 	private static Image synthesize(Function f, Image[] images) {
-		Image synthesized = new Image(images[0].getWidth(),
-				images[0].getHeight(), images[0].getImageFormat(),
-				images[0].getType());
+		Image synthesized = new RgbImage(images[0].getWidth(),
+				images[0].getHeight());
 		for (int x = 0; x < synthesized.getWidth(); x++) {
 			for (int y = 0; y < synthesized.getHeight(); y++) {
 				synthesized.setPixel(x, y, RED, f.apply(getPixels(x, y, RED, images)));
@@ -39,7 +39,7 @@ public class SynthesizationUtils {
 		return synthesized;
 	}
 
-	private static double[] getPixels(int x, int y, ColorChannel channel,
+	private static double[] getPixels(int x, int y, ChannelType channel,
 			Image[] images) {
 		double[] data = new double[images.length];
 		for (int i = 0; i < images.length; i++) {

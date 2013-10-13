@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import application.utils.StatsUtilities;
-import static domain.Image.ColorChannel.*;
+import static domain.Image.ChannelType.*;
 
 @SuppressWarnings("serial")
 public class ColorHistogramDialog extends JDialog {

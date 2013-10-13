@@ -18,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import application.utils.ImageConversionUtils;
 import application.utils.PunctualOperationsUtils;
 import domain.Image;
 
@@ -33,6 +34,28 @@ public class PunctualOperationsMenu extends JMenu {
 		JMenuItem addition = new AddImagesItem(this);
 		JMenuItem substraction = new SubstractImagesItem(this);
 		JMenuItem multiplication = new MultiplyImagesItem(this);
+		
+		
+		JMenuItem convert = new JMenuItem("Format convertion");
+		convert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				Image image = panel.getImage();
+				if (image == null) {
+					return;
+				}
+				if (image.isHsv()) 
+					System.out.println("Tengo una HSV");
+				else
+					System.out.println("Tengo una RGB");
+				panel.setImage(ImageConversionUtils.convert(image));
+				if (panel.getImage().isHsv()) 
+					System.out.println("La pase a HSV");
+				else
+					System.out.println("La pase a RGB");
+				panel.repaint();
+			}
+		});
 		JMenuItem scalarMultiplication = new JMenuItem("Scalar multiplication");
 		scalarMultiplication.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -125,6 +148,8 @@ public class PunctualOperationsMenu extends JMenu {
 		add(histogram);
 		add(new JSeparator());
 		add(ecualization);
+		add(new JSeparator()); 
+		add(convert);
 	}
 
 }

@@ -1,10 +1,10 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
+import static domain.Image.ChannelType.BLUE;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 
 public class ThresholdUtils {
 
@@ -19,7 +19,7 @@ public class ThresholdUtils {
 		return thresholded;
 	}
 
-	public static void threshold(Image image, int value, ColorChannel c) {
+	public static void threshold(Image image, int value, ChannelType c) {
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				image.setPixel(x, y, c,
@@ -33,13 +33,13 @@ public class ThresholdUtils {
 		return threshold(image, globalThreshold);
 	}
 
-	public static void global(Image image, ColorChannel c, int T, int delta) {
+	public static void global(Image image, ChannelType c, int T, int delta) {
 		int globalThreshold = getGlobalThresholdValue(T, image, delta, c);
 		threshold(image, globalThreshold, c);
 	}
 
 	static int getGlobalThresholdValue(int T, Image img, int delta,
-			ColorChannel c) {
+			ChannelType c) {
 		int currentT = T;
 		int previousT = 0;
 		int i = 0;
@@ -56,7 +56,7 @@ public class ThresholdUtils {
 	}
 
 	private static int getAdjustedThreshold(int previousThreshold, Image img,
-			ColorChannel c) {
+			ChannelType c) {
 		int amountOfHigher = 0;
 		int amountOfLower = 0;
 		double sumOfHigher = 0;
@@ -87,7 +87,7 @@ public class ThresholdUtils {
 		return thresholded;
 	}
 
-	public static void otsu(Image img, ColorChannel c) {
+	public static void otsu(Image img, ChannelType c) {
 		double maxSigma = 0;
 		int threshold = 0;
 		double[] probabilities = getProbabilitiesOfColorLevel(img, c);
@@ -129,7 +129,7 @@ public class ThresholdUtils {
 	}
 
 	private static double[] getProbabilitiesOfColorLevel(Image img,
-			ColorChannel c) {
+			ChannelType c) {
 		double[] probabilities = new double[Image.MAX_VAL + 1];
 
 		for (int x = 0; x < img.getWidth(); x++) {
@@ -151,7 +151,7 @@ public class ThresholdUtils {
 		return t;
 	}
 
-	public static void hysteresis(Image image, ColorChannel c, double t1,
+	public static void hysteresis(Image image, ChannelType c, double t1,
 			double t2) {
 		applyHysteresis(image, t1, t2, c);
 		checkHysteresisNeighbors(image, t1, t2);
@@ -163,7 +163,7 @@ public class ThresholdUtils {
 		int width = image.getWidth();
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				for (ColorChannel c : ColorChannel.values()) {
+				for (ChannelType c : Image.rgbValues()) {
 					double pixel = image.getPixel(x, y, c);
 					if (pixel >= t1 && pixel <= t2) {
 						boolean isBorderNeighbor1 = y > 0
@@ -187,8 +187,8 @@ public class ThresholdUtils {
 	}
 
 	private static void applyHysteresis(Image image, double t1, double t2,
-			ColorChannel c) {
-		ColorChannel color = c == null ? RED : c;
+			ChannelType c) {
+		ChannelType color = c == null ? RED : c;
 		for (int x = 0; x < image.getWidth(); x++) {
 			for (int y = 0; y < image.getHeight(); y++) {
 				double pixel = image.getPixel(x, y, color);
@@ -210,7 +210,7 @@ public class ThresholdUtils {
 	}
 
 	public static void hysteresis(Image image) {
-		for (ColorChannel c : ColorChannel.values()) {
+		for (ChannelType c : Image.rgbValues()) {
 			double thresholdVal = ThresholdUtils.getGlobalThresholdValue(128,
 					image, 1, c);
 			hysteresis(image, c, thresholdVal, thresholdVal + 30);

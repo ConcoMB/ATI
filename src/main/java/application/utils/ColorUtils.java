@@ -1,11 +1,11 @@
-package domain;
+package application.utils;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 
-import org.apache.sanselan.ImageFormat;
+import domain.Image;
 
 public class ColorUtils {
 
@@ -40,18 +40,18 @@ public class ColorUtils {
 		}
 	}
 	
-	public static ImageFormat toSanselanImageFormat(Image.ImageFormat fmt) {
-		switch(fmt) {
-		case BMP:
-			return ImageFormat.IMAGE_FORMAT_BMP;
-		case PGM:
-			return ImageFormat.IMAGE_FORMAT_PGM;
-		case PPM:
-			return ImageFormat.IMAGE_FORMAT_PPM;
-		case RAW:
-			return ImageFormat.IMAGE_FORMAT_UNKNOWN;
-		default:
-			throw new IllegalArgumentException();			
-		}
-	}
+//	public static ImageFormat toSanselanImageFormat(Image.ImageFormat fmt) {
+//		switch(fmt) {
+//		case BMP:
+//			return ImageFormat.IMAGE_FORMAT_BMP;
+//		case PGM:
+//			return ImageFormat.IMAGE_FORMAT_PGM;
+//		case PPM:
+//			return ImageFormat.IMAGE_FORMAT_PPM;
+//		case RAW:
+//			return ImageFormat.IMAGE_FORMAT_UNKNOWN;
+//		default:
+//			throw new IllegalArgumentException();			
+//		}
+//	}
 }

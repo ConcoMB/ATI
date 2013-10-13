@@ -1,10 +1,10 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
+import static domain.Image.ChannelType.BLUE;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 import domain.Image;
-import domain.Image.ColorChannel;
+import domain.Image.ChannelType;
 
 public class NoiseUtils {
 
@@ -28,7 +28,7 @@ public class NoiseUtils {
 
 	private static void setPixelSaltAndPepper(Image original,
 			Image saltAndPepper, double minP, double maxP, double p,
-			ColorChannel color, int x, int y) {
+			ChannelType color, int x, int y) {
 		double pix;
 		if (p < minP) {
 			pix = 0;

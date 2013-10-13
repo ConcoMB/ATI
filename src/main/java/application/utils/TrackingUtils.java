@@ -1,8 +1,8 @@
 package application.utils;
 
-import static domain.Image.ColorChannel.BLUE;
-import static domain.Image.ColorChannel.GREEN;
-import static domain.Image.ColorChannel.RED;
+import static domain.Image.ChannelType.*;
+import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.RED;
 import gui.Panel;
 
 import java.awt.Point;
@@ -23,23 +23,38 @@ public class TrackingUtils {
 		while (i < Na && changed) {
 			changed = handleExpand(frontier);
 			changed = handleContract(frontier) || changed;
-			panel.setTempImage(drawBorder(frontier, (Image)frontier.getImage().clone()));
+			panel.setTempImage(drawBorder(frontier, (Image) frontier.getImage()
+					.clone()));
 			panel.paintImmediately(0, 0, image.getWidth(), image.getWidth());
 			i++;
 		}
 		return image;
 	}
 
-	private static Image  drawBorder(Frontier frontier, Image image) {
-		for (Point p : frontier.getInnerBorder()) {
-			image.setPixel(p.x, p.y, RED, 255);
-			image.setPixel(p.x, p.y, GREEN, 0);
-			image.setPixel(p.x, p.y, BLUE, 0);
-		}
-		for (Point p : frontier.getOuterBorder()) {
-			image.setPixel(p.x, p.y, RED, 0);
-			image.setPixel(p.x, p.y, GREEN, 255);
-			image.setPixel(p.x, p.y, BLUE, 0);
+	private static Image drawBorder(Frontier frontier, Image image) {
+		if (image.isRgb()) {
+			for (Point p : frontier.getInnerBorder()) {
+				image.setPixel(p.x, p.y, RED, 255);
+				image.setPixel(p.x, p.y, GREEN, 0);
+				image.setPixel(p.x, p.y, BLUE, 0);
+			}
+			for (Point p : frontier.getOuterBorder()) {
+				image.setPixel(p.x, p.y, RED, 0);
+				image.setPixel(p.x, p.y, GREEN, 255);
+				image.setPixel(p.x, p.y, BLUE, 0);
+			}
+		} else if (image.isHsv()) {
+			for (Point p : frontier.getInnerBorder()) {
+				image.setPixel(p.x, p.y, HUE, 35);
+				image.setPixel(p.x, p.y, SATURATION, 1);
+				image.setPixel(p.x, p.y, VALUE, 255);
+
+			}
+			for (Point p : frontier.getOuterBorder()) {
+				image.setPixel(p.x, p.y, HUE, 181);
+				image.setPixel(p.x, p.y, SATURATION, 1);
+				image.setPixel(p.x, p.y, VALUE, 205);
+			}
 		}
 		return image;
 	}
@@ -67,16 +82,27 @@ public class TrackingUtils {
 	}
 
 	private static double velocity(Frontier f, Point p) {
-		double red = f.getImage().getPixel(p.x, p.y, RED);
-		double green = f.getImage().getPixel(p.x, p.y, GREEN);
-		double blue = f.getImage().getPixel(p.x, p.y, BLUE);
+		double p1, p2;
+		if (f.getImage().isRgb()) {
+			double red = f.getImage().getPixel(p.x, p.y, RED);
+			double green = f.getImage().getPixel(p.x, p.y, GREEN);
+			double blue = f.getImage().getPixel(p.x, p.y, BLUE);
 
-		double p1 = Math.sqrt(Math.pow((f.averageInner(RED) - red), 2)
-				+ Math.pow((f.averageInner(GREEN) - green), 2)
-				+ Math.pow((f.averageInner(BLUE) - blue), 2));
-		double p2 = Math.sqrt(Math.pow((f.averageOuter(RED) - red), 2)
-				+ Math.pow((f.averageOuter(GREEN) - green), 2)
-				+ Math.pow((f.averageOuter(BLUE) - blue), 2));
+			p1 = Math.sqrt(Math.pow((f.averageInner(RED) - red), 2)
+					+ Math.pow((f.averageInner(GREEN) - green), 2)
+					+ Math.pow((f.averageInner(BLUE) - blue), 2));
+			p2 = Math.sqrt(Math.pow((f.averageOuter(RED) - red), 2)
+					+ Math.pow((f.averageOuter(GREEN) - green), 2)
+					+ Math.pow((f.averageOuter(BLUE) - blue), 2));
+		} else {
+			double hue = f.getImage().getPixel(p.x, p.y, HUE);
+			double sat = f.getImage().getPixel(p.x, p.y, SATURATION);
+
+			p1 = Math.sqrt(Math.pow((f.averageInner(HUE) - hue), 2)
+					+ Math.pow((f.averageInner(SATURATION) - sat), 2));
+			p2 = Math.sqrt(Math.pow((f.averageOuter(HUE) - hue), 2)
+					+ Math.pow((f.averageOuter(SATURATION) - sat), 2));
+		}
 		return p2 - p1;
 	}
 }

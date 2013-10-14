@@ -64,14 +64,14 @@ public class ImageConversionUtils {
 			h = 0; //-1
 			return new HsvPixel(h, s, v);
 		}
+		if (delta == 0)
+			delta = 1;
 		if (r == max)
-			h = (g - b) ;/// delta; // between yellow & magenta
+			h = (g - b) / delta; // between yellow & magenta
 		else if (g == max)
-			h = 2 + (b - r);// / delta; // between cyan & yellow
+			h = 2 + ((b - r) / delta); // between cyan & yellow
 		else
-			h = 4 + (r - g);// / delta; // between magenta & cyan
-		if (delta != 0)
-			h /= delta;
+			h = 4 + ((r - g) / delta); // between magenta & cyan
 		h *= 60; // degrees
 		if (h < 0)
 			h += 360;

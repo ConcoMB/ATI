@@ -19,8 +19,9 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 	@Override
 	protected void track(int px, int py, int qx, int qy) {
 		dispose();
+		int i = 30231;
 		String[] splitted = Loader.getCurrentFile().getAbsolutePath()
-				.split("1.");
+				.split(i + ".");
 		if (splitted.length > 2) {
 			
 			new MessageFrame("Invalid file");
@@ -32,7 +33,7 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 		Frontier frontier = getFrontier(px, py, qx, qy);
 		TrackingUtils.track(frontier, panel);
 		panel.repaint();
-		int i = 2;
+		i++;
 		boolean read = true;
 		int width = panel.getImage().getWidth();
 		int height = panel.getImage().getHeight();

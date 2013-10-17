@@ -19,7 +19,7 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 	@Override
 	protected void track(int px, int py, int qx, int qy) {
 		dispose();
-		int i = 30231;
+		int i = 1;
 		String[] splitted = Loader.getCurrentFile().getAbsolutePath()
 				.split(i + ".");
 		if (splitted.length > 2) {

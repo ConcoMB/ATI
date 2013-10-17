@@ -1,13 +1,13 @@
 package domain.tracking;
 
-import static domain.tracking.Frontier.Side.INNER;
-
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
+import application.utils.MaskUtils;
 import domain.Image;
-import domain.Image.ChannelType;
+import domain.mask.Mask;
+import domain.mask.MaskFactory;
 
 public abstract class Frontier {
 
@@ -15,54 +15,34 @@ public abstract class Frontier {
 		INNER, OUTER
 	};
 
-	protected Set<Point> outer = new HashSet<Point>();
-	protected Set<Point> inner = new HashSet<Point>();
 	protected Set<Point> innerBorder = new HashSet<Point>();
 	protected Set<Point> outerBorder = new HashSet<Point>();
-	protected Image image;
+	protected Tita tita;
+	private int w, h;
+	private Mask mask = MaskFactory.buildGaussianMask(5, 10);
 
-	public Frontier(Point p, Point q, Image image) {
-		for (int x = 0; x < image.getWidth(); x++) {
-			for (int y = 0; y < image.getHeight(); y++) {
+	protected Frontier(Point p, Point q, Image image) {
+		tita = new Tita(image);
+		w = image.getWidth();
+		h = image.getHeight();
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
 				Point r = new Point(x, y);
 				if (x < p.x || x > q.x || y < p.y || y > q.y) {
-					outer.add(r);
+					tita.setValue(r, 3);
 				} else if ((between(y, p.y, q.y) && (x == p.x || x == q.x))
 						|| (between(x, p.x, q.x) && (y == p.y || y == q.y))) {
 					outerBorder.add(r);
+					tita.setValue(r, 1);
 				} else if ((between(y, p.y + 1, q.y - 1) && (x == p.x + 1 || x == q.x - 1))
 						|| (between(x, p.x + 1, q.x - 1) && (y == p.y + 1 || y == q.y - 1))) {
 					innerBorder.add(r);
+					tita.setValue(r, -1);
 				} else {
-					inner.add(r);
+					tita.setValue(r, -3);
 				}
 			}
 		}
-		setImage(image);
-	}
-
-	public int tita(Point p) {
-		if (outer.contains(p)) {
-			return 3;
-		}
-		if (outerBorder.contains(p)) {
-			return 1;
-		}
-		if (innerBorder.contains(p)) {
-			return -1;
-		}
-		if (inner.contains(p)) {
-			return -3;
-		}
-		throw new IllegalStateException("=(");
-	}
-
-	public Set<Point> getOuter() {
-		return outer;
-	}
-
-	public Set<Point> getInner() {
-		return inner;
 	}
 
 	public Set<Point> getInnerBorder() {
@@ -73,97 +53,74 @@ public abstract class Frontier {
 		return outerBorder;
 	}
 
-	public void expand(Point p) {
+	private void addToOuterBorder(Point p) {
+		outerBorder.add(p);
+		tita.setValue(p, 1);
+	}
+
+	private void addToInnerBorder(Point p) {
+		innerBorder.add(p);
+		tita.setValue(p, -1);
+	}
+
+	private void removeFromInnerBorder(Point p) {
+		innerBorder.remove(p);
+		tita.setValue(p, -3);
+	}
+
+	private void removeFromOuterBorder(Point p) {
+		outerBorder.remove(p);
+		tita.setValue(p, 3);
+	}
+
+	public void switch_in(Point p) {
 		if (!outerBorder.remove(p)) {
-			// throw new IllegalArgumentException();
 			return;
 		}
 		innerBorder.add(p);
-		for (Point n : neighbors(p)) {
-			if (outer.contains(n)) {
-				outerBorder.add(n);
-				removeFromOuterAndRecalculate(n);
-			}
-		}
-		for (Point n : neighbors(p)) {
-			if (innerBorder.contains(n)) {
-				boolean reallyInnerBorder = false;
-				for (Point nn : neighbors(n)) {
-					if (outerBorder.contains(nn)) {
-						reallyInnerBorder = true;
-						break;
-					}
-				}
-				if (!reallyInnerBorder) {
-					addToInnerAndRecalculate(n);
-					innerBorder.remove(n);
-				}
+		tita.setValue(p, -1);
+		for (Point n : n4(p)) {
+			if (tita.getValue(n) == 3) {
+				addToOuterBorder(n);
 			}
 		}
 	}
 
-	public void contract(Point p) {
+	public void switch_out(Point p) {
 		if (!innerBorder.remove(p)) {
-			// throw new IllegalArgumentException();
 			return;
 		}
 		outerBorder.add(p);
-		for (Point n : neighbors(p)) {
-			if (inner.contains(n)) {
-				innerBorder.add(n);
-				removeFromInnerAndRecalculate(n);
-			}
-		}
-		for (Point n : neighbors(p)) {
-			if (outerBorder.contains(n)) {
-				boolean realOuterBorder = false;
-				for (Point nn : neighbors(n)) {
-					if (innerBorder.contains(nn)) {
-						realOuterBorder = true;
-						break;
-					}
-				}
-				if (!realOuterBorder) {
-					addToOuterAndRecalculate(n);
-					outerBorder.remove(n);
-				}
+		tita.setValue(p, 1);
+		for (Point n : n4(p)) {
+			if (tita.getValue(n) == -3) {
+				addToInnerBorder(n);
 			}
 		}
 	}
 
-	public abstract double averageInner(ChannelType channel);
-
-	public abstract double averageOuter(ChannelType channel);
 
 	public Image getImage() {
-		return image;
+		return tita.getImage();
 	}
 
 	public abstract void setImage(Image image);
 
-	private Set<Point> neighbors(Point p) {
-		Set<Point> neighbors = new HashSet<Point>();
-		for (int i = -2; i <= 2; i++) {
-			for (int j = -2; j <= 2; j++) {
-				addIfExists(neighbors, p.x + i, p.y + j);
-			}
+	private Set<Point> n4(Point p) {
+		Set<Point> n4 = new HashSet<Point>();
+		if (p.x > 0) {
+			n4.add(new Point(p.x - 1, p.y));
 		}
-		return neighbors;
-	}
-
-	private void addIfExists(Set<Point> neighbors, int x, int y) {
-		if (x >= 0 && x < image.getWidth() && y >=0 && y < image.getHeight()) {
-			neighbors.add(new Point(x, y));
+		if (p.x < w - 1) {
+			n4.add(new Point(p.x + 1, p.y));
 		}
-	}
-
-	protected double sum(ChannelType channel, Side side) {
-		double sum = 0;
-		Set<Point> points = side == INNER ? inner : outer;
-		for (Point p : points) {
-			sum += image.getPixel(p, channel);
+		if (p.y > 0) {
+			n4.add(new Point(p.x, p.y - 1));
 		}
-		return sum;
+		if (p.x < h - 1) {
+			n4.add(new Point(p.x, p.y + 1));
+		}
+		return n4;
 	}
 
 	private boolean between(int m, int a, int b) {
@@ -171,11 +128,80 @@ public abstract class Frontier {
 		int max = Math.max(a, b);
 		return m >= min && m <= max;
 	}
+
+	public int process(Function f) {
+		int changed = 0;
+		for (Point p : new HashSet<Point>(outerBorder)) {
+			if (f.val(p) > 0) {
+				switch_in(p);
+				changed++;
+			}
+		}
+		for (Point p : new HashSet<Point>(innerBorder)) {
+			boolean notFound = true;
+			for (Point n : n4(p)) {
+				if (tita.getValue(n) >= 0) {
+					notFound = false;
+					break;
+				}
+			}
+			if (notFound) {
+				removeFromInnerBorder(p);
+			}
+		}
+		for (Point p : new HashSet<Point>(innerBorder)) {
+			if (f.val(p) < 0) {
+				switch_out(p);
+				changed++;
+			}
+		}
+		for (Point p : new HashSet<Point>(outerBorder)) {
+			boolean notFound = true;
+			for (Point n : n4(p)) {
+				if (tita.getValue(n) <= 0) {
+					notFound = false;
+					break;
+				}
+			}
+			if (notFound) {
+				removeFromOuterBorder(p);
+			}
+		}
+		return changed;
+	}
+
+	public boolean change() {
+		long t0 = System.currentTimeMillis();
+		int changed = process(new VelocityFunction());
+		long t1 = System.currentTimeMillis();
+		process(new TitaFunction());;
+//		System.out.println("tardo " + (System.currentTimeMillis() - t1) + " y " + (t1-t0));
+		return changed > 10;
+	}
+
+	private interface Function {
+		public double val(Point p);
+	}
 	
-	protected abstract void removeFromOuterAndRecalculate(Point p);
-	protected abstract void removeFromInnerAndRecalculate(Point p);
-	protected abstract void addToOuterAndRecalculate(Point p);
-	protected abstract void addToInnerAndRecalculate(Point p);
-
-
+	private class TitaFunction implements Function {
+		
+		double[][] convolution;
+		
+		public TitaFunction() {
+			convolution = MaskUtils.applyMask(tita, innerBorder, outerBorder, mask);
+		}
+		
+		@Override
+		public double val(Point p) {
+			return -convolution[p.x][p.y];
+		}
+	}
+	
+	private class VelocityFunction implements Function {
+		
+		@Override
+		public double val(Point p) {
+			return tita.velocity(p);
+		}
+	}
 }

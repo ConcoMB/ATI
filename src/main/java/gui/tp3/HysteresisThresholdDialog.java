@@ -62,7 +62,6 @@ public class HysteresisThresholdDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-				
 				panel.setImage(ThresholdUtils.hysteresis(panel.getImage(), lowerThreshold, upperThreshold));
 				panel.repaint();
 				dispose();

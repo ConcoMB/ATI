@@ -147,7 +147,7 @@ public class ThresholdUtils {
 
 	public static Image hysteresis(Image image, double t1, double t2) {
 		Image t = (Image) image.clone();
-		hysteresis(t, null, t1, t2);
+		applyHysteresis(t, t1, t2, null);
 		return t;
 	}
 

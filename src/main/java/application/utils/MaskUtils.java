@@ -1,18 +1,24 @@
 package application.utils;
 
-import static domain.Image.ChannelType.*;
+import static domain.Image.ChannelType.BLUE;
 import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.HUE;
 import static domain.Image.ChannelType.RED;
+import static domain.Image.ChannelType.SATURATION;
+import static domain.Image.ChannelType.VALUE;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import domain.Image;
 import domain.Image.ChannelType;
 import domain.SynthetizationType;
 import domain.mask.Mask;
+import domain.tracking.Tita;
 
 public class MaskUtils {
 
@@ -44,6 +50,30 @@ public class MaskUtils {
 		return s_ro;
 	}
 
+	public static double[][] applyMask(Tita tita, Set<Point> innerBorder, Set<Point> outerBorder, Mask mask) {
+		double[][] conv = new double[tita.getWidth()][tita.getHeight()];
+		for (Point p : innerBorder) {
+			conv[p.x][p.y] = applyMask(tita, mask, p.x, p.y);
+		}
+		for (Point p : outerBorder) {
+			conv[p.x][p.y] = applyMask(tita, mask, p.x, p.y);
+		}
+		return conv;
+	}
+	
+	private static double applyMask(Tita tita, Mask mask, int x, int y) {
+		double pix = 0;
+		int w = tita.getWidth(), h = tita.getHeight();
+		for (int i = -mask.getWidth() / 2; i <= mask.getWidth() / 2; i++) {
+			for (int j = -mask.getHeight() / 2; j <= mask.getHeight() / 2; j++) {
+				int a = getPoint(x, i, w);
+				int b = getPoint(y, j, h);
+				pix += mask.getValue(i, j) * tita.getValue(a, b);
+			}
+		}
+		return pix;
+	}
+	
 	public static Image applyMask(Image original, Mask mask) {
 		if (original == null || mask == null) {
 			return null;

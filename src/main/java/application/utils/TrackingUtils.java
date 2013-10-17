@@ -1,12 +1,14 @@
 package application.utils;
 
-import static domain.Image.ChannelType.*;
+import static domain.Image.ChannelType.BLUE;
 import static domain.Image.ChannelType.GREEN;
+import static domain.Image.ChannelType.HUE;
 import static domain.Image.ChannelType.RED;
+import static domain.Image.ChannelType.SATURATION;
+import static domain.Image.ChannelType.VALUE;
 import gui.Panel;
 
 import java.awt.Point;
-import java.util.HashSet;
 
 import domain.Image;
 import domain.mask.MaskFactory;
@@ -20,14 +22,18 @@ public class TrackingUtils {
 		int i = 0;
 		int Na = Math.max(image.getHeight(), image.getWidth());
 		boolean changed = true;
+		long time0 = System.currentTimeMillis();
 		while (i < Na && changed) {
-			changed = handleExpand(frontier);
-			changed = handleContract(frontier) || changed;
+			changed = frontier.change();
 			panel.setTempImage(drawBorder(frontier, (Image) frontier.getImage()
 					.clone()));
 			panel.paintImmediately(0, 0, image.getWidth(), image.getWidth());
 			i++;
 		}
+		System.out.println("Tardo " + (System.currentTimeMillis() - time0) + " milisegundos");
+		
+		System.out.println("painted");
+		
 		return image;
 	}
 
@@ -38,11 +44,11 @@ public class TrackingUtils {
 				image.setPixel(p.x, p.y, GREEN, 0);
 				image.setPixel(p.x, p.y, BLUE, 0);
 			}
-			for (Point p : frontier.getOuterBorder()) {
-				image.setPixel(p.x, p.y, RED, 0);
-				image.setPixel(p.x, p.y, GREEN, 255);
-				image.setPixel(p.x, p.y, BLUE, 0);
-			}
+//			for (Point p : frontier.getOuterBorder()) {
+//				image.setPixel(p.x, p.y, RED, 0);
+//				image.setPixel(p.x, p.y, GREEN, 255);
+//				image.setPixel(p.x, p.y, BLUE, 0);
+//			}
 		} else if (image.isHsv()) {
 			for (Point p : frontier.getInnerBorder()) {
 				image.setPixel(p.x, p.y, HUE, 35);
@@ -57,52 +63,5 @@ public class TrackingUtils {
 			}
 		}
 		return image;
-	}
-
-	private static boolean handleExpand(Frontier frontier) {
-		boolean changed = false;
-		for (Point p : new HashSet<Point>(frontier.getOuterBorder())) {
-			if (velocity(frontier, p) > 0) {
-				frontier.expand(p);
-				changed = true;
-			}
-		}
-		return changed;
-	}
-
-	private static boolean handleContract(Frontier frontier) {
-		boolean changed = false;
-		for (Point p : new HashSet<Point>(frontier.getInnerBorder())) {
-			if (velocity(frontier, p) < 0) {
-				frontier.contract(p);
-				changed = true;
-			}
-		}
-		return changed;
-	}
-
-	private static double velocity(Frontier f, Point p) {
-		double p1, p2;
-		if (f.getImage().isRgb()) {
-			double red = f.getImage().getPixel(p.x, p.y, RED);
-			double green = f.getImage().getPixel(p.x, p.y, GREEN);
-			double blue = f.getImage().getPixel(p.x, p.y, BLUE);
-
-			p1 = Math.sqrt(Math.pow((f.averageInner(RED) - red), 2)
-					+ Math.pow((f.averageInner(GREEN) - green), 2)
-					+ Math.pow((f.averageInner(BLUE) - blue), 2));
-			p2 = Math.sqrt(Math.pow((f.averageOuter(RED) - red), 2)
-					+ Math.pow((f.averageOuter(GREEN) - green), 2)
-					+ Math.pow((f.averageOuter(BLUE) - blue), 2));
-		} else {
-			double hue = f.getImage().getPixel(p.x, p.y, HUE);
-			double sat = f.getImage().getPixel(p.x, p.y, SATURATION);
-
-			p1 = Math.sqrt(Math.pow((f.averageInner(HUE) - hue), 2)
-					+ Math.pow((f.averageInner(SATURATION) - sat), 2));
-			p2 = Math.sqrt(Math.pow((f.averageOuter(HUE) - hue), 2)
-					+ Math.pow((f.averageOuter(SATURATION) - sat), 2));
-		}
-		return p2 - p1;
 	}
 }

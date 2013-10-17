@@ -65,7 +65,7 @@ public class FileMenu extends JMenu {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser chooser = new JFileChooser();
 				FileFilter type = new ExtensionFilter("Images", new String[] {
-						".pgm", ".PGM", ".ppm", ".PPM", ".bmp", ".BMP", ".jpg", ".JPG" });
+						".pgm", ".PGM", ".ppm", ".PPM", ".bmp", ".BMP", ".jpg", ".JPG", ".jpeg", ".JPEG" });
 				chooser.addChoosableFileFilter(type);
 				chooser.setAcceptAllFileFilterUsed(false);
 				chooser.setFileFilter(type);

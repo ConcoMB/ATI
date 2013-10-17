@@ -125,12 +125,12 @@ public class HoughUtils {
 		int rSize = (int) (Math.abs(rRange.getLength()));
 		int[][][] A = new int[aSize][bSize][rSize];
 
-		for (int r = 0; r < rSize; r++) {
+		for (int r = 0; r < rSize; r+=2) {
 			double rValue = rRange.getLowerBound() + r;
 			double rTerm = Math.pow(rValue, 2);
-			for (int a = 0; a < aSize; a++) {
+			for (int a = 0; a < aSize; a+=2) {
 				double aValue = aRange.getLowerBound() + a;
-				for (int b = 0; b < bSize; b++) {
+				for (int b = 0; b < bSize; b+=2) {
 					double bValue = bRange.getLowerBound() + b;
 					for (int x = 0; x < borderImage.getWidth(); x++) {
 						double aTerm = Math.pow(x - aValue, 2);

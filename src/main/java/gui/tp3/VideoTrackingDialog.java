@@ -34,6 +34,7 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 		TrackingUtils.track(frontier, panel);
 		panel.repaint();
 		i++;
+//		int i = 1259;
 		boolean read = true;
 		int width = panel.getImage().getWidth();
 		int height = panel.getImage().getHeight();

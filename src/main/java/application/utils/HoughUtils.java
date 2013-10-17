@@ -125,16 +125,16 @@ public class HoughUtils {
 		int rSize = (int) (Math.abs(rRange.getLength()));
 		int[][][] A = new int[aSize][bSize][rSize];
 
-		for (int r = 0; r < rSize; r++) {
+		for (int r = 0; r < rSize; r += 2) {
 			double rValue = rRange.getLowerBound() + r;
 			double rTerm = Math.pow(rValue, 2);
-			for (int a = 0; a < aSize; a++) {
+			for (int a = 0; a < aSize; a += 2) {
 				double aValue = aRange.getLowerBound() + a;
-				for (int b = 0; b < bSize; b++) {
+				for (int b = 0; b < bSize; b += 2) {
 					double bValue = bRange.getLowerBound() + b;
-					for (int x = 0; x < borderImage.getWidth(); x++) {
+					for (int x = 0; x < borderImage.getWidth(); x += 2) {
 						double aTerm = Math.pow(x - aValue, 2);
-						for (int y = 0; y < borderImage.getHeight(); y++) {
+						for (int y = 0; y < borderImage.getHeight(); y += 2) {
 							if (isWhite(borderImage, x, y)) {
 								double bTerm = Math.pow(y - bValue, 2);
 								double total = rTerm - aTerm - bTerm;
@@ -151,9 +151,9 @@ public class HoughUtils {
 		System.out.println("Voted");
 
 		Set<BucketForCircles> allBuckets = new HashSet<BucketForCircles>();
-		for (int a = 0; a < aSize; a += 1) {
-			for (int b = 0; b < bSize; b += 1) {
-				for (int r = 0; r < rSize; r += 1) {
+		for (int a = 0; a < aSize; a += 2) {
+			for (int b = 0; b < bSize; b += 2) {
+				for (int r = 0; r < rSize; r += 2) {
 					if (A[a][b][r] > 0) {
 						BucketForCircles newBucket = new BucketForCircles(a, b,
 								r, A[a][b][r]);

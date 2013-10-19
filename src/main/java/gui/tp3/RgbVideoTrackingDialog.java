@@ -9,7 +9,6 @@ import domain.HsvImage;
 import domain.Image;
 import domain.RgbImage;
 import domain.tracking.Frontier;
-import domain.tracking.RgbFrontier;
 
 @SuppressWarnings("serial")
 public class RgbVideoTrackingDialog extends VideoTrackingDialog {
@@ -27,6 +26,6 @@ public class RgbVideoTrackingDialog extends VideoTrackingDialog {
 		else
 			rgb = (RgbImage)image;
 			
-		return new RgbFrontier(new Point(px, py), new Point(qx, qy), rgb);
+		return new Frontier(new Point(px, py), new Point(qx, qy), rgb);
 	}
 }

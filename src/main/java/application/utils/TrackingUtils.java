@@ -16,14 +16,13 @@ import domain.tracking.Frontier;
 
 public class TrackingUtils {
 
-	public static Image track(Frontier frontier, Panel panel) {
+	public static Image track(Frontier frontier, Panel panel, int iterations) {
 		Image image = (Image) frontier.getImage();
 		MaskUtils.applyMask(image, MaskFactory.buildGaussianMask(5, 5));
 		int i = 0;
-		int Na = Math.max(image.getHeight(), image.getWidth());
 		boolean changed = true;
 		long time0 = System.currentTimeMillis();
-		while (i < Na && changed) {
+		while (i < iterations && changed) {
 			changed = frontier.change();
 			panel.setTempImage(drawBorder(frontier, (Image) frontier.getImage()
 					.clone()));
@@ -39,27 +38,22 @@ public class TrackingUtils {
 
 	private static Image drawBorder(Frontier frontier, Image image) {
 		if (image.isRgb()) {
-			for (Point p : frontier.getInnerBorder()) {
-				image.setPixel(p.x, p.y, RED, 255);
-				image.setPixel(p.x, p.y, GREEN, 0);
-				image.setPixel(p.x, p.y, BLUE, 0);
-			}
-//			for (Point p : frontier.getOuterBorder()) {
-//				image.setPixel(p.x, p.y, RED, 0);
-//				image.setPixel(p.x, p.y, GREEN, 255);
+//			for (Point p : frontier.getInnerBorder()) {
+//				image.setPixel(p.x, p.y, RED, 255);
+//				image.setPixel(p.x, p.y, GREEN, 0);
 //				image.setPixel(p.x, p.y, BLUE, 0);
 //			}
+			for (Point p : frontier.getOuterBorder()) {
+				image.setPixel(p.x, p.y, RED, 0);
+				image.setPixel(p.x, p.y, GREEN, 255);
+				image.setPixel(p.x, p.y, BLUE, 0);
+			}
 		} else if (image.isHsv()) {
 			for (Point p : frontier.getInnerBorder()) {
 				image.setPixel(p.x, p.y, HUE, 35);
 				image.setPixel(p.x, p.y, SATURATION, 1);
 				image.setPixel(p.x, p.y, VALUE, 255);
 
-			}
-			for (Point p : frontier.getOuterBorder()) {
-				image.setPixel(p.x, p.y, HUE, 181);
-				image.setPixel(p.x, p.y, SATURATION, 1);
-				image.setPixel(p.x, p.y, VALUE, 205);
 			}
 		}
 		return image;

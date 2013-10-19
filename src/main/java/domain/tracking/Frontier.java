@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import application.utils.MaskUtils;
+import domain.HsvImage;
 import domain.Image;
+import domain.RgbImage;
 import domain.mask.Mask;
 import domain.mask.MaskFactory;
 
-public abstract class Frontier {
+public class Frontier {
 
 	public enum Side {
 		INNER, OUTER
@@ -19,10 +21,13 @@ public abstract class Frontier {
 	protected Set<Point> outerBorder = new HashSet<Point>();
 	protected Tita tita;
 	private int w, h;
-	private Mask mask = MaskFactory.buildGaussianMask(5, 10);
+	private Mask mask = MaskFactory.buildGaussianMask(3, 1);
 
-	protected Frontier(Point p, Point q, Image image) {
-		tita = new Tita(image);
+	public Frontier(Point p, Point q, Image image) {
+		if (image.isRgb())
+			tita = new RgbTita((RgbImage) image, this);
+		else
+			tita = new HsvTita((HsvImage) image, this);
 		w = image.getWidth();
 		h = image.getHeight();
 		for (int x = 0; x < w; x++) {
@@ -43,6 +48,7 @@ public abstract class Frontier {
 				}
 			}
 		}
+		tita.checkEnded();
 	}
 
 	public Set<Point> getInnerBorder() {
@@ -99,12 +105,13 @@ public abstract class Frontier {
 		}
 	}
 
-
 	public Image getImage() {
 		return tita.getImage();
 	}
 
-	public abstract void setImage(Image image);
+	public void setImage(Image image) {
+		tita.setImage(image);
+	}
 
 	private Set<Point> n4(Point p) {
 		Set<Point> n4 = new HashSet<Point>();
@@ -129,15 +136,16 @@ public abstract class Frontier {
 		return m >= min && m <= max;
 	}
 
-	public int process(Function f) {
-		int changed = 0;
-		for (Point p : new HashSet<Point>(outerBorder)) {
+	public void process(Function f) {
+		Set<Point> outerBorderCopy = new HashSet<Point>(outerBorder);
+		Set<Point> innerBorderCopy = new HashSet<Point>(innerBorder);
+
+		for (Point p : outerBorderCopy) {
 			if (f.val(p) > 0) {
 				switch_in(p);
-				changed++;
 			}
 		}
-		for (Point p : new HashSet<Point>(innerBorder)) {
+		for (Point p : innerBorderCopy) {
 			boolean notFound = true;
 			for (Point n : n4(p)) {
 				if (tita.getValue(n) >= 0) {
@@ -149,13 +157,12 @@ public abstract class Frontier {
 				removeFromInnerBorder(p);
 			}
 		}
-		for (Point p : new HashSet<Point>(innerBorder)) {
+		for (Point p : innerBorderCopy) {
 			if (f.val(p) < 0) {
 				switch_out(p);
-				changed++;
 			}
 		}
-		for (Point p : new HashSet<Point>(outerBorder)) {
+		for (Point p : outerBorderCopy) {
 			boolean notFound = true;
 			for (Point n : n4(p)) {
 				if (tita.getValue(n) <= 0) {
@@ -167,41 +174,56 @@ public abstract class Frontier {
 				removeFromOuterBorder(p);
 			}
 		}
-		return changed;
 	}
 
 	public boolean change() {
-		long t0 = System.currentTimeMillis();
-		int changed = process(new VelocityFunction());
-		long t1 = System.currentTimeMillis();
-		process(new TitaFunction());;
-//		System.out.println("tardo " + (System.currentTimeMillis() - t1) + " y " + (t1-t0));
-		return changed > 10;
+		// long t0 = System.currentTimeMillis();
+		process(new VelocityFunction());
+		// long t1 = System.currentTimeMillis();
+		boolean end = tita.checkEnded();
+		if (end) {
+			process(new TitaFunction());
+		}
+		// System.out.println("tardo " + (System.currentTimeMillis() - t1) +
+		// " y " + (t1-t0));
+		// System.out.println(tita.isEnded());
+		return !end;// != changed2;////innerBorder.size() * 0.01;
 	}
 
 	private interface Function {
 		public double val(Point p);
 	}
-	
+
 	private class TitaFunction implements Function {
-		
+
 		double[][] convolution;
-		
+
 		public TitaFunction() {
-			convolution = MaskUtils.applyMask(tita, innerBorder, outerBorder, mask);
+			convolution = MaskUtils.applyMask(tita, innerBorder, outerBorder,
+					mask);
 		}
-		
+
 		@Override
 		public double val(Point p) {
 			return -convolution[p.x][p.y];
 		}
+
+		@Override
+		public String toString() {
+			return "Tita";
+		}
 	}
-	
+
 	private class VelocityFunction implements Function {
-		
+
 		@Override
 		public double val(Point p) {
 			return tita.velocity(p);
+		}
+
+		@Override
+		public String toString() {
+			return "Velocity";
 		}
 	}
 }

@@ -9,7 +9,6 @@ import domain.HsvImage;
 import domain.Image;
 import domain.RgbImage;
 import domain.tracking.Frontier;
-import domain.tracking.HsvFrontier;
 
 @SuppressWarnings("serial")
 public class HsvVideoTrackingDialog extends VideoTrackingDialog {
@@ -27,7 +26,7 @@ public class HsvVideoTrackingDialog extends VideoTrackingDialog {
 		else
 			hsv = (HsvImage) image;
 
-		return new HsvFrontier(new Point(px, py), new Point(qx, qy), hsv);
+		return new Frontier(new Point(px, py), new Point(qx, qy), hsv);
 	}
 
 }

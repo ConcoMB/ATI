@@ -87,7 +87,6 @@ public class MaskUtils {
 			applyMask(original, image, mask, HUE);
 			applyMask(original, image, mask, SATURATION);
 			applyMask(original, image, mask, VALUE);
-
 		}
 		return image;
 	}

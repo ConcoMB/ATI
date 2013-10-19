@@ -17,22 +17,34 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 	}
 
 	@Override
-	protected void track(int px, int py, int qx, int qy) {
+	protected void track(int px, int py, int qx, int qy, int iterations) {
 		dispose();
-		int i = 1;
 		String[] splitted = Loader.getCurrentFile().getAbsolutePath()
-				.split(i + ".");
-		if (splitted.length > 2) {
-			
-			new MessageFrame("Invalid file");
-			System.out.println(splitted[0]);
+				.split("/");
+		String fileName = splitted[splitted.length-1];
+		int x = fileName.indexOf('.');
+		
+		StringBuffer num = new StringBuffer();
+		boolean end = false;
+		while (!end && x > 0) {
+			char n = fileName.charAt(--x);
+			if ( n>= '0' && n <= '9')
+				num.append(n);
+			else 
+				end = true;
+		}
+		num.reverse();
+		String[] nameSplitted = Loader.getCurrentFile().getAbsolutePath().split(num.toString() + ".");
+		if (nameSplitted.length < 2) {
+			new MessageFrame("Invalid Image");
 			return;
 		}
-		String filePrefix = splitted[0];
-		String extension = splitted[1];
+		String extension = nameSplitted[1];
+		String  filePrefix = nameSplitted[0];
 		Frontier frontier = getFrontier(px, py, qx, qy);
-		TrackingUtils.track(frontier, panel);
+		TrackingUtils.track(frontier, panel, iterations);
 		panel.repaint();
+		int i = Integer.valueOf(num.toString());
 		i++;
 		boolean read = true;
 		int width = panel.getImage().getWidth();
@@ -47,7 +59,7 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 				panel.setTempImage(Loader.loadImage(currentFile));
 				frontier.setImage(panel.getTempImage());
 				panel.paintImmediately(0, 0, width, height);
-				TrackingUtils.track(frontier, panel);
+				TrackingUtils.track(frontier, panel, iterations);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

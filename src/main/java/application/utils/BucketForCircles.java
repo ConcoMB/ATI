@@ -1,12 +1,12 @@
 package application.utils;
 
 public class BucketForCircles implements Comparable<BucketForCircles> {
-	double a;
-	double b;
-	double r;
+	int a;
+	int b;
+	int r;
 	int votes;
 
-	public BucketForCircles(double a, double b, double r, int votes) {
+	public BucketForCircles(int a, int b, int r, int votes) {
 		this.a = a;
 		this.b = b;
 		this.r = r;

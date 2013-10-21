@@ -34,18 +34,19 @@ public class RgbTita extends Tita {
 
 	@Override
 	protected void removeFromOuter(int x, int y) {
-		outerSum[0] -= image.getPixel(x, y, RED);
-		outerSum[1] -= image.getPixel(x, y, GREEN);
-		outerSum[2] -= image.getPixel(x, y, BLUE);
+		outerSum[0] = Math.max(0, outerSum[0]- image.getPixel(x, y, RED));
+		outerSum[1] = Math.max(0, outerSum[1]- image.getPixel(x, y, GREEN));
+		outerSum[2] = Math.max(0, outerSum[2]- image.getPixel(x, y, BLUE));
 		outerSize--;
 	}
 
 	@Override
 	protected void removeFromInner(int x, int y) {
-		innerSum[0] -= image.getPixel(x, y, RED);
-		innerSum[1] -= image.getPixel(x, y, GREEN);
-		innerSum[2] -= image.getPixel(x, y, BLUE);
+		innerSum[0] = Math.max(0, innerSum[0]- image.getPixel(x, y, RED));
+		innerSum[1] = Math.max(0, innerSum[1]- image.getPixel(x, y, GREEN));
+		innerSum[2] = Math.max(0, innerSum[2]- image.getPixel(x, y, BLUE));
 		innerSize--;
+		
 	}
 
 	@Override

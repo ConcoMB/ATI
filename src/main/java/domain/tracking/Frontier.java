@@ -83,8 +83,7 @@ public class Frontier {
 		if (!outerBorder.remove(p)) {
 			return;
 		}
-		innerBorder.add(p);
-		tita.setValue(p, -1);
+		addToInnerBorder(p);
 		for (Point n : n4(p)) {
 			if (tita.getValue(n) == 3) {
 				addToOuterBorder(n);
@@ -96,8 +95,7 @@ public class Frontier {
 		if (!innerBorder.remove(p)) {
 			return;
 		}
-		outerBorder.add(p);
-		tita.setValue(p, 1);
+		addToOuterBorder(p);
 		for (Point n : n4(p)) {
 			if (tita.getValue(n) == -3) {
 				addToInnerBorder(n);
@@ -124,7 +122,7 @@ public class Frontier {
 		if (p.y > 0) {
 			n4.add(new Point(p.x, p.y - 1));
 		}
-		if (p.x < h - 1) {
+		if (p.y < h - 1) {
 			n4.add(new Point(p.x, p.y + 1));
 		}
 		return n4;
@@ -177,17 +175,12 @@ public class Frontier {
 	}
 
 	public boolean change() {
-		// long t0 = System.currentTimeMillis();
 		process(new VelocityFunction());
-		// long t1 = System.currentTimeMillis();
 		boolean end = tita.checkEnded();
 		if (end) {
 			process(new TitaFunction());
 		}
-		// System.out.println("tardo " + (System.currentTimeMillis() - t1) +
-		// " y " + (t1-t0));
-		// System.out.println(tita.isEnded());
-		return !end;// != changed2;////innerBorder.size() * 0.01;
+		return !end;
 	}
 
 	private interface Function {

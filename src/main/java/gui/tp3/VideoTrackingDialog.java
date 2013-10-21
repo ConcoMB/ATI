@@ -4,6 +4,9 @@ import gui.MessageFrame;
 import gui.Panel;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.sanselan.ImageReadException;
 
 import application.Loader;
 import application.utils.TrackingUtils;
@@ -21,48 +24,52 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 		dispose();
 		String[] splitted = Loader.getCurrentFile().getAbsolutePath()
 				.split("/");
-		String fileName = splitted[splitted.length-1];
+		String fileName = splitted[splitted.length - 1];
 		int x = fileName.indexOf('.');
-		
+
 		StringBuffer num = new StringBuffer();
 		boolean end = false;
 		while (!end && x > 0) {
 			char n = fileName.charAt(--x);
-			if ( n>= '0' && n <= '9')
+			if (n >= '0' && n <= '9')
 				num.append(n);
-			else 
+			else
 				end = true;
 		}
 		num.reverse();
-		String[] nameSplitted = Loader.getCurrentFile().getAbsolutePath().split(num.toString() + ".");
+		String[] nameSplitted = Loader.getCurrentFile().getAbsolutePath()
+				.split(num.toString() + ".");
 		if (nameSplitted.length < 2) {
 			new MessageFrame("Invalid Image");
 			return;
 		}
 		String extension = nameSplitted[1];
-		String  filePrefix = nameSplitted[0];
+		String filePrefix = nameSplitted[0];
 		Frontier frontier = getFrontier(px, py, qx, qy);
 		TrackingUtils.track(frontier, panel, iterations);
 		panel.repaint();
 		int i = Integer.valueOf(num.toString());
 		i++;
 		boolean read = true;
-		int width = panel.getImage().getWidth();
-		int height = panel.getImage().getHeight();
+//		int width = panel.getImage().getWidth();
+//		int height = panel.getImage().getHeight();
 		while (read) {
+			File currentFile = new File(filePrefix + i + "." + extension);
+			if (!currentFile.exists()) {
+				read = false;
+				break;
+			}
 			try {
-				File currentFile = new File(filePrefix + i + "." + extension);
-				if (!currentFile.exists()) {
-					read = false;
-					break;
-				}
 				panel.setTempImage(Loader.loadImage(currentFile));
-				frontier.setImage(panel.getTempImage());
-				panel.paintImmediately(0, 0, width, height);
-				TrackingUtils.track(frontier, panel, iterations);
-			} catch (Exception e) {
+			} catch (ImageReadException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			frontier.setImage(panel.getTempImage());
+//			panel.paintImmediately(0, 0, width, height);
+			TrackingUtils.track(frontier, panel, iterations);
+			// }
 			i++;
 		}
 

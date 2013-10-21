@@ -7,9 +7,8 @@ import domain.Image.ChannelType;
 
 public abstract class Tita {
 
-	double[][] values;
-	double[][] velocities;
-
+	private double[][] values;
+	private double[][] velocities;
 	protected double[] innerSum = new double[3];
 	protected double[] outerSum = new double[3];
 	protected int innerSize = 0;
@@ -37,19 +36,20 @@ public abstract class Tita {
 	}
 
 	public void setValue(int x, int y, int i) {
+		if (i != -1 && i != -3 && i != 3 && i != 1) {
+			System.err.println(i);
+			throw new IllegalStateException();
+		}
 		if (values[x][y] == 3 && i != 3) {
 			// lo saco del outer
 			removeFromOuter(x, y);
-		}
-		if (values[x][y] == -3 && i != -3) {
+		} else if (values[x][y] == -3 && i != -3) {
 			// lo saco del inner
 			removeFromInner(x, y);
-		}
-		if (i == 3 && values[x][y] != 3) {
+		} else if (i == 3 && values[x][y] != 3) {
 			// lo agrego al outer
 			addToOuter(x, y);
-		}
-		if (i == -3 && values[x][y] != -3) {
+		} else if (i == -3 && values[x][y] != -3) {
 			// lo agrego al inner
 			addToInner(x, y);
 		}
@@ -113,7 +113,7 @@ public abstract class Tita {
 				end2 = false;
 			}
 		}
-//		System.out.println(end1 + " " + end2);
+		// System.out.println(end1 + " " + end2);
 		return end1 && end2;
 	}
 

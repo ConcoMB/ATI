@@ -24,11 +24,11 @@ public class TrackingUtils {
 		long time0 = System.currentTimeMillis();
 		while (i < iterations && changed) {
 			changed = frontier.change();
-			panel.setTempImage(drawBorder(frontier, (Image) frontier.getImage()
-					.clone()));
-			panel.paintImmediately(0, 0, image.getWidth(), image.getWidth());
 			i++;
 		}
+		panel.setTempImage(drawBorder(frontier, (Image) frontier.getImage()
+				.clone()));
+		panel.paintImmediately(0, 0, image.getWidth(), image.getWidth());
 		System.out.println("Tardo " + (System.currentTimeMillis() - time0) + " milisegundos");
 		
 		System.out.println("painted");

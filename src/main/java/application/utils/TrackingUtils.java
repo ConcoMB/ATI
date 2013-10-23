@@ -11,14 +11,12 @@ import gui.Panel;
 import java.awt.Point;
 
 import domain.Image;
-import domain.mask.MaskFactory;
 import domain.tracking.Frontier;
 
 public class TrackingUtils {
 
 	public static Image track(Frontier frontier, Panel panel, int iterations) {
 		Image image = (Image) frontier.getImage();
-		MaskUtils.applyMask(image, MaskFactory.buildGaussianMask(5, 5));
 		int i = 0;
 		boolean changed = true;
 		long time0 = System.currentTimeMillis();
@@ -29,9 +27,9 @@ public class TrackingUtils {
 		panel.setTempImage(drawBorder(frontier, (Image) frontier.getImage()
 				.clone()));
 		panel.paintImmediately(0, 0, image.getWidth(), image.getWidth());
-		System.out.println("Tardo " + (System.currentTimeMillis() - time0) + " milisegundos");
+//		System.out.println("Tardo en calcular el borde " + (System.currentTimeMillis() - time0) + " milisegundos");
 		
-		System.out.println("painted");
+//		System.out.println("painted");
 		
 		return image;
 	}

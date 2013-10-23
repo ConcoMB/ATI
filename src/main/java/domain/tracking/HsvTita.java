@@ -82,4 +82,18 @@ public class HsvTita extends Tita {
 		super.setImage(hsv);
 	}
 
+	@Override
+	protected void recalculateAvgs() {
+		innerSum[0] = innerSum[1] = outerSum[0] = outerSum[1] = innerSize = outerSize = 0;
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				if (getValue(x, y) == 3) {
+					addToOuter(x, y);
+				} else if (getValue(x, y) == -3) {
+					addToInner(x, y);
+				}
+			}
+		}		
+	}
+
 }

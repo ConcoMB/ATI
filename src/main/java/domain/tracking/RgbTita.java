@@ -34,19 +34,20 @@ public class RgbTita extends Tita {
 
 	@Override
 	protected void removeFromOuter(int x, int y) {
-		outerSum[0] = Math.max(0, outerSum[0]- image.getPixel(x, y, RED));
-		outerSum[1] = Math.max(0, outerSum[1]- image.getPixel(x, y, GREEN));
-		outerSum[2] = Math.max(0, outerSum[2]- image.getPixel(x, y, BLUE));
+		outerSum[0] -= image.getPixel(x, y, RED);
+		outerSum[1] -= image.getPixel(x, y, GREEN);
+		outerSum[2] -= image.getPixel(x, y, BLUE);
 		outerSize--;
+
 	}
 
 	@Override
 	protected void removeFromInner(int x, int y) {
-		innerSum[0] = Math.max(0, innerSum[0]- image.getPixel(x, y, RED));
-		innerSum[1] = Math.max(0, innerSum[1]- image.getPixel(x, y, GREEN));
-		innerSum[2] = Math.max(0, innerSum[2]- image.getPixel(x, y, BLUE));
+		innerSum[0] -= image.getPixel(x, y, RED);
+		innerSum[1] -= image.getPixel(x, y, GREEN);
+		innerSum[2] -= image.getPixel(x, y, BLUE);
 		innerSize--;
-		
+
 	}
 
 	@Override
@@ -81,15 +82,29 @@ public class RgbTita extends Tita {
 
 		return p2 - p1;
 	}
-	
+
 	@Override
 	public void setImage(Image image) {
 		RgbImage rgb;
-		if (image.isHsv()) 
+		if (image.isHsv())
 			rgb = ImageConversionUtils.convertToRgb((HsvImage) image);
 		else
 			rgb = (RgbImage) image;
 		super.setImage(rgb);
 	}
-	
+
+	@Override
+	protected void recalculateAvgs() {
+		innerSum[0] = innerSum[1] = innerSum[2] = outerSum[0] = outerSum[1] = outerSum[2] = innerSize = outerSize = 0;
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				if (getValue(x, y) == 3) {
+					addToOuter(x, y);
+				} else if (getValue(x, y) == -3) {
+					addToInner(x, y);
+				}
+			}
+		}
+	}
+
 }

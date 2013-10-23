@@ -83,6 +83,7 @@ public abstract class Tita {
 	public void setImage(Image image) {
 		this.image = image;
 		checkEnded();
+		recalculateAvgs();
 		// this.image = MaskUtils.applyMask(image, mask);;
 	}
 
@@ -129,4 +130,5 @@ public abstract class Tita {
 
 	protected abstract double calculateVelocity(Point p);
 
+	protected abstract void recalculateAvgs();
 }

@@ -1,5 +1,6 @@
 package application.utils;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -95,9 +96,7 @@ public class HoughUtils {
 						double total = roValue - thetaTerm;
 						// Step 6
 						if (Math.abs(total) < epsilon) {
-							houghed.setPixel(x, y, ChannelType.RED, 255);
-							houghed.setPixel(x, y, ChannelType.GREEN, 0);
-							houghed.setPixel(x, y, ChannelType.BLUE, 0);
+							paintRed(houghed, x, y);
 						}
 					}
 				}
@@ -182,27 +181,15 @@ public class HoughUtils {
 					break;
 				}
 
-				double aValue = aRange.getLowerBound() + b.a;
+				int aValue = rMin + b.a;
 
-				double bValue = bRange.getLowerBound() + b.b;
-				double rValue = rRange.getLowerBound() + b.r;
+				int bValue = (int) bRange.getLowerBound() + b.b;
+				int rValue = (int) rRange.getLowerBound() + b.r;
 
 				System.out.println("Circle: (" + aValue + "," + bValue + ","
 						+ rValue + ")");
 
-				for (int x = 0; x < borderImage.getWidth(); x++) {
-					for (int y = 0; y < borderImage.getHeight(); y++) {
-						double aTerm = Math.pow(x - aValue, 2);
-						double bTerm = Math.pow(y - bValue, 2);
-						double rTerm = Math.pow(rValue, 2);
-						double total = rTerm - aTerm - bTerm;
-						if (Math.abs(total) < epsilon) {
-							houghed.setPixel(x, y, ChannelType.RED, 255);
-							houghed.setPixel(x, y, ChannelType.GREEN, 0);
-							houghed.setPixel(x, y, ChannelType.BLUE, 0);
-						}
-					}
-				}
+				drawCircle(houghed, aValue, bValue, rValue);
 
 			}
 
@@ -212,5 +199,44 @@ public class HoughUtils {
 	private static boolean isWhite(Image image, int x, int y) {
 		return image.getGraylevelFromPixel(x, y) == Image.MAX_VAL;
 	}
+	
+	private static void drawCircle(Image image, int x0, int y0, int radius) {
+	  int error = 1 - radius;
+	  int errorY = 1;
+	  int errorX = -2 * radius;
+	  int x = radius, y = 0;
+	 
+	  paintRed(image, x0, y0 + radius);
+	  paintRed(image, x0, y0 - radius);
+	  paintRed(image, x0 + radius, y0);
+	  paintRed(image, x0 - radius, y0);
+	 
+	  while(y < x)
+	  {
+	    if(error > 0) // >= 0 produces a slimmer circle. =0 produces the circle picture at radius 11 above
+	    {
+	      x--;
+	      errorX += 2;
+	      error += errorX;
+	    }
+	    y++;
+	    errorY += 2;
+	    error += errorY;    
+	    paintRed(image, x0 + x, y0 + y);
+	    paintRed(image, x0 - x, y0 + y);
+	    paintRed(image, x0 + x, y0 - y);
+	    paintRed(image, x0 - x, y0 - y);
+	    paintRed(image, x0 + y, y0 + x);
+	    paintRed(image, x0 - y, y0 + x);
+	    paintRed(image, x0 + y, y0 - x);
+	    paintRed(image, x0 - y, y0 - x);
+	  }
+	}
 
+	private static void paintRed(Image image, int x, int y) {
+		image.setPixel(x, y, ChannelType.RED, 255);
+		image.setPixel(x, y, ChannelType.GREEN, 0);
+		image.setPixel(x, y, ChannelType.BLUE, 0);
+	}
+	
 }

@@ -5,6 +5,7 @@ import static domain.Image.ChannelType.GREEN;
 import static domain.Image.ChannelType.RED;
 import domain.Image;
 import domain.Image.ChannelType;
+import domain.Image.ImageType;
 
 public class ThresholdUtils {
 
@@ -147,12 +148,18 @@ public class ThresholdUtils {
 
 	public static Image hysteresis(Image image, double t1, double t2) {
 		Image t = (Image) image.clone();
-		applyHysteresis(t, t1, t2, null);
+		if (image.getType() == ImageType.GREYSCALE) {
+			applyHysteresis(t, t1, t2, null);
+		} else {
+			applyHysteresis(t, t1, t2, RED);
+			applyHysteresis(t, t1, t2, GREEN);
+			applyHysteresis(t, t1, t2, BLUE);
+		}
 		return t;
 	}
 
-	public static void hysteresis(Image image, ChannelType c, double t1,
-			double t2) {
+	public static void hysteresisForCanny(Image image, ChannelType c,
+			double t1, double t2) {
 		applyHysteresis(image, t1, t2, c);
 		checkHysteresisNeighbors(image, t1, t2);
 	}
@@ -209,11 +216,11 @@ public class ThresholdUtils {
 		}
 	}
 
-	public static void hysteresis(Image image) {
+	public static void hysteresisForCanny(Image image) {
 		for (ChannelType c : Image.rgbValues()) {
 			double thresholdVal = ThresholdUtils.getGlobalThresholdValue(128,
 					image, 1, c);
-			hysteresis(image, c, thresholdVal, thresholdVal + 30);
+			hysteresisForCanny(image, c, thresholdVal - 15, thresholdVal + 15);
 		}
 	}
 

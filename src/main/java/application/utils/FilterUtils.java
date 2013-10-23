@@ -16,7 +16,7 @@ public class FilterUtils {
 		Image image = (Image) original.clone();
 		MaskUtils.applyMask(image, MaskFactory.buildGaussianMask(5, 0.2));
 		image = supressNoMaximums(image);
-		ThresholdUtils.hysteresis(image);
+		ThresholdUtils.hysteresisForCanny(image);
 		PunctualOperationsUtils.maximize(image);
 		return image;
 	}

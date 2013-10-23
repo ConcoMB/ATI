@@ -52,7 +52,7 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 		i++;
 		boolean read = true;
 		while (read) {
-			long t0 = System.currentTimeMillis();
+//			long t0 = System.currentTimeMillis();
 			File currentFile = new File(filePrefix + i + "." + extension);
 			if (!currentFile.exists()) {
 				read = false;
@@ -65,7 +65,7 @@ public abstract class VideoTrackingDialog extends TrackingDialog {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			long t1 = System.currentTimeMillis();
+//			long t1 = System.currentTimeMillis();
 			frontier.setImage(panel.getTempImage());
 //			System.out.println("Tardo en levantar la imagen: " + (System.currentTimeMillis() - t1));
 			TrackingUtils.track(frontier, panel, iterations);

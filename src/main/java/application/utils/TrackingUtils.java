@@ -19,7 +19,7 @@ public class TrackingUtils {
 		Image image = (Image) frontier.getImage();
 		int i = 0;
 		boolean changed = true;
-		long time0 = System.currentTimeMillis();
+//		long time0 = System.currentTimeMillis();
 		while (i < iterations && changed) {
 			changed = frontier.change();
 			i++;

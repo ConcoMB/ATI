@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import application.utils.FilterUtils;
+import application.utils.BorderDetectionUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")
@@ -93,7 +93,7 @@ public class SusanDialog extends JDialog {
 					new MessageFrame("Invalid values");
 					return;
 				}
-				Image susaned = FilterUtils.applySusanFilter(panel.getImage(),
+				Image susaned = BorderDetectionUtils.susan(panel.getImage(),
 						min, max);
 				panel.setImage(susaned);
 				panel.repaint();

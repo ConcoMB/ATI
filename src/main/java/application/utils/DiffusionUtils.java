@@ -6,7 +6,7 @@ import domain.Image.ChannelType;
 public class DiffusionUtils {
 	
 	public static Image isotropicDiffusion(Image original, int iterations) {
-		return anisotropicDiffusion(original, iterations, new BorderDetector() {	
+		return anisotropicDiffusion(original, iterations, new BorderDetectorFunction() {	
 			@Override
 			public double g(double pixel) {
 				return 1;
@@ -14,7 +14,7 @@ public class DiffusionUtils {
 		});
 	}
 		
-	public static Image anisotropicDiffusion(Image original, int iterations, BorderDetector pf) {
+	public static Image anisotropicDiffusion(Image original, int iterations, BorderDetectorFunction pf) {
 		Image diffused = original.shallowClone();
 		for(int i = 0; i < iterations; i++) {
 			for(int x = 0; x < diffused.getWidth(); x++) {
@@ -27,7 +27,7 @@ public class DiffusionUtils {
 		return diffused;
 	}
 	
-	private static void diffusePixel(Image original, Image diffused, int i, int j, BorderDetector pf) {
+	private static void diffusePixel(Image original, Image diffused, int i, int j, BorderDetectorFunction pf) {
 		for(ChannelType channel: Image.rgbValues()){
 			double oldValueIJ = original.getPixel(i, j, channel);
 	
@@ -57,7 +57,7 @@ public class DiffusionUtils {
 		}
 	}
 	
-	public static class LeclercDetector implements BorderDetector {
+	public static class LeclercDetector implements BorderDetectorFunction {
 		private double sigma;
 		public LeclercDetector(double sigma){
 			this.sigma = sigma;
@@ -68,7 +68,7 @@ public class DiffusionUtils {
 		}
 	}
 	
-	public static class LorentzDetector implements BorderDetector {
+	public static class LorentzDetector implements BorderDetectorFunction {
 
 		private double sigma;
 

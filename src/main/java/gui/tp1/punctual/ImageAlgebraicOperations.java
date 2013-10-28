@@ -1,6 +1,5 @@
 package gui.tp1.punctual;
 
-import gui.ExtensionFilter;
 import gui.MessageFrame;
 import gui.Panel;
 import gui.Window;
@@ -12,7 +11,6 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.filechooser.FileFilter;
 
 import application.Loader;
 import domain.Image;
@@ -35,11 +33,9 @@ public abstract class ImageAlgebraicOperations extends JMenuItem {
 				}
 				JFileChooser chooser = new JFileChooser();
 				Image panelImage = panel.getImage();
-				FileFilter type = new ExtensionFilter("Images", new String[] {
-						".pgm", ".PGM", ".ppm", ".PPM", ".bmp", ".BMP", ".JPG", ".jpg", ".jpeg", ".JPEG" });
-				chooser.addChoosableFileFilter(type);
+				chooser.addChoosableFileFilter(panel.fileFilter);
 				chooser.setAcceptAllFileFilterUsed(false);
-				chooser.setFileFilter(type);
+				chooser.setFileFilter(panel.fileFilter);
 				chooser.showOpenDialog(menu);
 				File file = chooser.getSelectedFile();
 				if (file != null) {

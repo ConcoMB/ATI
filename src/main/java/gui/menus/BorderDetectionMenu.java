@@ -15,6 +15,7 @@ import gui.tp2.filters.SobelBorderDetectorDialog;
 import gui.tp3.HoughCircleDialog;
 import gui.tp3.HoughLineDialog;
 import gui.tp3.SusanDialog;
+import gui.tp4.HarrisDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
-import application.utils.FilterUtils;
+import application.utils.BorderDetectionUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")
@@ -86,7 +87,7 @@ public class BorderDetectionMenu extends JMenu{
 				if (image == null) {
 					return;
 				}
-				panel.setImage(FilterUtils.supressNoMaximums(image));
+				panel.setImage(BorderDetectionUtils.supressNoMaximums(image));
 				panel.repaint();
 			}
 		});
@@ -99,7 +100,7 @@ public class BorderDetectionMenu extends JMenu{
 				if (image == null) {
 					return;
 				}
-				panel.setImage(FilterUtils.applyCannyFilter(image));
+				panel.setImage(BorderDetectionUtils.canny(image));
 				panel.repaint();
 			}
 		});
@@ -234,6 +235,18 @@ public class BorderDetectionMenu extends JMenu{
 			}
 		});
 
+		JMenuItem harris = new JMenuItem("Harris");
+		harris.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				JDialog dialog = new HarrisDialog(panel);
+				dialog.setVisible(true);
+			}
+		});
 		
 		add(edgeEnhancement);
 		add(secodDerivate);
@@ -259,6 +272,8 @@ public class BorderDetectionMenu extends JMenu{
 		
 		hough.add(lineDetector);
 		hough.add(circleDetector);
+		add(new JSeparator());
+		add(harris);
 	}
 
 }

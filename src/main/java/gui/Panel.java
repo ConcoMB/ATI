@@ -22,6 +22,7 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
 
 import domain.DrawingContainer;
 import domain.Image;
@@ -37,6 +38,9 @@ public class Panel extends JPanel {
 	private Window window;
 	private VolatileImage vImg;
 	private DrawingContainer drawingContainer;
+	public FileFilter fileFilter = new ExtensionFilter("Images", new String[] {
+			".pgm", ".PGM", ".ppm", ".PPM", ".bmp", ".BMP", ".jpg", ".JPG", ".jpeg", ".JPEG" });
+	
 
 	public Panel(Window window) {
 		this.window = window;

@@ -63,15 +63,13 @@ public class FileMenu extends JMenu {
 		JMenuItem loadImage = new JMenuItem("Load image");
 		loadImage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				JFileChooser chooser = new JFileChooser();
-				FileFilter type = new ExtensionFilter("Images", new String[] {
-						".pgm", ".PGM", ".ppm", ".PPM", ".bmp", ".BMP", ".jpg", ".JPG", ".jpeg", ".JPEG" });
-				chooser.addChoosableFileFilter(type);
+				chooser.addChoosableFileFilter(panel.fileFilter);
 				chooser.setAcceptAllFileFilterUsed(false);
-				chooser.setFileFilter(type);
+				chooser.setFileFilter(panel.fileFilter);
 				chooser.showOpenDialog(FileMenu.this);
 				File file = chooser.getSelectedFile();
-				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				if (file != null) {
 					Image image = null;
 					try {

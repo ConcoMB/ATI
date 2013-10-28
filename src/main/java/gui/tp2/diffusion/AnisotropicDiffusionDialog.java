@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import application.utils.BorderDetector;
+import application.utils.BorderDetectorFunction;
 import application.utils.DiffusionUtils;
 import domain.Image;
 
@@ -85,7 +85,7 @@ public class AnisotropicDiffusionDialog extends JDialog {
 					new MessageFrame("Invalid parameters.");
 					return;
 				}
-				BorderDetector borderDetector = null;
+				BorderDetectorFunction borderDetector = null;
 				if(leclercRadioButton.isSelected()) {
 					borderDetector = new DiffusionUtils.LeclercDetector(sigma);
 				} else if(lorentzRadioButton.isSelected()) {

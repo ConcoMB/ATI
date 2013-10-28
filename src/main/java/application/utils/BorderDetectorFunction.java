@@ -1,6 +1,6 @@
 package application.utils;
 
-public interface BorderDetector {
+public interface BorderDetectorFunction {
 
 	double g(double x);
 

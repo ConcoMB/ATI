@@ -73,7 +73,7 @@ public class HoughUtils {
 				allBuckets);
 		Collections.sort(allBucketsAsList);
 
-		Image houghed = borderImage.shallowClone();
+		Image houghed = original.clone();
 		// Gets the max vote number
 		int maxVotes = allBucketsAsList.get(0).votes;
 		if (maxVotes > 1) {
@@ -160,7 +160,7 @@ public class HoughUtils {
 				}
 			}
 		}
-		Image houghed = borderImage.shallowClone();
+		Image houghed = original.clone();
 		if (allBuckets.isEmpty()) {
 			System.out.println("Empty Buckets");
 			return houghed;

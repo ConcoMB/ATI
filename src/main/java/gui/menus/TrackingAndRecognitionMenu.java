@@ -22,9 +22,9 @@ import application.utils.SiftUtils;
 import domain.Image;
 
 @SuppressWarnings("serial")
-public class TrackingMenu extends JMenu {
+public class TrackingAndRecognitionMenu extends JMenu {
 
-	public TrackingMenu() {
+	public TrackingAndRecognitionMenu() {
 		super("Tracking & Recognition");
 		setEnabled(true);
 
@@ -65,9 +65,24 @@ public class TrackingMenu extends JMenu {
 				
 			}
 		});
+		JMenu sift = new JMenu("SIFT");
+		
+		JMenuItem siftAnalyze = new JMenuItem("Analyze");
+		siftAnalyze.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				Image a = panel.getImage();
+				if (a == null) {
+					return;
+				}
+				panel.setImage(SiftUtils.sift(a));
+				panel.repaint();
+			}
+		});
+		
 
-		JMenuItem sift = new JMenuItem("SIFT");
-		sift.addActionListener(new ActionListener() {
+		JMenuItem siftCompare = new JMenuItem("Compare");
+		siftCompare.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
 				Image a = panel.getImage();
@@ -75,8 +90,12 @@ public class TrackingMenu extends JMenu {
 					return;
 				}
 				Image b = getSecondaryImage();
-				panel.setImage(SiftUtils.sift(a, b));
+				Image[] pair = SiftUtils.sift(a, b);
+				panel.setImage(pair[0]);
 				panel.repaint();
+				Window w = new Window();
+				w.getPanel().setImage(pair[1]);
+				w.setVisible(true);
 			}
 		});
 		
@@ -86,6 +105,8 @@ public class TrackingMenu extends JMenu {
 		add(hvsVideoTracking);
 		add(new JSeparator());
 		add(sift);
+		sift.add(siftAnalyze);
+		sift.add(siftCompare);
 	}
 	
 	private Image getSecondaryImage() {
@@ -94,7 +115,7 @@ public class TrackingMenu extends JMenu {
 		chooser.addChoosableFileFilter(panel.fileFilter);
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setFileFilter(panel.fileFilter);
-		chooser.showOpenDialog(TrackingMenu.this);
+		chooser.showOpenDialog(TrackingAndRecognitionMenu.this);
 
 		File arch = chooser.getSelectedFile();
 

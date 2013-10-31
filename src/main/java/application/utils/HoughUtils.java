@@ -1,5 +1,7 @@
 package application.utils;
 
+import static application.utils.BasicImageUtils.paintRed;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -9,7 +11,6 @@ import java.util.Set;
 import org.jfree.data.Range;
 
 import domain.Image;
-import domain.Image.ChannelType;
 import domain.SynthetizationType;
 import domain.mask.MaskFactory;
 
@@ -231,11 +232,4 @@ public class HoughUtils {
 	    paintRed(image, x0 - y, y0 - x);
 	  }
 	}
-
-	private static void paintRed(Image image, int x, int y) {
-		image.setPixel(x, y, ChannelType.RED, 255);
-		image.setPixel(x, y, ChannelType.GREEN, 0);
-		image.setPixel(x, y, ChannelType.BLUE, 0);
-	}
-	
 }

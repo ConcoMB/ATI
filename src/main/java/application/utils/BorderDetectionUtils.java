@@ -1,5 +1,6 @@
 package application.utils;
 
+import static application.utils.BasicImageUtils.paintRed;
 import static domain.Image.ChannelType.BLUE;
 import static domain.Image.ChannelType.GREEN;
 import static domain.Image.ChannelType.RED;
@@ -112,7 +113,7 @@ public class BorderDetectionUtils {
 					double s_ro = MaskUtils.applySusanPixelMask(x, y, mask,
 							image, c);
 					if (s_ro < max && s_ro > min) {
-						paintPixel(susaned, x, y);
+						paintRed(susaned, x, y);
 					}
 				}
 			}
@@ -152,19 +153,9 @@ public class BorderDetectionUtils {
 		}
 		for (Corner c : corners) {
 			System.out.println(c.x + " " + c.y);
-			paintPixel(harried, c.x, c.y);
+			paintRed(harried, c.x, c.y);
 		}
 		return harried;
-	}
-
-	private static void paintPixel(Image image, int x, int y) {
-		for (int i = -1; i <= 1 - 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				image.setPixel(x + i, y + j, RED, 255);
-				image.setPixel(x + i, y + j, BLUE, 0);
-				image.setPixel(x + i, y + j, GREEN, 0);
-			}
-		}
 	}
 
 	private static boolean isSpatialMaxima(double[][] hmap, int x, int y) {

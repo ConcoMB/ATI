@@ -14,6 +14,6 @@ public class MenuBar extends JMenuBar {
 		add(new DiffusionMenu());
 		add(new ThresholdMenu());
 		add(new BorderDetectionMenu());
-		add(new TrackingMenu());
+		add(new TrackingAndRecognitionMenu());
 	}
 }

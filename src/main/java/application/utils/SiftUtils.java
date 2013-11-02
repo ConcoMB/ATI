@@ -31,7 +31,7 @@ public class SiftUtils {
 					(int) (Math.random() * 255), (int) (Math.random() * 255) };
 			paintN8(image1, (int) match.getP1().getL()[0], (int) match.getP1()
 					.getL()[1], color[0], color[1], color[2]);
-			paintN8(image2, (int) match.getP1().getL()[0], (int) match.getP1()
+			paintN8(image2, (int) match.getP2().getL()[0], (int) match.getP2()
 					.getL()[1], color[0], color[1], color[2]);
 		}
 		System.out.println((double) matches.size()

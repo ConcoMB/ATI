@@ -224,4 +224,14 @@ public class ThresholdUtils {
 		}
 	}
 
+	public static Image awesomeThresholding(Image original) {
+		if (original.isHsv()) {
+			throw new IllegalStateException();
+		}
+		AwesomeThresholding tp = new AwesomeThresholding(original);
+		tp.calculateMeansAndDevs();
+		tp.compareDevsAndMerge();
+		return tp.complete();
+	}
+
 }

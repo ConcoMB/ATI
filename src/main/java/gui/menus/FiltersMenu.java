@@ -20,7 +20,6 @@ public class FiltersMenu extends JMenu {
 		super("Filter");
 		setEnabled(true);
 
-		
 		JMenuItem gaussianFilter = new JMenuItem("Gaussian");
 		gaussianFilter.addActionListener(new ActionListener() {
 			@Override
@@ -33,7 +32,6 @@ public class FiltersMenu extends JMenu {
 				dialog.setVisible(true);
 			}
 		});
-
 
 		JMenuItem meanFilter = new JMenuItem("Mean");
 		meanFilter.addActionListener(new ActionListener() {

@@ -1,6 +1,6 @@
 package application.utils;
 
-import static application.utils.BasicImageUtils.paintRed;
+import static application.utils.BasicImageUtils.paintRedN8;
 import static domain.Image.ChannelType.BLUE;
 import static domain.Image.ChannelType.GREEN;
 import static domain.Image.ChannelType.RED;
@@ -113,7 +113,7 @@ public class BorderDetectionUtils {
 					double s_ro = MaskUtils.applySusanPixelMask(x, y, mask,
 							image, c);
 					if (s_ro < max && s_ro > min) {
-						paintRed(susaned, x, y);
+						paintRedN8(susaned, x, y);
 					}
 				}
 			}
@@ -153,7 +153,7 @@ public class BorderDetectionUtils {
 		}
 		for (Corner c : corners) {
 			System.out.println(c.x + " " + c.y);
-			paintRed(harried, c.x, c.y);
+			paintRedN8(harried, c.x, c.y);
 		}
 		return harried;
 	}

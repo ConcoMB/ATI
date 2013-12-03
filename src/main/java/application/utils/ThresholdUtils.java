@@ -99,7 +99,7 @@ public class ThresholdUtils {
 				threshold = i;
 			}
 		}
-		System.out.println("Threshold " + c.toString() + ": " + threshold);
+//		System.out.println("Threshold " + c.toString() + ": " + threshold);
 		threshold(img, threshold, c);
 	}
 

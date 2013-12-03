@@ -61,7 +61,7 @@ public class AwesomeVideoActionListener implements ActionListener {
 		panel.setImage(ThresholdUtils.awesomeThresholding(image));
 		panel.paintImmediately(0, 0, panel.getWidth(), panel.getHeight());
 		while (read) {
-			File currentFile = new File(filePrefix + i + "." + extension);
+			File currentFile = new File(filePrefix + getNum(num.length(), i) + "." + extension);
 			if (!currentFile.exists()) {
 				read = false;
 				break;
@@ -77,5 +77,16 @@ public class AwesomeVideoActionListener implements ActionListener {
 			panel.paintImmediately(0, 0, panel.getWidth(), panel.getHeight());
 			i++;
 		}
+	}
+
+	private String getNum(int length, int i) {
+		StringBuffer s = new StringBuffer();
+		s.append(i);
+		s.reverse();
+		while(s.length() < length) {
+			s.append(0);
+		}
+		s.reverse();
+		return s.toString();
 	}
 }

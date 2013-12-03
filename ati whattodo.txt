@@ -1,0 +1,11 @@
+1. analizar motivacion de el problema
+  para que dicen los autores que esta bueno
+  cual es la mejora (sobre umbralizacion sola t epuede quedar solo rojo)
+2. Pruebas que hciimos
+3. Detalles de impl
+4. Dificultades q tuvimos
+5. Ejemplos
+6. Conclusiones
+  Si pensamos algo
+  Funciona en tiempor real? es util?? Medir el tiempo
+  Conclusiiones propias. Que pensamos sobre eso que queremso decir

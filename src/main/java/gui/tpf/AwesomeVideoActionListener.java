@@ -14,10 +14,9 @@ import javax.swing.JMenu;
 import org.apache.sanselan.ImageReadException;
 
 import application.Loader;
-import application.utils.ThresholdUtils;
 import domain.Image;
 
-public class AwesomeVideoActionListener implements ActionListener {
+public abstract class AwesomeVideoActionListener implements ActionListener {
 
 	private JMenu menu;
 
@@ -58,7 +57,7 @@ public class AwesomeVideoActionListener implements ActionListener {
 		int i = Integer.valueOf(num.toString());
 		i++;
 		boolean read = true;
-		panel.setImage(ThresholdUtils.awesomeThresholding(image));
+		panel.setImage(doMagic(image));
 		panel.paintImmediately(0, 0, panel.getWidth(), panel.getHeight());
 		while (read) {
 			File currentFile = new File(filePrefix + getNum(num.length(), i) + "." + extension);
@@ -73,7 +72,7 @@ public class AwesomeVideoActionListener implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			panel.setImage(ThresholdUtils.awesomeThresholding(image));
+			panel.setImage(doMagic(image));
 			panel.paintImmediately(0, 0, panel.getWidth(), panel.getHeight());
 			i++;
 		}
@@ -89,4 +88,6 @@ public class AwesomeVideoActionListener implements ActionListener {
 		s.reverse();
 		return s.toString();
 	}
+	
+	protected abstract Image doMagic(Image image);
 }

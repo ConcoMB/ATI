@@ -141,6 +141,20 @@ public class PunctualOperationsMenu extends JMenu {
 			}
 		});
 
+		JMenuItem toGreyscale = new JMenuItem("To Greyscale");
+		toGreyscale.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
+				if (panel.getImage() == null) {
+					return;
+				}
+				panel.setImage(PunctualOperationsUtils.toGreyscale(panel
+						.getImage()));
+				panel.repaint();
+			}
+		});
+
+		
 		add(algebraic);
 		algebraic.add(addition);
 		algebraic.add(substraction);
@@ -156,6 +170,8 @@ public class PunctualOperationsMenu extends JMenu {
 		add(histogram);
 		add(new JSeparator());
 		add(ecualization);
+		add(new JSeparator());
+		add(toGreyscale);
 		add(new JSeparator());
 		add(convert);
 	}

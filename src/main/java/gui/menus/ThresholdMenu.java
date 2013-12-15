@@ -6,7 +6,6 @@ import gui.tp1.punctual.ThresholdDialog;
 import gui.tp2.thresholds.ColorGlobalThresholdDialog;
 import gui.tp2.thresholds.GlobalThresholdDialog;
 import gui.tp3.HysteresisThresholdDialog;
-import gui.tpf.AwesomeVideoActionListener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +13,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
 
 import application.utils.ThresholdUtils;
 import domain.Image;
@@ -82,35 +80,10 @@ public class ThresholdMenu extends JMenu {
 		});
 		
 
-		JMenu videoThresholding = new JMenu("Video Thresholding");
-
-		JMenuItem awesomeImage = new JMenuItem("Single Image");
-		JMenuItem awesomeVideo = new JMenuItem("Video");
-
-		awesomeImage.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Panel panel = (((Window) getTopLevelAncestor()).getPanel());
-				Image image = panel.getImage();
-				if (image == null) {
-					return;
-				}
-				panel.setImage(ThresholdUtils.awesomeThresholding(image));
-				panel.repaint();
-			}
-		});
 		
-		awesomeVideo.addActionListener(new AwesomeVideoActionListener(this));
-
-		videoThresholding.add(awesomeImage);
-		videoThresholding.add(awesomeVideo);
 		add(threshold);
 		add(globalThreshold);
 		add(otsuThreshold);
 		add(hysteresis);
-		add(new JSeparator());
-		add(videoThresholding);
-
 	}
 }

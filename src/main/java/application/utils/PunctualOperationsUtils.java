@@ -351,4 +351,20 @@ public class PunctualOperationsUtils {
 		}
 	}
 
+	public static Image toGreyscale(Image original) {
+		Image image = original.shallowClone();
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				double r = original.getPixel(x, y, RED);
+				double g = original.getPixel(x, y, GREEN);
+				double b = original.getPixel(x, y, BLUE);
+				double grey = Math.min(255, Math.sqrt(r * r + g * g + b * b));
+				image.setPixel(x, y, RED, grey);
+				image.setPixel(x, y, GREEN, grey);
+				image.setPixel(x, y, BLUE, grey);
+			}
+		}
+		return image;
+	}
+
 }

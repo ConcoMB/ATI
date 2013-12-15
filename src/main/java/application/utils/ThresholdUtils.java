@@ -99,7 +99,7 @@ public class ThresholdUtils {
 				threshold = i;
 			}
 		}
-//		System.out.println("Threshold " + c.toString() + ": " + threshold);
+		// System.out.println("Threshold " + c.toString() + ": " + threshold);
 		threshold(img, threshold, c);
 	}
 
@@ -224,14 +224,28 @@ public class ThresholdUtils {
 		}
 	}
 
-	public static Image awesomeThresholding(Image original) {
+	private static Image doAwesomeThresholding(Image original, boolean merged) {
+
 		if (original.isHsv()) {
 			throw new IllegalStateException();
 		}
+		long t0 = System.currentTimeMillis();
 		AwesomeThresholding tp = new AwesomeThresholding(original);
 		tp.calculateMeansAndDevs();
-		tp.compareDevsAndMerge();
+		if (merged) {
+			tp.compareDevsAndMerge();
+		}
+		System.out.println(System.currentTimeMillis() - t0);
+
 		return tp.complete();
+	}
+
+	public static Image awesomeThresholding(Image original) {
+		return doAwesomeThresholding(original, true);
+	}
+
+	public static Image notMergedAwesomeThresholding(Image original) {
+		return doAwesomeThresholding(original, false);
 	}
 
 }

@@ -124,8 +124,9 @@ public class Panel extends JPanel {
 
 	public void loadImage(Image image) {
 		setImage(image);
+		Rectangle bounds = window.getBounds();
 		window.setBounds(new Rectangle(window.getLocation(), new Dimension(
-				image.getWidth() + 5, image.getHeight() + 5)));
+				Math.max(bounds.x, image.getWidth()), Math.max(bounds.y, image.getHeight()))));
 	}
 
 	public void undo() {

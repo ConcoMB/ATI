@@ -72,14 +72,20 @@ public class AwesomeThresholding {
 				}
 			}
 		}
-//		System.out.println("Empezamos con");
-//		for (Cluster cluster : clusters) {
-//			System.out.println("Un cluster con " + cluster.points.size() + " puntos");
-//		}
+		for (Cluster cluster : new ArrayList<Cluster>(clusters)) {
+			if (cluster.points.isEmpty()) {
+				clusters.remove(cluster);
+			}
+		}
+		// System.out.println("Empezamos con");
+		// for (Cluster cluster : clusters) {
+		// System.out.println("Un cluster con " + cluster.points.size() +
+		// " puntos");
+		// }
 	}
 
 	public void calculateMeansAndDevs() {
-//		System.out.println("Calculando medianas y desvios");
+		// System.out.println("Calculando medianas y desvios");
 		for (Cluster cluster : clusters) {
 			cluster.calculateMean();
 			cluster.calculateDev();
@@ -87,20 +93,19 @@ public class AwesomeThresholding {
 	}
 
 	public void compareDevsAndMerge() {
-//		System.out.println("Comparamos y vemos si mergeamos");
+		// System.out.println("Comparamos y vemos si mergeamos");
 		boolean change = true;
 		while (change) {
 			change = false;
 			for (int i = 0; i < clusters.size() && !change; i++) {
-				for (int j = 0; j < clusters.size() && !change; j++) {
-					if (i != j) {
-						Cluster c1 = clusters.get(i), c2 = clusters.get(j);
-						double comparision = c1.compareDev(c2);
-						if (comparision <= c1.dev || comparision <= c2.dev) {
-							mergeClusters(c1, c2);
-//							System.out.println("Mergeamos!");
-							change = true;
-						}
+				for (int j = i + 1; j < clusters.size() && !change; j++) {
+					Cluster c1 = clusters.get(i), c2 = clusters.get(j);
+					double comparision = c1.compareDev(c2);
+					// System.out.println("C1:"+c1.dev+"  C2:"+c2.dev+"  C3:"+comparision);
+					if (comparision <= c1.dev || comparision <= c2.dev) {
+						mergeClusters(c1, c2);
+						 System.out.println("Mergeamos!");
+						change = true;
 					}
 				}
 			}
@@ -108,6 +113,7 @@ public class AwesomeThresholding {
 	}
 
 	private void mergeClusters(Cluster c1, Cluster c2) {
+		System.out.println("Le merging");
 		clusters.remove(c1);
 		clusters.remove(c2);
 		Cluster merged = new Cluster(c1, c2);

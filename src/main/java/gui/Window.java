@@ -21,13 +21,13 @@ public class Window extends JFrame {
 	public Window() {
         config = getGraphicsConfiguration();
 		setTitle("Images Analysis and Treatment");
-		setBounds(1, 1, 700, 700);
+		setBounds(1, 1, 1000, 800);
 		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 		location = new Point(size.width / 3 - getWidth() / 3, size.height / 3
 				- getHeight() / 2);
 		setLocation(location);
 		setResizable(true);
-		setMinimumSize(new Dimension(700, 700));
+		setMinimumSize(new Dimension(1000, 800));
 		panel.setBackground(Color.WHITE);
 		setJMenuBar(menuBar);
         panel.initKeyBindings();

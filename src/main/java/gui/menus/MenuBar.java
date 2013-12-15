@@ -13,6 +13,7 @@ public class MenuBar extends JMenuBar {
 		add(new FiltersMenu());
 		add(new DiffusionMenu());
 		add(new ThresholdMenu());
+		add(new AwesomeThresholdingMenu());
 		add(new BorderDetectionMenu());
 		add(new TrackingAndRecognitionMenu());
 	}
